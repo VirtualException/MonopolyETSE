@@ -39,7 +39,7 @@ public class Casilla {
     public Casilla(String nombre, int posicion, float impuesto, Jugador duenho) {
         this.avatares = new ArrayList<>();
         this.nombre = nombre;
-        this.tipo = "impuesto";
+        this.tipo = "Impuesto";
         this.posicion = posicion;
         this.duenho = duenho;  // La banca es dueño de la casilla de impuestos
         this.impuesto = impuesto;
