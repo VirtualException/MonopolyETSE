@@ -92,12 +92,11 @@ public class Tablero {
     @Override
     public String toString() {
 
-        System.out.println();
-
-
+        return " ";
     }
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:
-    public Casilla encontrar_casilla(String nombre){
+    public static Casilla encontrar_casilla(String nombre){
+        return null;
     }
 }
