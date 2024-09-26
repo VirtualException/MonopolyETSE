@@ -2,6 +2,7 @@ package monopoly;
 
 import java.util.ArrayList;
 import partida.*;
+import monopoly.Tablero;
 
 public class Menu {
 
@@ -26,8 +27,7 @@ public class Menu {
     // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
 
-        //Jugador[] jugadores = new Jugador();
-        ArrayList<Avatar> avatares = new ArrayList<>();
+
 
     }
     
@@ -35,6 +35,15 @@ public class Menu {
     * Parámetro: cadena de caracteres (el comando).
     */
     private void analizarComando(String comando) {
+
+        String[] comandos_args = comando.split(" ");
+
+        /* Crear jugador, junto a su avatar */
+        if (comandos_args[0] == "crear" && comandos_args[1] == "jugador") {
+            jugadores.add(new Jugador(comandos_args[2], "nada", Tablero.encontrar_casilla("Salida"), avatares));
+            avatares.add(new Avatar("nada", jugadores.getLast(), Tablero.encontrar_casilla("Salida"), avatares));
+        }
+
     }
 
     /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
