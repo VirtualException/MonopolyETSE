@@ -25,8 +25,6 @@ public class Valor {
     public static final float VALOR_GRUPO_AZUL_OSCURO = (VALOR_GRUPO_VERDE*1.3f);
 
 
-
-    
     //Colores del texto:
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
@@ -37,6 +35,5 @@ public class Valor {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
-
-
+    public static final String BROWN = "\u001B[38;5;94m";
 }

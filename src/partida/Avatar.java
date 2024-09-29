@@ -1,6 +1,8 @@
 package partida;
 
 import java.util.ArrayList;
+import java.util.Objects;
+
 import monopoly.*;
 
 
@@ -21,7 +23,7 @@ public class Avatar {
      * avatares creados (usado para crear un ID distinto del de los demás avatares).
      */
     public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) {
-        this.generarId(avCreados);  //Crea un ID para un avatar y guarda ese
+        this.generarId(avCreados);  //Crea un ID nuevo para un avatar distinto de los creados anteriormente
         this.tipo = tipo;
         this.jugador = jugador;
         this.lugar = lugar;
@@ -41,5 +43,42 @@ public class Avatar {
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
     private void generarId(ArrayList<Avatar> avCreados) {
+    }
+
+
+
+    //Getters y Setters
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
+    }
+
+    public Casilla getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(Casilla lugar) {
+        this.lugar = lugar;
     }
 }

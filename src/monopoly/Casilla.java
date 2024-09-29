@@ -8,7 +8,7 @@ public class Casilla {
 
     //Atributos:
     private String nombre; //Nombre de la casilla
-    private String tipo; //Tipo de casilla (Solar, Especial, Transporte, Servicios, Comunidad).
+    private String tipo; //Tipo de casilla (Solar, Especial, Transporte, Servicios, Comunidad, Suerte y Impuesto).
     private float valor; //Valor de esa casilla (en la mayoría será valor de compra, en la casilla parking se usará como el bote).
     private int posicion; //Posición que ocupa la casilla en el tablero (entero entre 1 y 40).
     private Jugador duenho; //Dueño de la casilla (por defecto sería la banca).
@@ -41,7 +41,7 @@ public class Casilla {
         this.nombre = nombre;
         this.tipo = "Impuesto";
         this.posicion = posicion;
-        this.duenho = duenho;  // La banca es dueño de la casilla de impuestos
+        this.duenho = duenho;// La banca es dueño de la casilla de impuestos
         this.impuesto = impuesto;
     }
 
@@ -128,4 +128,83 @@ public class Casilla {
     public String casEnVenta() {
     }
 
+
+
+
+
+
+    //Getters y Setters
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public float getValor() {
+        return valor;
+    }
+
+    public void setValor(float valor) {
+        this.valor = valor;
+    }
+
+    public int getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(int posicion) {
+        this.posicion = posicion;
+    }
+
+    public Jugador getDuenho() {
+        return duenho;
+    }
+
+    public void setDuenho(Jugador duenho) {
+        this.duenho = duenho;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public float getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(float impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public float getHipoteca() {
+        return hipoteca;
+    }
+
+    public void setHipoteca(float hipoteca) {
+        this.hipoteca = hipoteca;
+    }
+
+    public ArrayList<Avatar> getAvatares() {
+        return avatares;
+    }
+
+    public void setAvatares(ArrayList<Avatar> avatares) {
+        this.avatares = avatares;
+    }
 }

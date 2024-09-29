@@ -22,35 +22,90 @@ public class Jugador {
     }
 
     /*Constructor principal. Requiere parámetros:
-    * Nombre del jugador, tipo del avatar que tendrá, casilla en la que empezará y ArrayList de
-    * avatares creados (usado para dos propósitos: evitar que dos jugadores tengan el mismo nombre y
-    * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
+     * Nombre del jugador, tipo del avatar que tendrá, casilla en la que empezará y ArrayList de
+     * avatares creados (usado para dos propósitos: evitar que dos jugadores tengan el mismo nombre y
+     * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
+        this.nombre = nombre;
+        this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
+        this.fortuna = (float) Valor.FORTUNA_INICIAL;
+        this.gastos = 0.0f;
+        this.enCarcel = false;
+        this.tiradasCarcel = 0;
+        this.vueltas = 0;
+        this.propiedades = new ArrayList<>();
     }
 
     //Otros métodos:
     //Método para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {
+        propiedades.add(casilla);
     }
 
     //Método para eliminar una propiedad del arraylist de propiedades de jugador.
     public void eliminarPropiedad(Casilla casilla) {
+        if (propiedades.contains(casilla)) {
+            propiedades.remove(casilla);
+        } else {
+            System.out.println("El jugador no es poseedor de la propiedad");
+        }
     }
 
     //Método para añadir fortuna a un jugador
     //Como parámetro se pide el valor a añadir. Si hay que restar fortuna, se pasaría un valor negativo.
     public void sumarFortuna(float valor) {
+        this.fortuna += valor;
     }
 
     //Método para sumar gastos a un jugador.
     //Parámetro: valor a añadir a los gastos del jugador (será el precio de un solar, impuestos pagados...).
     public void sumarGastos(float valor) {
+        this.gastos += valor;
     }
 
-    /*Método para establecer al jugador en la cárcel. 
-    * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
+    /*Método para establecer al jugador en la cárcel.
+     * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
     }
 
+
+
+
+
+
+    //Getters y Setters
+
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public Avatar getAvatar(){
+        return avatar;
+    }
+
+    public float getFortuna(){
+        return fortuna;
+    }
+
+    public float getGastos(){
+        return gastos;
+    }
+
+    public boolean isEnCarcel(){
+        return enCarcel;
+    }
+
+    public int getTiradasCarcel(){
+        return tiradasCarcel;
+    }
+
+    public int getVueltas(){
+        return vueltas;
+    }
+
+    public ArrayList<Casilla> getPropiedades(){
+        return propiedades;
+    }
 }

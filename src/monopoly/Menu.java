@@ -28,7 +28,7 @@ public class Menu {
     private void iniciarPartida() {
 
 
-
+        System.out.println(this.tablero.toString());
     }
     
     /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
@@ -93,5 +93,4 @@ public class Menu {
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
     private void acabarTurno() {
     }
-
 }

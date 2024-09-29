@@ -13,9 +13,6 @@ class Grupo {
 
     //Constructor vacío.
     public Grupo() {
-        this.miembros = new ArrayList<>();
-        this.colorGrupo = "";
-        this.numCasillas = 0;
     }
 
     /*Constructor para cuando el grupo está formado por DOS CASILLAS:
@@ -56,8 +53,35 @@ class Grupo {
      * Valor devuelto: true si es dueño de todas las casillas del grupo, false en otro caso.
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
-
-
     }
 
+
+
+
+    //Getters y Setters
+
+
+    public ArrayList<Casilla> getMiembros() {
+        return miembros;
+    }
+
+    public void setMiembros(ArrayList<Casilla> miembros) {
+        this.miembros = miembros;
+    }
+
+    public String getColorGrupo() {
+        return colorGrupo;
+    }
+
+    public void setColorGrupo(String colorGrupo) {
+        this.colorGrupo = colorGrupo;
+    }
+
+    public int getNumCasillas() {
+        return numCasillas;
+    }
+
+    public void setNumCasillas(int numCasillas) {
+        this.numCasillas = numCasillas;
+    }
 }
