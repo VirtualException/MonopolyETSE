@@ -19,6 +19,8 @@ public class Tablero {
         this.posiciones = new ArrayList<>();
         this.grupos = new HashMap<>();
         this.banca = banca;
+
+        generarCasillas();
     }
 
 
@@ -143,7 +145,17 @@ public class Tablero {
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
+
         String str = new String();
+
+        /* Lado de arriba */
+        for (int i = 0; i < posiciones.get(2).size(); i++) {
+            str +=  "|" + posiciones.get(2).get(i).getNombre();
+
+        }
+
+
+        return str;
     }
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:
