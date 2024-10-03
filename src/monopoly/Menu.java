@@ -26,8 +26,6 @@ public class Menu {
 
     // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
-
-
         System.out.println(this.tablero.toString());
     }
     

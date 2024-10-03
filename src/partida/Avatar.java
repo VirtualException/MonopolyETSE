@@ -34,6 +34,13 @@ public class Avatar {
      * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
      */
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
+        for(ArrayList<Casilla> arrayList: casillas){
+            for(Casilla casilla : arrayList){
+                int posicionActual = this.lugar.getPosicion();
+                posicionActual += valorTirada;
+                this.lugar.setPosicion(posicionActual);
+            }
+        }
     }
 
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
