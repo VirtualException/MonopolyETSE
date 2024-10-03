@@ -3,9 +3,7 @@ package monopoly;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-
 import partida.*;
-import monopoly.Tablero;
 
 public class Menu {
 
@@ -29,14 +27,11 @@ public class Menu {
 
     // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
-<<<<<<< HEAD
-=======
 
         /* Crear banca y tablero */
         banca = new Jugador("Banca", "Banca", null, avatares);
         tablero = new Tablero(banca);
 
->>>>>>> ee9a81df48fce69e81ef3f492a2160ae46a4e0ff
         System.out.println(this.tablero.toString());
 
         Scanner scan = new Scanner(System.in);
