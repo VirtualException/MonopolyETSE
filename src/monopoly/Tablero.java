@@ -142,6 +142,13 @@ public class Tablero {
         grupos.put(Valor.BLUE, grupoAzul);
     }
 
+    public String stringToColor(String str) {
+
+        /* Hay que convertir palabras en los valores de "Valor.ALGO" */
+
+        return Valor.BLACK;
+    }
+
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
@@ -163,6 +170,9 @@ public class Tablero {
 
         /* Ambos lados */
         for (int i = 0; i < 9; i++) {
+
+            //posiciones.get(1).get(1).getGrupo().getColorGrupo();
+
             int padding = (8 - posiciones.get(1).get(8 - i).getNombre().length());
             str += "|" + posiciones.get(1).get(8 - i).getNombre();
             str += " ".repeat(padding) + "|" + " ".repeat(10 * 8);
