@@ -163,15 +163,17 @@ public class Tablero {
 
         /* Ambos lados */
         for (int i = 0; i < 9; i++) {
-            int padding = (8 - posiciones.get(1).get(i).getNombre().length());
-            str += "|" + posiciones.get(1).get(i).getNombre();
+            int padding = (8 - posiciones.get(1).get(8 - i).getNombre().length());
+            str += "|" + posiciones.get(1).get(8 - i).getNombre();
             str += " ".repeat(padding) + "|" + " ".repeat(10 * 8);
+
             padding = (8 - posiciones.get(3).get(i).getNombre().length());
             str += "|" + posiciones.get(3).get(i).getNombre() + " ".repeat(padding) + "|\n";
 
-            str += separador2;
+            if (i != 8) str += separador2;
         }
-        str += "|\n";
+
+        str += separador;
 
         /* Lado de abajo */
         for (int i = posiciones.get(0).size() - 1; i >= 0; i--) {
@@ -180,7 +182,9 @@ public class Tablero {
             str +=  "|" + cnom + " " .repeat(padding);
 
         }
-        str += "|";
+        str += "|\n";
+
+        str += separador;
 
 
         return str;
