@@ -19,6 +19,8 @@ public class Tablero {
         this.posiciones = new ArrayList<>();
         this.grupos = new HashMap<>();
         this.banca = banca;
+
+        generarCasillas();
     }
 
 
@@ -140,14 +142,74 @@ public class Tablero {
         grupos.put(Valor.BLUE, grupoAzul);
     }
 
+    public String stringToColor(String str) {
+
+        /* Hay que convertir palabras en los valores de "Valor.ALGO" */
+
+        return Valor.BLACK;
+    }
+
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
-        generarCasillas();
+
+        String str = new String();
+        String separador = new String(" ________".repeat(11) + "\n");
+        String separador2 = new String(" ________" + " ".repeat(9 * 9) +" ________" + "\n");
+
+        str += separador;
+        /* Lado de arriba */
+        for (int i = 0; i < posiciones.get(2).size(); i++) {
+            String cnom = posiciones.get(2).get(i).getNombre();
+            int padding = 8 - cnom.length();
+            str +=  "|" + cnom + " " .repeat(padding);
+
+        }
+        str += "|\n";
+        str += separador;
+
+        /* Ambos lados */
+        for (int i = 0; i < 9; i++) {
+
+            //posiciones.get(1).get(1).getGrupo().getColorGrupo();
+
+            int padding = (8 - posiciones.get(1).get(8 - i).getNombre().length());
+            str += "|" + posiciones.get(1).get(8 - i).getNombre();
+            str += " ".repeat(padding) + "|" + " ".repeat(10 * 8);
+
+            padding = (8 - posiciones.get(3).get(i).getNombre().length());
+            str += "|" + posiciones.get(3).get(i).getNombre() + " ".repeat(padding) + "|\n";
+
+            if (i != 8) str += separador2;
+        }
+
+        str += separador;
+
+        /* Lado de abajo */
+        for (int i = posiciones.get(0).size() - 1; i >= 0; i--) {
+            String cnom = posiciones.get(0).get(i).getNombre();
+            int padding = 8 - cnom.length();
+            str +=  "|" + cnom + " " .repeat(padding);
+
+        }
+        str += "|\n";
+
+        str += separador;
+
+
+        return str;
     }
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:
     public Casilla encontrar_casilla(String nombre) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < posiciones.get(i).size(); j++) {
+                if (posiciones.get(i).get(j).getNombre() == nombre) {
+                    return posiciones.get(i).get(j);
+                }
+            }
+        }
+        /* No se encontró */
         return null;
     }
 

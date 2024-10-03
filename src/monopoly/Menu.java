@@ -1,6 +1,9 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
+
 import partida.*;
 import monopoly.Tablero;
 
@@ -26,22 +29,49 @@ public class Menu {
 
     // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
+<<<<<<< HEAD
+=======
+
+        /* Crear banca y tablero */
+        banca = new Jugador("Banca", "Banca", null, avatares);
+        tablero = new Tablero(banca);
+
+>>>>>>> ee9a81df48fce69e81ef3f492a2160ae46a4e0ff
         System.out.println(this.tablero.toString());
+
+        Scanner scan = new Scanner(System.in);
+        boolean sair = false;
+
+        while (!sair) {
+            sair = this.analizarComando(scan.nextLine());
+        }
     }
     
     /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
     * Parámetro: cadena de caracteres (el comando).
     */
-    private void analizarComando(String comando) {
+    private boolean analizarComando(String comando) {
 
         String[] comandos_args = comando.split(" ");
 
+        System.out.println(comandos_args[0] + comandos_args[1]);
+
         /* Crear jugador, junto a su avatar */
-        if (comandos_args[0] == "crear" && comandos_args[1] == "jugador") {
-            jugadores.add(new Jugador(comandos_args[2], "nada", Tablero.encontrar_casilla("Salida"), avatares));
-            avatares.add(new Avatar("nada", jugadores.getLast(), Tablero.encontrar_casilla("Salida"), avatares));
+        if (Objects.equals(comandos_args[0], "crear") && Objects.equals(comandos_args[1], "jugador")) {
+            jugadores.add(new Jugador(comandos_args[2], "jugador", tablero.encontrar_casilla("Salida"), avatares));
+            avatares.add(new Avatar("jugador", jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
         }
 
+        /* Comando salida */
+        else if (Objects.equals(comandos_args[0], "exit")) {
+            return true;
+        }
+
+        else {
+            System.out.println("Comando no reconocido.");
+        }
+
+        return false;
     }
 
     /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
