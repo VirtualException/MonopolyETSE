@@ -1,7 +1,7 @@
 package monopoly;
 
-import partida.*;
 import java.util.ArrayList;
+import partida.*;
 
 
 class Grupo {
@@ -53,9 +53,13 @@ class Grupo {
      * Valor devuelto: true si es dueño de todas las casillas del grupo, false en otro caso.
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
+        for(Casilla casilla : miembros){    //bucle for each que itera por todas las casillas del ArrayList miembros
+            if(jugador.getPropiedades().contains(casilla)){   //comprueba que cada una de las casillas son propiedad del jugador
+                return true;
+            }
+        }
+        return false;
     }
-
-
 
 
     //Getters y Setters
