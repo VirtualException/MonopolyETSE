@@ -147,12 +147,40 @@ public class Tablero {
     public String toString() {
 
         String str = new String();
+        String separador = new String(" ________".repeat(11) + "\n");
+        String separador2 = new String(" ________" + " ".repeat(9 * 9) +" ________" + "\n");
 
+        str += separador;
         /* Lado de arriba */
         for (int i = 0; i < posiciones.get(2).size(); i++) {
-            str +=  "|" + posiciones.get(2).get(i).getNombre();
+            String cnom = posiciones.get(2).get(i).getNombre();
+            int padding = 8 - cnom.length();
+            str +=  "|" + cnom + " " .repeat(padding);
 
         }
+        str += "|\n";
+        str += separador;
+
+        /* Ambos lados */
+        for (int i = 0; i < 9; i++) {
+            int padding = (8 - posiciones.get(1).get(i).getNombre().length());
+            str += "|" + posiciones.get(1).get(i).getNombre();
+            str += " ".repeat(padding) + "|" + " ".repeat(10 * 8);
+            padding = (8 - posiciones.get(3).get(i).getNombre().length());
+            str += "|" + posiciones.get(3).get(i).getNombre() + " ".repeat(padding) + "|\n";
+
+            str += separador2;
+        }
+        str += "|\n";
+
+        /* Lado de abajo */
+        for (int i = posiciones.get(0).size() - 1; i >= 0; i--) {
+            String cnom = posiciones.get(0).get(i).getNombre();
+            int padding = 8 - cnom.length();
+            str +=  "|" + cnom + " " .repeat(padding);
+
+        }
+        str += "|";
 
 
         return str;
