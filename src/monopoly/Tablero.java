@@ -143,7 +143,7 @@ public class Tablero {
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
-        return "tablero";
+        String str = new String();
     }
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:

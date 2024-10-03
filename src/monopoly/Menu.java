@@ -1,6 +1,7 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import partida.*;
@@ -50,14 +51,16 @@ public class Menu {
 
         String[] comandos_args = comando.split(" ");
 
+        System.out.println(comandos_args[0] + comandos_args[1]);
+
         /* Crear jugador, junto a su avatar */
-        if (comandos_args[0] == "crear" && comandos_args[1] == "jugador") {
+        if (Objects.equals(comandos_args[0], "crear") && Objects.equals(comandos_args[1], "jugador")) {
             jugadores.add(new Jugador(comandos_args[2], "jugador", tablero.encontrar_casilla("Salida"), avatares));
             avatares.add(new Avatar("jugador", jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
         }
 
         /* Comando salida */
-        else if (comandos_args[0] == "exit") {
+        else if (Objects.equals(comandos_args[0], "exit")) {
             return true;
         }
 
