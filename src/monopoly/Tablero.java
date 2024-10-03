@@ -67,7 +67,7 @@ public class Tablero {
         Casilla Solar1 = new Casilla("Solar1", "Solar", 2, Valor.VALOR_GRUPO_NEGRO / 2, banca);
         ladoSur.add(Solar1);
         ladoSur.add(new Casilla("Caja", "Comunidad", 3, banca));
-        Casilla Solar2 = new Casilla("Solar2", "Solar", 4, Valor.VALOR_GRUPO_NEGRO / 2, banca)
+        Casilla Solar2 = new Casilla("Solar2", "Solar", 4, Valor.VALOR_GRUPO_NEGRO / 2, banca);
         ladoSur.add(Solar2);
         ladoSur.add(new Casilla("Imp1", 5, (float) Valor.SUMA_VUELTA, banca));
         ladoSur.add(new Casilla("Trans1", "Transporte", 6, (float) Valor.SUMA_VUELTA, banca));
@@ -91,7 +91,7 @@ public class Tablero {
     private void insertarLadoOeste() {
         ArrayList<Casilla> ladoOeste = new ArrayList<>();
 
-        Casilla Solar6 = new Casilla("Solar6", "Solar", 12, Valor.VALOR_GRUPO_ROSA / 3, banca)
+        Casilla Solar6 = new Casilla("Solar6", "Solar", 12, Valor.VALOR_GRUPO_ROSA / 3, banca);
         ladoOeste.add(Solar6);
         ladoOeste.add(new Casilla("Serv1", "Servicio", 13, (float) (0.75f * Valor.SUMA_VUELTA), banca));
         Casilla Solar7 = new Casilla("Solar7", "Solar", 14, Valor.VALOR_GRUPO_ROSA / 3, banca);
@@ -143,10 +143,14 @@ public class Tablero {
     //Para imprimir el tablero, modificamos el método toString().
     @Override
     public String toString() {
+        return null;
     }
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:
     public Casilla encontrar_casilla(String nombre) {
+        for (int i = 0; i < posiciones.size(); i++) {
+            posiciones.get(i);
+        }
         return null;
     }
 
