@@ -27,8 +27,13 @@ public class Menu {
     // Metodo para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
 
+        /* Crear banca y tablero */
+        banca = new Jugador("Banca", "Banca", null, avatares);
+        tablero = new Tablero(banca);
 
         System.out.println(this.tablero.toString());
+
+
     }
     
     /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
@@ -40,8 +45,8 @@ public class Menu {
 
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0] == "crear" && comandos_args[1] == "jugador") {
-            jugadores.add(new Jugador(comandos_args[2], "nada", Tablero.encontrar_casilla("Salida"), avatares));
-            avatares.add(new Avatar("nada", jugadores.getLast(), Tablero.encontrar_casilla("Salida"), avatares));
+            jugadores.add(new Jugador(comandos_args[2], "nada", tablero.encontrar_casilla("Salida"), avatares));
+            avatares.add(new Avatar("nada", jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
         }
 
     }
