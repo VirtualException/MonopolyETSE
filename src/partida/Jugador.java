@@ -1,7 +1,6 @@
 package partida;
 
 import java.util.ArrayList;
-
 import monopoly.*;
 
 
@@ -37,11 +36,15 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
     }
 
+
+
     //Otros métodos:
     //Método para añadir una propiedad al jugador. Como parámetro, la casilla a añadir.
     public void anhadirPropiedad(Casilla casilla) {
         propiedades.add(casilla);
     }
+
+
 
     //Método para eliminar una propiedad del arraylist de propiedades de jugador.
     public void eliminarPropiedad(Casilla casilla) {
@@ -52,11 +55,15 @@ public class Jugador {
         }
     }
 
+
+
     //Método para añadir fortuna a un jugador
     //Como parámetro se pide el valor a añadir. Si hay que restar fortuna, se pasaría un valor negativo.
     public void sumarFortuna(float valor) {
         this.fortuna += valor;
     }
+
+
 
     //Método para sumar gastos a un jugador.
     //Parámetro: valor a añadir a los gastos del jugador (será el precio de un solar, impuestos pagados...).
@@ -64,13 +71,18 @@ public class Jugador {
         this.gastos += valor;
     }
 
+
+
     /*Método para establecer al jugador en la cárcel.
      * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
+        
+
+
+
+        this.avatar.getLugar();
+        
     }
-
-
-
 
 
 
