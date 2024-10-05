@@ -1,6 +1,7 @@
 package partida;
 
 import java.util.ArrayList;
+import java.util.Random;
 import monopoly.*;
 
 
@@ -34,13 +35,23 @@ public class Avatar {
      * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
      */
     public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
-        for(ArrayList<Casilla> arrayList: casillas){
+
+        int nuevaPosicion = this.lugar.getPosicion() + valorTirada;
+
+        if(nuevaPosicion > 40){
+            jugador.setVueltas(jugador.getVueltas() + 1);
+            jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
+            nuevaPosicion -= 40;    
+        } 
+
+        for(ArrayList<Casilla> arrayList : casillas){
             for(Casilla casilla : arrayList){
-                int posicionActual = this.lugar.getPosicion();
-                posicionActual += valorTirada;
-                this.lugar.setPosicion(posicionActual);
+                if(casilla.getPosicion() == nuevaPosicion){
+                    this.lugar = casilla;
+                }
             }
         }
+        
     }
 
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
@@ -48,6 +59,24 @@ public class Avatar {
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
     private void generarId(ArrayList<Avatar> avCreados) {
+        Random letraRandom = new Random();
+        String letra;
+        boolean idExiste = true;
+
+        do { 
+            letra = String.valueOf(letraRandom.nextInt(26) + 'A');
+
+            /*Por cada avatar, comprobamos que el id generado no es igual.
+             * En caso de ser igual, repetimos el proceso.*/
+            for(Avatar avatar : avCreados){    
+                idExiste = avatar.getId().equals(letra);
+                if(idExiste){
+                    break;
+                }
+            }
+        } while (idExiste);
+
+        this.id = letra;
     }
 
 
@@ -57,10 +86,6 @@ public class Avatar {
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTipo() {
