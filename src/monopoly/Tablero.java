@@ -188,7 +188,7 @@ public class Tablero {
         String separador = String.format(Valor.RESET, (" " + "—".repeat(16)).repeat(11) + "\n");
         String separador2 = String.format(Valor.RESET, " " + "—".repeat(16) +  " ".repeat(154) + "—".repeat(16) + "\n");
 
-        String str = new String();
+        String str = "";
         str += separador;
 
         /* Lado de arriba */

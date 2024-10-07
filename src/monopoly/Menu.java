@@ -59,13 +59,19 @@ public class Menu {
 
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
-            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares));
-            avatares.add(new Avatar(comandos_args[3], jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
+            Jugador jugador = new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares);
+            Avatar avatar = new Avatar(jugador.getAvatar().getId(), jugador, tablero.encontrar_casilla("Salida"), avatares);
+            avatares.add(avatar);
+            jugadores.add(jugador);
+            avatares.add(avatar);
+
+            tablero.encontrar_casilla("Salida").anhadirAvatar(avatar);
 
             System.out.println("{");
-            System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
-            System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
+            System.out.println("\tnombre: " + jugador.getNombre() + ",");
+            System.out.println("\tavatar: " + jugador.getAvatar().getId());
             System.out.println("}");
+
 
         }
 
