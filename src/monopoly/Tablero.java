@@ -142,11 +142,37 @@ public class Tablero {
         grupos.put(Valor.BLUE, grupoAzul);
     }
 
-    public String stringToColor(String str) {
+
+
+    public String stringToColor(int casilla, String nombre) {
 
         /* Hay que convertir palabras en los valores de "Valor.ALGO" */
+        String representar = "";
 
-        return Valor.BLACK;
+            if (casilla == 1 || casilla == 2 || casilla == 3 || casilla == 4 ||
+                    casilla == 5 || casilla == 6  || casilla == 8 || casilla == 11 ||
+                    casilla == 13 || casilla == 16 || casilla == 18 || casilla == 21 ||
+                    casilla == 23 || casilla == 26 || casilla == 29 || casilla == 31 ||
+                    casilla == 34 || casilla == 36 || casilla == 37 || casilla == 49){
+                representar = String.format(Valor.BLACK, nombre);
+            } else if (casilla == 7 || casilla == 9 || casilla == 10){
+                representar = String.format(Valor.CYAN, nombre);
+            } else if (casilla == 12 || casilla == 14 || casilla == 15){
+                representar = String.format(Valor.ROSA, nombre);
+            } else if (casilla == 17 || casilla == 19 || casilla == 20){
+                representar = String.format(Valor.YELLOW, nombre);
+            } else if (casilla == 22 || casilla == 24 || casilla == 25){
+                representar = String.format(Valor.RED, nombre);
+            } else if (casilla == 27 || casilla == 28 || casilla == 30){
+                representar = String.format(Valor.BROWN, nombre);
+            } else if (casilla == 32 || casilla == 33 || casilla == 35){
+                representar = String.format(Valor.GREEN, nombre);
+            } else if (casilla == 38 || casilla == 40){
+                representar = String.format(Valor.BLUE, nombre);
+            }
+
+
+        return representar;
     }
 
     //Para imprimir el tablero, modificamos el método toString().
@@ -160,7 +186,7 @@ public class Tablero {
         str += separador;
         /* Lado de arriba */
         for (int i = 0; i < posiciones.get(2).size(); i++) {
-            String cnom = posiciones.get(2).get(i).getNombre();
+            String cnom = stringToColor(posiciones.get(2).get(i).getPosicion(), posiciones.get(2).get(i).getNombre());
             int padding = 8 - cnom.length();
             str +=  "|" + cnom + " " .repeat(padding);
 

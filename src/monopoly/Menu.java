@@ -36,7 +36,7 @@ public class Menu {
 
 
 
-        System.out.println(this.tablero.toString());
+        System.out.println(this.tablero);
 
         Scanner scan = new Scanner(System.in);
         boolean sair = false;
