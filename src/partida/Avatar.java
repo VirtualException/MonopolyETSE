@@ -59,24 +59,21 @@ public class Avatar {
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
     private void generarId(ArrayList<Avatar> avCreados) {
+
         Random letraRandom = new Random();
-        String letra;
-        boolean idExiste = true;
+        boolean existe;
 
-        do { 
-            letra = String.valueOf(letraRandom.nextInt(26) + 'A');
+        do {
+            existe = false;
+            this.id = String.valueOf(letraRandom.nextInt(26) + 'A');
 
-            /*Por cada avatar, comprobamos que el id generado no es igual.
-             * En caso de ser igual, repetimos el proceso.*/
-            for(Avatar avatar : avCreados){    
-                idExiste = avatar.getId().equals(letra);
-                if(idExiste){
-                    break;
+            /* Si no existe en ningún avatar, salimos */
+            for(Avatar avatar : avCreados){
+                if(avatar.getId().equals(this.id)){
+                    existe = true;
                 }
             }
-        } while (idExiste);
-
-        this.id = letra;
+        } while(existe);
     }
 
 

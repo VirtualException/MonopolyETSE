@@ -29,8 +29,11 @@ public class Menu {
     private void iniciarPartida() {
 
         /* Crear banca y tablero */
+        avatares = new ArrayList<Avatar>();
         banca = new Jugador("Banca", "Banca", null, avatares);
         tablero = new Tablero(banca);
+
+
 
         System.out.println(this.tablero.toString());
 
@@ -38,6 +41,7 @@ public class Menu {
         boolean sair = false;
 
         while (!sair) {
+            System.out.println("Introduce comando: ");
             sair = this.analizarComando(scan.nextLine());
         }
     }
@@ -47,12 +51,13 @@ public class Menu {
     */
     private boolean analizarComando(String comando) {
 
-        String[] comandos_args = comando.split(" ");
-
-        System.out.println(comandos_args[0] + comandos_args[1]);
+        String[] comandos_args = new String[5];
+        String[] split = comando.split(" ");
+        int num_args = split.length;
+        System.arraycopy(split, 0, comandos_args, 0, num_args);
 
         /* Crear jugador, junto a su avatar */
-        if (Objects.equals(comandos_args[0], "crear") && Objects.equals(comandos_args[1], "jugador")) {
+        if (Objects.equals(comandos_args[0], "crear") && Objects.equals(comandos_args[1], "jugador") && num_args == 3) {
             jugadores.add(new Jugador(comandos_args[2], "jugador", tablero.encontrar_casilla("Salida"), avatares));
             avatares.add(new Avatar("jugador", jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
         }

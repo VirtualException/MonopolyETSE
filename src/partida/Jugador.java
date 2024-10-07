@@ -117,6 +117,9 @@ public class Jugador {
     public int getVueltas(){
         return vueltas;
     }
+    public void setVueltas(int vueltas) {
+        this.vueltas = vueltas;
+    }
 
     public ArrayList<Casilla> getPropiedades(){
         return propiedades;
