@@ -85,17 +85,28 @@ public class Avatar {
 
         do {
             existe = false;
+
             // Generamos un índice aleatorio para seleccionar una letra del arreglo
-            int indiceAleatorio = random.nextInt(letrasRestantes);
+            int indiceAleatorio = random.nextInt(letrasRestantes); // letrasRestantes se actualiza
             this.id = String.valueOf(letrasDisponibles[indiceAleatorio]);
 
-            /* Si no existe en ningún avatar, salimos */
+            /* Si no existe en ningún avatar, procedemos */
             for (Avatar avatar : avCreados) {
                 if (avatar.getId().equals(this.id)) {
                     existe = true; // Si existe, repetimos el proceso
                     break; // Salimos del bucle si ya existe
                 }
             }
+
+            // Si no existe, eliminamos la letra del array y actualizamos letrasRestantes
+            if (!existe) {
+                // Eliminamos la letra seleccionada del array de letras disponibles
+                for (int i = indiceAleatorio; i < letrasRestantes - 1; i++) {
+                    letrasDisponibles[i] = letrasDisponibles[i + 1]; // Desplazamos las letras hacia la izquierda
+                }
+                letrasRestantes--; // Actualizamos el número de letras restantes
+            }
+
         } while (existe);
     }
 
