@@ -27,16 +27,16 @@ public class Valor {
 
     //Colores del texto:
     public static final String RESET = "\u001B[0m%s"; // Se añadió %s
-    public static final String BLACK = "\u001B[30m%s"; // Se añadió %s
-    public static final String RED = "\u001B[31m%s"; // Se añadió %s
-    public static final String GREEN = "\u001B[32m%s"; // Se añadió %s
-    public static final String YELLOW = "\u001B[33m%s"; // Se añadió %s
-    public static final String BLUE = "\u001B[34m%s"; // Se añadió %s
-    public static final String PURPLE = "\u001B[35m%s"; // Se añadió %s
-    public static final String CYAN = "\u001B[36m%s"; // Se añadió %s
-    public static final String WHITE = "\u001B[37m%s"; // Se añadió %s
-    public static final String BROWN = "\u001B[38;5;94m%s"; // Se añadió %s
-    public static final String ROSA = "\u001B[35m%s"; // Se añadió %s
+    public static final String BLACK = "\u001B[30m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String RED = "\u001B[31m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String GREEN = "\u001B[32m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String YELLOW = "\u001B[33m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String BLUE = "\u001B[34m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String PURPLE = "\u001B[35m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String CYAN = "\u001B[36m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String WHITE = "\u001B[37m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String BROWN = "\u001B[38;5;94m%-8s %-7s\u001B[0m"; // Se añadió %s
+    public static final String ROSA = "\u001B[35m%-8s %-7s\u001B[0m"; // Se añadió %s
 
 
 }
