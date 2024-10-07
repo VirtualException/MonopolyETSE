@@ -73,14 +73,15 @@ public class Menu {
             System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
             System.out.println("}");
 
-
         }
         /* Comandos de listar */
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
             listarJugadores();
-        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("avatares") && num_args == 2) {
+        }
+        else if (comandos_args[0].equals("listar") && comandos_args[1].equals("avatares") && num_args == 2) {
             listarAvatares();
-        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
+        }
+        else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
             listarVenta();
         }
         /* Ver tablero */
@@ -90,8 +91,20 @@ public class Menu {
         /* Acciones jugador */
         else if (comandos_args[0].equals("acabar") && comandos_args[1].equals("turno") && num_args == 2) {
             acabarTurno();
-        } else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
+        }
+        else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
             lanzarDados();
+        }
+        /* Describir */
+        else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
+            descAvatar(comandos_args[2]);
+        }
+        else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
+            descJugador(comandos_args[2]);
+        }
+        /* Describir casilla */
+        else if (comandos_args[0].equals("describir") && num_args == 2) {
+            descCasilla(comandos_args[1]);
         }
 
 
@@ -110,13 +123,67 @@ public class Menu {
     /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
-    private void descJugador(String[] partes) {
+    private void descJugador(String nombre) {
+
+        Jugador j = null;
+
+        for (Jugador i : jugadores) {
+            if (i.getNombre() == nombre) {
+                j = i;
+                break;
+            }
+        }
+        if (j == null) {
+            System.out.println("No existe ese jugador");
+            return;
+        }
+
+        System.out.println("{");
+        System.out.println("\tnombre: " + j.getNombre() + ",");
+        System.out.println("\tavatar: " + j.getAvatar().getId());
+        System.out.println("\tfortuna: " + j.getFortuna());
+        System.out.print("\tpropiedades: [");
+        for (Casilla p : j.getPropiedades()) {
+            System.out.print(p.getNombre() + ", ");
+        }
+        System.out.println("]");
+        System.out.print("\thipotecas: [");
+        for (Casilla p : j.getPropiedades()) {
+            System.out.print(p.getNombre() + ", ");
+        }
+        System.out.println("]");
+        System.out.print("\tedificios: [");
+        for (Casilla p : j.getPropiedades()) {
+            System.out.print(p.getNombre() + ", ");
+        }
+        System.out.println("]");
+        System.out.println("\n},");
     }
 
     /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.
     * Parámetro: id del avatar a describir.
     */
     private void descAvatar(String ID) {
+
+        Avatar a = null;
+
+        for (Avatar i : avatares) {
+            if (i.getId() == ID) {
+                a = i;
+                break;
+            }
+        }
+        if (a == null) {
+            System.out.println("No existe ese jugador");
+            return;
+        }
+
+        System.out.println("{");
+        System.out.println("\tid: " + a.getId() + ",");
+        System.out.println("\ttipo: " + a.getTipo());
+        System.out.println("\tcasilla: " + a.getLugar().getNombre());
+        System.out.print("\tjugador: " + a.getJugador().getNombre());
+        System.out.println("\n},");
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
@@ -178,38 +245,14 @@ public class Menu {
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
         for (Jugador j : jugadores) {
-            System.out.println("{");
-            System.out.println("\tnombre: " + j.getNombre() + ",");
-            System.out.println("\tavatar: " + j.getAvatar().getId());
-            System.out.println("\tfortuna: " + j.getFortuna());
-            System.out.print("\tpropiedades: [");
-            for (Casilla p : j.getPropiedades()) {
-                System.out.print(p.getNombre() + ", ");
-            }
-            System.out.println("]");
-            System.out.print("\thipotecas: [");
-            for (Casilla p : j.getPropiedades()) {
-                System.out.print(p.getNombre() + ", ");
-            }
-            System.out.println("]");
-            System.out.print("\tedificios: [");
-            for (Casilla p : j.getPropiedades()) {
-                System.out.print(p.getNombre() + ", ");
-            }
-            System.out.println("]");
-            System.out.println("\n},");
+            descJugador(j.getNombre());
         }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
         for (Avatar a : avatares) {
-            System.out.println("{");
-            System.out.println("\tid: " + a.getId() + ",");
-            System.out.println("\ttipo: " + a.getTipo());
-            System.out.println("\tcasilla: " + a.getLugar().getNombre());
-            System.out.print("\tjugador: " + a.getJugador().getNombre());
-            System.out.println("\n},");
+            descAvatar(a.getId());
         }
     }
 

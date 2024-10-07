@@ -156,6 +156,8 @@ public class Tablero {
             avataresConAmpersand.append(av.getId());
         }
 
+        /* Aquí no hay que usar GRUPOS? */
+
         if (casilla == 1 || casilla == 2 || casilla == 3 || casilla == 4 ||
                 casilla == 5 || casilla == 6  || casilla == 8 || casilla == 11 ||
                 casilla == 13 || casilla == 16 || casilla == 18 || casilla == 21 ||
