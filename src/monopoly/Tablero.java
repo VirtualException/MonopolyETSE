@@ -147,30 +147,37 @@ public class Tablero {
     public String stringToColor(int casilla, String nombre) {
 
         /* Hay que convertir palabras en los valores de "Valor.ALGO" */
-        String representar = "";
+        String representacion = "";
+        StringBuilder avataresConAmpersand = new StringBuilder();
+        if (!encontrar_casilla(nombre).getAvatares().isEmpty()){
+            avataresConAmpersand.append("&");
+        }
+        for (Avatar av: encontrar_casilla(nombre).getAvatares()){
+            avataresConAmpersand.append(av.getId());
+        }
 
-            if (casilla == 1 || casilla == 2 || casilla == 3 || casilla == 4 ||
-                    casilla == 5 || casilla == 6  || casilla == 8 || casilla == 11 ||
-                    casilla == 13 || casilla == 16 || casilla == 18 || casilla == 21 ||
-                    casilla == 23 || casilla == 26 || casilla == 29 || casilla == 31 ||
-                    casilla == 34 || casilla == 36 || casilla == 37 || casilla == 49){
-                representar = String.format(Valor.BLACK, nombre);
-            } else if (casilla == 7 || casilla == 9 || casilla == 10){
-                representar = String.format(Valor.CYAN, nombre);
-            } else if (casilla == 12 || casilla == 14 || casilla == 15){
-                representar = String.format(Valor.ROSA, nombre);
-            } else if (casilla == 17 || casilla == 19 || casilla == 20){
-                representar = String.format(Valor.YELLOW, nombre);
-            } else if (casilla == 22 || casilla == 24 || casilla == 25){
-                representar = String.format(Valor.RED, nombre);
-            } else if (casilla == 27 || casilla == 28 || casilla == 30){
-                representar = String.format(Valor.BROWN, nombre);
-            } else if (casilla == 32 || casilla == 33 || casilla == 35){
-                representar = String.format(Valor.GREEN, nombre);
-            } else if (casilla == 38 || casilla == 40){
-                representar = String.format(Valor.BLUE, nombre);
-            }
-        return representar;
+        if (casilla == 1 || casilla == 2 || casilla == 3 || casilla == 4 ||
+                casilla == 5 || casilla == 6  || casilla == 8 || casilla == 11 ||
+                casilla == 13 || casilla == 16 || casilla == 18 || casilla == 21 ||
+                casilla == 23 || casilla == 26 || casilla == 29 || casilla == 31 ||
+                casilla == 34 || casilla == 36 || casilla == 37 || casilla == 39){
+            representacion = String.format(Valor.BLACK, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 7 || casilla == 9 || casilla == 10){
+            representacion = String.format(Valor.CYAN, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 12 || casilla == 14 || casilla == 15){
+            representacion = String.format(Valor.ROSA, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 17 || casilla == 19 || casilla == 20){
+            representacion = String.format(Valor.YELLOW, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 22 || casilla == 24 || casilla == 25){
+            representacion = String.format(Valor.RED, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 27 || casilla == 28 || casilla == 30){
+            representacion = String.format(Valor.BROWN, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 32 || casilla == 33 || casilla == 35){
+            representacion = String.format(Valor.GREEN, nombre, avataresConAmpersand.toString());
+        } else if (casilla == 38 || casilla == 40){
+            representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand.toString());
+        }
+        return representacion;
     }
 
     //Para imprimir el tablero, modificamos el método toString().
