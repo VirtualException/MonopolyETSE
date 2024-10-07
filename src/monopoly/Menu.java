@@ -30,6 +30,7 @@ public class Menu {
 
         /* Crear banca y tablero */
         avatares = new ArrayList<Avatar>();
+        jugadores = new ArrayList<Jugador>();
         banca = new Jugador("Banca", "Banca", null, avatares);
         tablero = new Tablero(banca);
 
@@ -41,7 +42,7 @@ public class Menu {
         boolean sair = false;
 
         while (!sair) {
-            System.out.println("Introduce comando: ");
+            System.out.print("Introduce comando: ");
             sair = this.analizarComando(scan.nextLine());
         }
     }
@@ -57,13 +58,47 @@ public class Menu {
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
         /* Crear jugador, junto a su avatar */
-        if (Objects.equals(comandos_args[0], "crear") && Objects.equals(comandos_args[1], "jugador") && num_args == 3) {
-            jugadores.add(new Jugador(comandos_args[2], "jugador", tablero.encontrar_casilla("Salida"), avatares));
-            avatares.add(new Avatar("jugador", jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
+        if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
+            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares));
+            avatares.add(new Avatar(comandos_args[3], jugadores.getLast(), tablero.encontrar_casilla("Salida"), avatares));
+
+            System.out.println("{");
+            System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
+            System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
+            System.out.println("}");
+
+        }
+
+        /* Crear jugador, junto a su avatar */
+        if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
+
+            for (Jugador j : jugadores) {
+                System.out.println("{");
+                System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
+                System.out.println("\tavatar: " + jugadores.getLast().getAvatar());
+                System.out.println("\tfortuna: " + jugadores.getLast().getFortuna());
+                System.out.print("\tpropiedades: [");
+                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.print("\thipotecas: [");
+                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.print("\tedificios: [");
+                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.println("},");
+            }
+
         }
 
         /* Comando salida */
-        else if (Objects.equals(comandos_args[0], "exit")) {
+        else if (comandos_args[0].equals("exit")) {
             return true;
         }
 
