@@ -194,9 +194,13 @@ public class Tablero {
         /* Lado de arriba */
         for (int i = 0; i < posiciones.get(2).size(); i++) {
             String cnom = stringToColor(posiciones.get(2).get(i).getPosicion(), posiciones.get(2).get(i).getNombre());
+
             int padding = 16 - getRealLength(cnom); // Usar la longitud real
             if (padding < 0) padding = 0; // Asegura que padding no sea negativo
             str += String.format(Valor.RESET, "|") + cnom + " ".repeat(padding);
+
+
+
         }
         str += String.format(Valor.RESET, "|\n");
         str += separador;

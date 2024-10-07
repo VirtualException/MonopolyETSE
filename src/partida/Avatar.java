@@ -81,29 +81,21 @@ public class Avatar {
 
     private void generarId(ArrayList<Avatar> avCreados) {
         Random random = new Random();
-        boolean existe;
+        boolean existe = false;
 
-        // Primero eliminamos las letras que ya fueron asignadas a otros avatares
-        for (Avatar avatar : avCreados) {
-            char idExistente = avatar.getId().charAt(0); // Obtenemos la letra del id existente
-            // Buscamos si esa letra está en las letras disponibles y la eliminamos
-            for (int i = 0; i < letrasRestantes; i++) {
-                if (letrasDisponibles[i] == idExistente) {
-                    // Eliminamos la letra desplazando el resto hacia la izquierda
-                    letrasDisponibles[i] = letrasDisponibles[letrasRestantes - 1];
-                    letrasRestantes--; // Reducimos el número de letras restantes
-                    break; // Salimos del loop ya que solo queremos eliminar una letra
+        do {
+
+            existe = false;
+            this.id = Character.toString((char)random.nextInt(26) + 'A');
+
+            /* Por cada avatar que exista */
+            for (Avatar avatar : avCreados) {
+                if (avatar.getId().equals(this.id)) {
+                    existe = true; // Si existe el id, repetimos el proceso
+                    break;
                 }
             }
-        }
-
-            // Generamos un índice aleatorio para seleccionar una letra del arreglo
-            int indiceAleatorio = random.nextInt(letrasRestantes);
-            this.id = String.valueOf(letrasDisponibles[indiceAleatorio]);
-
-                // Movemos la última letra disponible al lugar del índice actual para eliminar la usada
-                letrasDisponibles[indiceAleatorio] = letrasDisponibles[letrasRestantes - 1];
-                letrasRestantes--; // Reducimos el número de letras restantes
+        } while (existe);
 
     }
 
