@@ -42,7 +42,7 @@ public class Menu {
         boolean sair = false;
 
         while (!sair) {
-            System.out.print("Introduce comando: ");
+            System.out.print("$> ");
             sair = this.analizarComando(scan.nextLine());
         }
     }
@@ -74,26 +74,41 @@ public class Menu {
 
             for (Jugador j : jugadores) {
                 System.out.println("{");
-                System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
-                System.out.println("\tavatar: " + jugadores.getLast().getAvatar());
-                System.out.println("\tfortuna: " + jugadores.getLast().getFortuna());
+                System.out.println("\tnombre: " + j.getNombre() + ",");
+                System.out.println("\tavatar: " + j.getAvatar().getId());
+                System.out.println("\tfortuna: " + j.getFortuna());
                 System.out.print("\tpropiedades: [");
-                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                for (Casilla p : j.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
                 System.out.println("]");
                 System.out.print("\thipotecas: [");
-                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                for (Casilla p : j.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
                 System.out.println("]");
                 System.out.print("\tedificios: [");
-                for (Casilla p : jugadores.getLast().getPropiedades()) {
+                for (Casilla p : j.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
                 System.out.println("]");
-                System.out.println("},");
+                System.out.println("\n},");
             }
+
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("avatares") && num_args == 2) {
+
+            for (Avatar a : avatares) {
+                System.out.println("{");
+                System.out.println("\tid: " + a.getId() + ",");
+                System.out.println("\ttipo: " + a.getTipo());
+                System.out.println("\tcasilla: " + a.getLugar().getNombre());
+                System.out.print("\tjugador: " + a.getJugador().getNombre());
+                System.out.println("\n},");
+            }
+
+        } else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
+
+            System.out.println(this.tablero);
 
         }
 

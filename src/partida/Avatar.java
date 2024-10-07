@@ -13,6 +13,9 @@ public class Avatar {
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
 
+    private static final char[] letrasDisponibles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+    private static int letrasRestantes = letrasDisponibles.length;
+
     //Constructor vacío
     public Avatar() {
     }
@@ -58,7 +61,7 @@ public class Avatar {
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    private void generarId(ArrayList<Avatar> avCreados) {
+    /*private void generarId(ArrayList<Avatar> avCreados) {
 
         Random letraRandom = new Random();
         boolean existe;
@@ -68,13 +71,34 @@ public class Avatar {
             this.id = String.valueOf(letraRandom.nextInt(26) + 'A');
 
             /* Si no existe en ningún avatar, salimos */
-            for(Avatar avatar : avCreados){
+            /*for(Avatar avatar : avCreados){
                 if(avatar.getId().equals(this.id)){
                     existe = true;
                 }
             }
         } while(existe);
+    }*/
+
+    private void generarId(ArrayList<Avatar> avCreados) {
+        Random random = new Random();
+        boolean existe;
+
+        do {
+            existe = false;
+            // Generamos un índice aleatorio para seleccionar una letra del arreglo
+            int indiceAleatorio = random.nextInt(letrasRestantes);
+            this.id = String.valueOf(letrasDisponibles[indiceAleatorio]);
+
+            /* Si no existe en ningún avatar, salimos */
+            for (Avatar avatar : avCreados) {
+                if (avatar.getId().equals(this.id)) {
+                    existe = true; // Si existe, repetimos el proceso
+                    break; // Salimos del bucle si ya existe
+                }
+            }
+        } while (existe);
     }
+
 
 
 

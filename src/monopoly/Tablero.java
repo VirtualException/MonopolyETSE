@@ -170,8 +170,6 @@ public class Tablero {
             } else if (casilla == 38 || casilla == 40){
                 representar = String.format(Valor.BLUE, nombre);
             }
-
-
         return representar;
     }
 
@@ -179,52 +177,69 @@ public class Tablero {
     @Override
     public String toString() {
 
-        String str = new String();
-        String separador = new String(" ________".repeat(11) + "\n");
-        String separador2 = new String(" ________" + " ".repeat(9 * 9) +" ________" + "\n");
+        // Separadores con color aplicado
+        String separador = String.format(Valor.RESET, " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014".repeat(11) + "\n");
+        String separador2 = String.format(Valor.RESET, " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014" +
+                " ".repeat(153) + " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014" + "\n");
 
+        String str = new String();
         str += separador;
+
         /* Lado de arriba */
         for (int i = 0; i < posiciones.get(2).size(); i++) {
             String cnom = stringToColor(posiciones.get(2).get(i).getPosicion(), posiciones.get(2).get(i).getNombre());
-            int padding = 8 - cnom.length();
-            str +=  "|" + cnom + " " .repeat(padding);
-
+            int padding = 16 - getRealLength(cnom); // Usar la longitud real
+            if (padding < 0) padding = 0; // Asegura que padding no sea negativo
+            str += String.format(Valor.RESET, "|") + cnom + " ".repeat(padding);
         }
-        str += "|\n";
+        str += String.format(Valor.RESET, "|\n");
         str += separador;
 
         /* Ambos lados */
         for (int i = 0; i < 9; i++) {
+            /* Lado izquierdo */
+            String cnomIzq = stringToColor(posiciones.get(1).get(8 - i).getPosicion(), posiciones.get(1).get(8 - i).getNombre());
+            int paddingIzq = 18 - getRealLength(cnomIzq); // Usar la longitud real
+            if (paddingIzq < 0) paddingIzq = 0; // Asegura que padding no sea negativo
 
-            //posiciones.get(1).get(1).getGrupo().getColorGrupo();
+            /* Lado derecho */
+            String cnomDer = stringToColor(posiciones.get(3).get(i).getPosicion(), posiciones.get(3).get(i).getNombre());
+            int paddingDer = 16 - getRealLength(cnomDer); // Usar la longitud real
+            if (paddingDer < 0) paddingDer = 0; // Asegura que padding no sea negativo
 
-            int padding = (8 - posiciones.get(1).get(8 - i).getNombre().length());
-            str += "|" + posiciones.get(1).get(8 - i).getNombre();
-            str += " ".repeat(padding) + "|" + " ".repeat(10 * 8);
+            // Concatenar las casillas con colores y espacios en ambos lados
+            str += String.format(Valor.RESET, "|") + cnomIzq + " ".repeat(paddingIzq)
+                    + String.format(Valor.RESET, "|") + " ".repeat(10 * 15)
+                    + String.format(Valor.RESET, "|") + cnomDer + " ".repeat(paddingDer)
+                    + String.format(Valor.RESET, "|\n");
 
-            padding = (8 - posiciones.get(3).get(i).getNombre().length());
-            str += "|" + posiciones.get(3).get(i).getNombre() + " ".repeat(padding) + "|\n";
-
-            if (i != 8) str += separador2;
+            if (i != 8) {
+                str += separador2;
+            }
         }
 
         str += separador;
 
         /* Lado de abajo */
         for (int i = posiciones.get(0).size() - 1; i >= 0; i--) {
-            String cnom = posiciones.get(0).get(i).getNombre();
-            int padding = 8 - cnom.length();
-            str +=  "|" + cnom + " " .repeat(padding);
-
+            String cnom = stringToColor(posiciones.get(0).get(i).getPosicion(), posiciones.get(0).get(i).getNombre());
+            int padding = 16 - getRealLength(cnom); // Usar la longitud real
+            if (padding < 0) padding = 0; // Asegura que padding no sea negativo
+            str += String.format(Valor.RESET, "|") + cnom + " ".repeat(padding);
         }
-        str += "|\n";
-
+        str += String.format(Valor.RESET, "|\n");
         str += separador;
-
 
         return str;
     }
+
+
+    // Método para obtener la longitud real de una cadena sin los caracteres ANSI
+    private int getRealLength(String str) {
+        return str.replaceAll("\u001B\\[[;\\d]*m", "").length(); // Elimina los códigos ANSI
+    }
+
+
 
     //Método usado para buscar la casilla con el nombre pasado como argumento:
     public Casilla encontrar_casilla(String nombre) {
