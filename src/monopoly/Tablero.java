@@ -178,9 +178,8 @@ public class Tablero {
     public String toString() {
 
         // Separadores con color aplicado
-        String separador = String.format(Valor.RESET, " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014".repeat(11) + "\n");
-        String separador2 = String.format(Valor.RESET, " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014" +
-                " ".repeat(153) + " \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014" + "\n");
+        String separador = String.format(Valor.RESET, (" " + "—".repeat(16)).repeat(11) + "\n");
+        String separador2 = String.format(Valor.RESET, " " + "—".repeat(16) +  " ".repeat(154) + "—".repeat(16) + "\n");
 
         String str = new String();
         str += separador;
@@ -199,7 +198,7 @@ public class Tablero {
         for (int i = 0; i < 9; i++) {
             /* Lado izquierdo */
             String cnomIzq = stringToColor(posiciones.get(1).get(8 - i).getPosicion(), posiciones.get(1).get(8 - i).getNombre());
-            int paddingIzq = 18 - getRealLength(cnomIzq); // Usar la longitud real
+            int paddingIzq = 16 - getRealLength(cnomIzq); // Usar la longitud real
             if (paddingIzq < 0) paddingIzq = 0; // Asegura que padding no sea negativo
 
             /* Lado derecho */
@@ -209,7 +208,7 @@ public class Tablero {
 
             // Concatenar las casillas con colores y espacios en ambos lados
             str += String.format(Valor.RESET, "|") + cnomIzq + " ".repeat(paddingIzq)
-                    + String.format(Valor.RESET, "|") + " ".repeat(10 * 15)
+                    + String.format(Valor.RESET, "|") + " ".repeat(152)
                     + String.format(Valor.RESET, "|") + cnomDer + " ".repeat(paddingDer)
                     + String.format(Valor.RESET, "|\n");
 

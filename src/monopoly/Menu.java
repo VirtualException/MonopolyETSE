@@ -70,7 +70,7 @@ public class Menu {
         }
 
         /* Crear jugador, junto a su avatar */
-        if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
+        else if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
 
             for (Jugador j : jugadores) {
                 System.out.println("{");
