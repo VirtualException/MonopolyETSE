@@ -97,10 +97,32 @@ public class Menu {
         }
         /* Describir */
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
-            descAvatar(comandos_args[2]);
+            if (jugadores.isEmpty()){
+                System.out.println("No hay avatares registrados");
+            } else{
+                for (Avatar a : avatares){
+                    if (a.getId().equals(comandos_args[2])){
+                        descAvatar(comandos_args[2]);
+                    } else {
+                        System.out.println("El avatar indicado no existe");
+                    }
+                }
+            }
+
         }
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
-            descJugador(comandos_args[2]);
+            if (jugadores.isEmpty()){
+                System.out.println("No hay jugadores registrados");
+            } else{
+                for (Jugador j : jugadores){
+                    if (j.getNombre().equals(comandos_args[2])){
+                        descJugador(comandos_args[2]);
+                    } else {
+                        System.out.println("El jugador indicado no existe");
+                    }
+                }
+
+            }
         }
         /* Describir casilla */
         else if (comandos_args[0].equals("describir") && num_args == 2) {
