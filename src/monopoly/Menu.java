@@ -147,8 +147,6 @@ public class Menu {
                 }
                 System.out.println("]");
                 System.out.println("\n},");
-            } else {
-                System.out.println("No existe ese jugador");
             }
         }
     }
@@ -165,8 +163,6 @@ public class Menu {
                 System.out.println("\tcasilla: " + i.getLugar().getNombre());
                 System.out.print("\tjugador: " + i.getJugador().getNombre());
                 System.out.println("\n},");
-            } else {
-                System.out.println("No existe ese jugador");
             }
         }
     }
@@ -229,15 +225,24 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
-        for (Jugador j : jugadores) {
-            descJugador(j.getNombre());
+        if (jugadores.isEmpty()){
+            System.out.println("No hay jugadores resgitrados");
+        } else {
+            for (Jugador j : jugadores) {
+                descJugador(j.getNombre());
+            }
         }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
-        for (Avatar a : avatares) {
-            descAvatar(a.getId());
+
+        if (jugadores.isEmpty()){
+            System.out.println("No hay avatares resgitrados");
+        } else {
+            for (Avatar a : avatares) {
+                descAvatar(a.getId());
+            }
         }
     }
 
