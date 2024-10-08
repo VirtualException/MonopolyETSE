@@ -28,7 +28,7 @@ public class Jugador {
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
         this.nombre = nombre;
-        if (tipoAvatar != "Banca") this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
+        if (!tipoAvatar.equals("Banca")) this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
         this.gastos = 0.0f;
         this.enCarcel = false;
@@ -107,29 +107,29 @@ public class Jugador {
 
         String tipo = c.getTipo();
         /* Depende de donde caímos, hacer algo */
-        if (tipo == "Solar") {
+        if (tipo.equals("Solar")) {
 
         }
-        else if (tipo == "Transporte") {
+        else if (tipo.equals("Transporte")) {
 
         }
-        else if (tipo == "Comunidad") {
+        else if (tipo.equals("Comunidad")) {
 
         }
-        else if (tipo == "Servicio") {
+        else if (tipo.equals("Servicio")) {
 
         }
-        else if (tipo == "Suerte") {
+        else if (tipo.equals("Suerte")) {
 
         }
         /* Tipo especial */
         else {
             /* Cae en cárcel */
-            if (c.getNombre() == "IrCarcel") {
+            if (c.getNombre().equals("IrCarcel")) {
                 this.encarcelar(pos);
             }
             /* Cae en cárcel */
-            if (c.getNombre() == "Parking") {
+            if (c.getNombre().equals("Parking")) {
 
             }
 
