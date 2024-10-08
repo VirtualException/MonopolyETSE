@@ -208,7 +208,12 @@ public class Menu {
     * Parámetros: nombre de la casilla a describir.
     */
     private void descCasilla(String nombre) {
-        System.out.println(tablero.encontrar_casilla(nombre).infoCasilla());;
+        Casilla c = tablero.encontrar_casilla(nombre);
+        if (c == null) {
+            System.out.println("Esa casilla non existe.");
+            return;
+        }
+        System.out.println(c.infoCasilla());
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
@@ -223,20 +228,24 @@ public class Menu {
 
         if (j.getTiradas() == -1) {
             System.out.println("El jugador ya tiró.");
+            return;
         }
 
-        System.out.print("El jugador " + j.getNombre() + " tira los dados.");
+        System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
 
         dado1.hacerTirada();
         dado2.hacerTirada();
 
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
-        if (dado1.getValor() == dado2.getValor()) {
+        /* Comprobar si las tiradas son iguales. Se usa @Override en la clase Dado */
+        if (dado1.equals(dado2)) {
             System.out.println("Doble!");
             if (j.getTiradas() == 1) {
                 System.out.println("A la cárcel!");
+                j.setTiradas(0);
                 /* IR A LA CARCEL */
+                this.acabarTurno();
             }
             /* El jugador puede tirar de nuevo */
             j.setTiradas(1);
@@ -244,6 +253,11 @@ public class Menu {
 
         /* El jugador no puede tirar de nuevo */
         j.setTiradas(-1);
+
+
+        /* mover jugador, etc.. */
+
+        System.out.println(tablero);
 
     }
 

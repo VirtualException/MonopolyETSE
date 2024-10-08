@@ -123,7 +123,7 @@ public class Jugador {
         return tiradasCarcel;
     }
 
-    public int getVueltas(){
+    public int getVueltas() {
         return vueltas;
     }
     public void setVueltas(int vueltas) {
@@ -139,6 +139,12 @@ public class Jugador {
     }
 
     public void setTiradas(int tiradas) {
+
+        /* Limitar el valor */
+        if (tiradas < -1 || tiradas > 1) {
+            return;
+        }
+
         this.tiradas = tiradas;
     }
 }

@@ -19,6 +19,15 @@ public class Dado {
         return this.valor;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Dado d = (Dado) obj;
+        return d.getValor() == this.getValor();
+    }
+
 
     //Getters
 
