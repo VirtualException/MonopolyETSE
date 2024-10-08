@@ -1,7 +1,7 @@
 package monopoly;
 
-import partida.*;
 import java.util.ArrayList;
+import partida.*;
 
 
 public class Casilla {
@@ -112,6 +112,11 @@ public class Casilla {
      * - Sumar valor a las casillas de solar al no comprarlas tras cuatro vueltas de todos los jugadores.
      * Este método toma como argumento la cantidad a añadir del valor de la casilla.*/
     public void sumarValor(float suma) {
+        if(suma < 0){
+            System.out.println("La cantidad a añadir debe ser un número positivo.");
+        } else {
+            this.valor += suma;
+        }
     }
 
 

@@ -42,19 +42,22 @@ public class Avatar {
         int nuevaPosicion = this.lugar.getPosicion() + valorTirada;
 
         if(nuevaPosicion > 40){
-            jugador.setVueltas(jugador.getVueltas() + 1);
-            jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
+            if(!this.lugar.getNombre().equals("IrCarcel")){
+                jugador.setVueltas(jugador.getVueltas() + 1);
+                jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
+            }
             nuevaPosicion -= 40;    
         } 
 
         for(ArrayList<Casilla> arrayList : casillas){
             for(Casilla casilla : arrayList){
                 if(casilla.getPosicion() == nuevaPosicion){
+                    this.lugar.eliminarAvatar(this);
                     this.lugar = casilla;
+                    casilla.anhadirAvatar(this);
                 }
             }
         }
-        
     }
 
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
