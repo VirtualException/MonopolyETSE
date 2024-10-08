@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import partida.*;
 
 
-class Grupo {
+public class Grupo {
 
     //Atributos
     private ArrayList<Casilla> miembros; //Casillas miembros del grupo.
