@@ -77,10 +77,18 @@ public class Jugador {
     /*Método para establecer al jugador en la cárcel.
      * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
-        for(ArrayList<Casilla> arrayList : pos){
-            for(Casilla casilla : arrayList){
-                if(avatar.getLugar().getPosicion() == 31){
-                    this.enCarcel = true;
+        
+        if(this.avatar.getLugar().getNombre().equals("IrCarcel")){
+
+            for(ArrayList<Casilla> arrayList : pos){
+                for(Casilla casilla : arrayList){
+                    if(casilla.getNombre().equals("Carcel")){
+
+                        this.avatar.getLugar().eliminarAvatar(this.avatar);
+                        this.avatar.setLugar(casilla);
+                        casilla.anhadirAvatar(this.avatar);
+                        this.enCarcel = true;
+                    }
                 }
             }
         }
