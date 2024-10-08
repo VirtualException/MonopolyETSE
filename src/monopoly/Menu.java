@@ -2,7 +2,6 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Scanner;
 import partida.*;
 
@@ -12,12 +11,12 @@ public class Menu {
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
-    private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
+    //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
     private Jugador banca; //El jugador banca.
-    private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
+    //private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
     private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
 
 
@@ -30,14 +29,13 @@ public class Menu {
     private void iniciarPartida() {
 
         /* Crear banca y tablero */
-        avatares = new ArrayList<Avatar>();
-        jugadores = new ArrayList<Jugador>();
-        banca = new Jugador("Banca", "Banca", null, avatares);
+        avatares = new ArrayList<>();
+        jugadores = new ArrayList<>();
+        banca = new Jugador("Banca", "Banca", null, null); /* No tiene casilla ni avatar asociado */
         tablero = new Tablero(banca);
 
         dado1 = new Dado();
         dado2 = new Dado();
-
 
         System.out.println(this.tablero);
 
@@ -135,7 +133,6 @@ public class Menu {
             }
         }
 
-
         /* Comando salida */
         else if (comandos_args[0].equals("exit")) {
             return true;
@@ -155,7 +152,7 @@ public class Menu {
 
         for (Jugador i : jugadores) {
             if (Objects.equals(i.getNombre(), nombre)) {
-                System.out.println("{\n");
+                System.out.print("{\n");
                 System.out.print("\tnombre: " + i.getNombre()  + "," + "\n");
                 System.out.print("\tavatar: " + i.getAvatar().getId() + "," + "\n");
                 System.out.print("\tfortuna: " + i.getFortuna() + "," + "\n");
@@ -163,18 +160,17 @@ public class Menu {
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.println("]");
+                System.out.println("],");
                 System.out.print("\thipotecas: [");
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.println("]" + "," + "\n");
+                System.out.println("],");
                 System.out.print("\tedificios: [");
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.print("]");
-                System.out.print("\n},");
+                System.out.print("]\n},\n");
             }
         }
     }
@@ -185,23 +181,25 @@ public class Menu {
     private void descAvatar(String ID) {
         for (Avatar i : avatares) {
             if (Objects.equals(i.getId(), ID)) {
-                System.out.println("{\n");
+                System.out.print("{\n");
                 System.out.print("\tid: " + i.getId() + "," + "\n");
                 System.out.print("\ttipo: " + i.getTipo() + "," + "\n");
                 System.out.print("\tcasilla: " + i.getLugar().getNombre() + "," + "\n");
                 System.out.print("\tjugador: " + i.getJugador().getNombre());
-                System.out.print("\n},");
+                System.out.print("\n},\n");
             }
         }
     }
 
     private void descTurno() {
-        String nombre = jugadores.get(turno).getNombre();
-        String avatar = jugadores.get(turno).getAvatar().getId();
-        System.out.println("{\n");
-        System.out.print("\tnombre: " + nombre  + "," + "\n");
-        System.out.print("\tavatar: " + avatar);
-        System.out.print("\n}");
+        // String nombre = jugadores.get(turno).getNombre();
+        // String avatar = jugadores.get(turno).getAvatar().getId();
+        // System.out.println("{\n");
+        // System.out.print("\tnombre: " + nombre  + "," + "\n");
+        // System.out.print("\tavatar: " + avatar);
+        // System.out.print("\n}\n");
+
+        descAvatar(jugadores.get(turno).getAvatar().getId());
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
@@ -238,13 +236,14 @@ public class Menu {
 
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
-        /* Comprobar si las tiradas son iguales. Se usa @Override en la clase Dado */
+        /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
         if (dado1.equals(dado2)) {
             System.out.println("Doble!");
             if (j.getTiradas() == 1) {
                 System.out.println("A la cárcel!");
                 j.setTiradas(0);
-                /* IR A LA CARCEL */
+                /* Ir a la cárcel */
+                j.encarcelar(tablero.getPosiciones());
                 this.acabarTurno();
             }
             /* El jugador puede tirar de nuevo */
@@ -254,11 +253,10 @@ public class Menu {
         /* El jugador no puede tirar de nuevo */
         j.setTiradas(-1);
 
-
         /* mover jugador, etc.. */
+        j.moverJugador(tablero.getPosiciones(), dado1.getValor() + dado2.getValor());
 
         System.out.println(tablero);
-
     }
 
     /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
@@ -276,7 +274,7 @@ public class Menu {
         for (ArrayList <Casilla> casillas : tablero.getPosiciones()){
             for (Casilla c : casillas){
                 if (c.getDuenho().getNombre().equals("Banca")){
-                    System.out.println(c.casEnVenta());;
+                    System.out.println(c.casEnVenta());
                 }
             }
         }

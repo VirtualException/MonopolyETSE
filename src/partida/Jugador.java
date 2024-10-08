@@ -28,7 +28,7 @@ public class Jugador {
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
         this.nombre = nombre;
-        this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
+        if (tipoAvatar != "Banca") this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
         this.gastos = 0.0f;
         this.enCarcel = false;
@@ -77,8 +77,9 @@ public class Jugador {
     /*Método para establecer al jugador en la cárcel.
      * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
-        
-        if(this.avatar.getLugar().getNombre().equals("IrCarcel")){
+
+        /* O xogador pode ir á carcel sen ter que caer na casilla */
+        //if (this.avatar.getLugar().getNombre().equals("IrCarcel")){
 
             for(ArrayList<Casilla> arrayList : pos){
                 for(Casilla casilla : arrayList){
@@ -91,7 +92,50 @@ public class Jugador {
                     }
                 }
             }
+        //}
+    }
+
+    /* Mover jugador de la casilla actual respecto al valor de la tirada*/
+    public void moverJugador(ArrayList<ArrayList<Casilla>> pos, int tirada) {
+
+        Casilla c = this.getAvatar().getLugar();
+
+        System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+        this.getAvatar().moverAvatar(pos, tirada);
+        c = this.getAvatar().getLugar();
+        System.out.println(" hasta " + c.getNombre() + ".");
+
+        String tipo = c.getTipo();
+        /* Depende de donde caímos, hacer algo */
+        if (tipo == "Solar") {
+
         }
+        else if (tipo == "Transporte") {
+
+        }
+        else if (tipo == "Comunidad") {
+
+        }
+        else if (tipo == "Servicio") {
+
+        }
+        else if (tipo == "Suerte") {
+
+        }
+        /* Tipo especial */
+        else {
+            /* Cae en cárcel */
+            if (c.getNombre() == "IrCarcel") {
+                this.encarcelar(pos);
+            }
+            /* Cae en cárcel */
+            if (c.getNombre() == "Parking") {
+
+            }
+
+        }
+
+
     }
 
 
