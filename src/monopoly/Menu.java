@@ -125,65 +125,50 @@ public class Menu {
      */
     private void descJugador(String nombre) {
 
-        Jugador j = null;
-
         for (Jugador i : jugadores) {
-            if (i.getNombre() == nombre) {
-                j = i;
-                break;
+            if (Objects.equals(i.getNombre(), nombre)) {
+                System.out.println("{");
+                System.out.println("\tnombre: " + i.getNombre() + ",");
+                System.out.println("\tavatar: " + i.getAvatar().getId());
+                System.out.println("\tfortuna: " + i.getFortuna());
+                System.out.print("\tpropiedades: [");
+                for (Casilla p : i.getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.print("\thipotecas: [");
+                for (Casilla p : i.getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.print("\tedificios: [");
+                for (Casilla p : i.getPropiedades()) {
+                    System.out.print(p.getNombre() + ", ");
+                }
+                System.out.println("]");
+                System.out.println("\n},");
+            } else {
+                System.out.println("No existe ese jugador");
             }
         }
-        if (j == null) {
-            System.out.println("No existe ese jugador");
-            return;
-        }
-
-        System.out.println("{");
-        System.out.println("\tnombre: " + j.getNombre() + ",");
-        System.out.println("\tavatar: " + j.getAvatar().getId());
-        System.out.println("\tfortuna: " + j.getFortuna());
-        System.out.print("\tpropiedades: [");
-        for (Casilla p : j.getPropiedades()) {
-            System.out.print(p.getNombre() + ", ");
-        }
-        System.out.println("]");
-        System.out.print("\thipotecas: [");
-        for (Casilla p : j.getPropiedades()) {
-            System.out.print(p.getNombre() + ", ");
-        }
-        System.out.println("]");
-        System.out.print("\tedificios: [");
-        for (Casilla p : j.getPropiedades()) {
-            System.out.print(p.getNombre() + ", ");
-        }
-        System.out.println("]");
-        System.out.println("\n},");
     }
 
     /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.
     * Parámetro: id del avatar a describir.
     */
     private void descAvatar(String ID) {
-
-        Avatar a = null;
-
         for (Avatar i : avatares) {
-            if (i.getId() == ID) {
-                a = i;
-                break;
+            if (Objects.equals(i.getId(), ID)) {
+                System.out.println("{");
+                System.out.println("\tid: " + i.getId() + ",");
+                System.out.println("\ttipo: " + i.getTipo());
+                System.out.println("\tcasilla: " + i.getLugar().getNombre());
+                System.out.print("\tjugador: " + i.getJugador().getNombre());
+                System.out.println("\n},");
+            } else {
+                System.out.println("No existe ese jugador");
             }
         }
-        if (a == null) {
-            System.out.println("No existe ese jugador");
-            return;
-        }
-
-        System.out.println("{");
-        System.out.println("\tid: " + a.getId() + ",");
-        System.out.println("\ttipo: " + a.getTipo());
-        System.out.println("\tcasilla: " + a.getLugar().getNombre());
-        System.out.print("\tjugador: " + a.getJugador().getNombre());
-        System.out.println("\n},");
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
@@ -195,7 +180,7 @@ public class Menu {
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
     private void lanzarDados() {
 
-        if (jugadores.size() == 0) {
+        if (jugadores.isEmpty()) {
             System.out.println("No hay jugadores!");
             return;
         }
