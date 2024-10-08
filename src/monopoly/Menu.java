@@ -194,30 +194,7 @@ public class Menu {
     * Parámetros: nombre de la casilla a describir.
     */
     private void descCasilla(String nombre) {
-
-        Casilla casilla = tablero.encontrar_casilla(nombre);
-
-        if (casilla.getTipo().equals("Solar")){
-            float alquiler = casilla.getValor()*0.1f;
-            System.out.println("{");
-            System.out.println("\ttipo: " + casilla.getTipo() + ",");
-            System.out.println("\tgrupo: " + casilla.getGrupo().getColorGrupo());
-            System.out.println("\tpropietario: " + casilla.getDuenho());
-            System.out.print("\tvalor: " + casilla.getValor());
-            System.out.print("\talquiler: " + alquiler);
-            System.out.print("\tvalor hotel: " + casilla.getValor()*0.6f);
-            System.out.print("\tvalor casa: " + casilla.getValor()*0.6f);
-            System.out.print("\tvalor piscina: " + casilla.getValor()*0.4f);
-            System.out.print("\tvalor pista de deporte: " + casilla.getValor()*1.25f);
-            System.out.print("\talquiler una casa: " + alquiler*5);
-            System.out.print("\talquiler dos casas: " + alquiler*15);
-            System.out.print("\talquiler tres casas: " + alquiler*35);
-            System.out.print("\talquiler cuatro casas: " + alquiler*50);
-            System.out.print("\talquiler hotel: " + alquiler*70);
-            System.out.print("\talquiler piscina: " + alquiler*25);
-            System.out.print("\talquiler pista de deporte: " + alquiler*25);
-            System.out.println("\n},");
-        }
+        System.out.println(tablero.encontrar_casilla(nombre).infoCasilla());;
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.

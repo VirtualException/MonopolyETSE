@@ -120,7 +120,50 @@ public class Casilla {
     /*Método para mostrar información sobre una casilla.
      * Devuelve una cadena con información específica de cada tipo de casilla.*/
     public String infoCasilla() {
-        return null;
+        String cadena = "";
+        if (getTipo().equals("Solar")){
+            float alquiler = getValor()*0.1f;
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tgrupo: " + getGrupo().getColorGrupo());
+            cadena +=("\tpropietario: " + getDuenho());
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\talquiler: " + alquiler);
+            cadena +=("\tvalor hotel: " + getValor()*0.6f);
+            cadena +=("\tvalor casa: " + getValor()*0.6f);
+            cadena +=("\tvalor piscina: " + getValor()*0.4f);
+            cadena +=("\tvalor pista de deporte: " + getValor()*1.25f);
+            cadena +=("\talquiler una casa: " + alquiler*5);
+            cadena +=("\talquiler dos casas: " + alquiler*15);
+            cadena +=("\talquiler tres casas: " + alquiler*35);
+            cadena +=("\talquiler cuatro casas: " + alquiler*50);
+            cadena +=("\talquiler hotel: " + alquiler*70);
+            cadena +=("\talquiler piscina: " + alquiler*25);
+            cadena +=("\talquiler pista de deporte: " + alquiler*25);
+            cadena +=("\n},");
+        } else if (getNombre().equals("Imp1") || getNombre().equals("Imp2")){
+            cadena =("{\n");
+            cadena +=("\ttipo: " + getTipo() + ",");
+            cadena +=("\ta pagar: " + getImpuesto());
+            cadena +=("\n},");
+        } else if (getTipo().equals("Transporte")){
+            float alquiler1 = getValor()*0.1f;
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tpropietario: " + getDuenho());
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\talquiler: " + alquiler1);
+            cadena +=("\n},");
+        } else if (getTipo().equals("Servicio")){
+            float alquiler2 = getValor()*0.1f;
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tpropietario: " + getDuenho());
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\talquiler: " + alquiler2);
+            cadena +=("\n},");
+        }
+        return cadena;
     }
 
 
@@ -129,7 +172,25 @@ public class Casilla {
      * Valor devuelto: texto con esa información.
      */
     public String casEnVenta() {
-        return null;
+        String cadena = "";
+        if (getTipo().equals("Solar")){
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tgrupo: " + getGrupo().getColorGrupo());
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\n},");
+        }  else if (getTipo().equals("Transporte")){
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\n},");
+        } else if (getTipo().equals("Servicio")){
+            cadena = ("{\n");
+            cadena += ("\ttipo: " + getTipo() + ",");
+            cadena +=("\tvalor: " + getValor());
+            cadena +=("\n},");
+        }
+        return cadena;
     }
 
 
