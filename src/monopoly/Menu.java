@@ -49,6 +49,7 @@ public class Menu {
             sair = this.analizarComando(scan.nextLine());
         }
     }
+
     
     /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
     * Parámetro: cadena de caracteres (el comando).
@@ -193,6 +194,7 @@ public class Menu {
     * Parámetros: nombre de la casilla a describir.
     */
     private void descCasilla(String nombre) {
+        System.out.println(tablero.encontrar_casilla(nombre).infoCasilla());;
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.

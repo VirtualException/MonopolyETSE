@@ -55,10 +55,10 @@ public class Tablero {
         ladoNorte.add(new Casilla("IrCarcel", "Especial", 31, banca));
 
         posiciones.add(ladoNorte);
-        Grupo grupoRojo = new Grupo(Solar12, Solar13, Solar14, Valor.RED);
-        Grupo grupoMarron = new Grupo(Solar15, Solar16, Solar17, Valor.BROWN);
-        grupos.put(Valor.RED, grupoRojo);
-        grupos.put(Valor.BROWN, grupoMarron);
+        Grupo grupoRojo = new Grupo(Solar12, Solar13, Solar14, "Rojo");
+        Grupo grupoMarron = new Grupo(Solar15, Solar16, Solar17, "Marrón");
+        grupos.put("rojo", grupoRojo);
+        grupos.put("marron", grupoMarron);
     }
 
     //Método para insertar las casillas del lado sur.
@@ -83,10 +83,10 @@ public class Tablero {
         ladoSur.add(new Casilla("Carcel", "Especial", 11, banca));
 
         posiciones.add(ladoSur);
-        Grupo grupoNegro = new Grupo(Solar1, Solar2, Valor.BLACK);
-        Grupo grupoCyan = new Grupo(Solar3, Solar4, Solar5, Valor.CYAN);
-        grupos.put(Valor.BLACK, grupoNegro);
-        grupos.put(Valor.CYAN, grupoCyan);
+        Grupo grupoNegro = new Grupo(Solar1, Solar2, "Negro");
+        Grupo grupoCyan = new Grupo(Solar3, Solar4, Solar5, "Cyan");
+        grupos.put("negro", grupoNegro);
+        grupos.put("cyan", grupoCyan);
     }
 
     //Método que inserta casillas del lado oeste.
@@ -110,10 +110,10 @@ public class Tablero {
         ladoOeste.add(Solar11);
 
         posiciones.add(ladoOeste);
-        Grupo grupoMorado = new Grupo(Solar6, Solar7, Solar8, Valor.PURPLE);
-        Grupo grupoAmarillo = new Grupo(Solar9, Solar10, Solar11, Valor.YELLOW);
-        grupos.put(Valor.PURPLE, grupoMorado);
-        grupos.put(Valor.YELLOW, grupoAmarillo);
+        Grupo grupoMorado = new Grupo(Solar6, Solar7, Solar8, "Morado");
+        Grupo grupoAmarillo = new Grupo(Solar9, Solar10, Solar11, "Amarillo");
+        grupos.put("morado", grupoMorado);
+        grupos.put("amarillo", grupoAmarillo);
     }
 
     //Método que inserta las casillas del lado este.
@@ -136,10 +136,10 @@ public class Tablero {
         ladoEste.add(Solar22);
 
         posiciones.add(ladoEste);
-        Grupo grupoVerde = new Grupo(Solar18, Solar19, Solar20, Valor.GREEN);
-        Grupo grupoAzul = new Grupo(Solar21, Solar22, Valor.BLUE);
-        grupos.put(Valor.GREEN, grupoVerde);
-        grupos.put(Valor.BLUE, grupoAzul);
+        Grupo grupoVerde = new Grupo(Solar18, Solar19, Solar20, "Verde");
+        Grupo grupoAzul = new Grupo(Solar21, Solar22, "Azul");
+        grupos.put("verde", grupoVerde);
+        grupos.put("azul", grupoAzul);
     }
 
 
