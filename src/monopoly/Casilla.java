@@ -124,21 +124,21 @@ public class Casilla {
         if (getTipo().equals("Solar")){
             float alquiler = getValor()*0.1f;
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tgrupo: " + getGrupo().getColorGrupo());
-            cadena +=("\tpropietario: " + getDuenho());
-            cadena +=("\tvalor: " + getValor());
-            cadena +=("\talquiler: " + alquiler);
-            cadena +=("\tvalor hotel: " + getValor()*0.6f);
-            cadena +=("\tvalor casa: " + getValor()*0.6f);
-            cadena +=("\tvalor piscina: " + getValor()*0.4f);
-            cadena +=("\tvalor pista de deporte: " + getValor()*1.25f);
-            cadena +=("\talquiler una casa: " + alquiler*5);
-            cadena +=("\talquiler dos casas: " + alquiler*15);
-            cadena +=("\talquiler tres casas: " + alquiler*35);
-            cadena +=("\talquiler cuatro casas: " + alquiler*50);
-            cadena +=("\talquiler hotel: " + alquiler*70);
-            cadena +=("\talquiler piscina: " + alquiler*25);
+            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
+            cadena +=("\tpropietario: " + getDuenho().getNombre() + "," + "\n");
+            cadena +=("\tvalor: " + getValor() + "," + "\n");
+            cadena +=("\talquiler: " + alquiler + "," + "\n");
+            cadena +=("\tvalor hotel: " + getValor()*0.6f + "," + "\n");
+            cadena +=("\tvalor casa: " + getValor()*0.6f + "," + "\n");
+            cadena +=("\tvalor piscina: " + getValor()*0.4f + "," + "\n");
+            cadena +=("\tvalor pista de deporte: " + getValor()*1.25f + "," + "\n");
+            cadena +=("\talquiler una casa: " + alquiler*5 + "," + "\n");
+            cadena +=("\talquiler dos casas: " + alquiler*15 + "," + "\n");
+            cadena +=("\talquiler tres casas: " + alquiler*35 + "," + "\n");
+            cadena +=("\talquiler cuatro casas: " + alquiler*50 + "," + "\n");
+            cadena +=("\talquiler hotel: " + alquiler*70 + "," + "\n");
+            cadena +=("\talquiler piscina: " + alquiler*25 + "," + "\n");
             cadena +=("\talquiler pista de deporte: " + alquiler*25);
             cadena +=("\n},");
         } else if (getNombre().equals("Imp1") || getNombre().equals("Imp2")){
@@ -175,19 +175,19 @@ public class Casilla {
         String cadena = "";
         if (getTipo().equals("Solar")){
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tgrupo: " + getGrupo().getColorGrupo());
+            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
             cadena +=("\tvalor: " + getValor());
             cadena +=("\n},");
         }  else if (getTipo().equals("Transporte")){
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tvalor: " + getValor());
+            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\n},");
         } else if (getTipo().equals("Servicio")){
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tvalor: " + getValor());
+            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\n},");
         }
         return cadena;

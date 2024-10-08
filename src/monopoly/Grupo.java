@@ -20,11 +20,9 @@ public class Grupo {
      */
     public Grupo(Casilla cas1, Casilla cas2, String colorGrupo) {
         this.miembros = new ArrayList<>();
-        this.miembros.add(cas1);
-        this.miembros.add(cas2);
-
+        anhadirCasilla(cas1);
+        anhadirCasilla(cas2);
         this.colorGrupo = colorGrupo;
-        this.numCasillas = 2;
     }
 
     /*Constructor para cuando el grupo está formado por TRES CASILLAS:
@@ -32,12 +30,10 @@ public class Grupo {
      */
     public Grupo(Casilla cas1, Casilla cas2, Casilla cas3, String colorGrupo) {
         this.miembros = new ArrayList<>();
-        this.miembros.add(cas1);
-        this.miembros.add(cas2);
-        this.miembros.add(cas3);
-
+        anhadirCasilla(cas1);
+        anhadirCasilla(cas2);
+        anhadirCasilla(cas3);
         this.colorGrupo = colorGrupo;
-        this.numCasillas = 3;
     }
 
     /* Método añade una casilla al array de casillas miembro de un grupo.

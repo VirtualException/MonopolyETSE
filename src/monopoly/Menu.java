@@ -110,8 +110,7 @@ public class Menu {
                 }
             }
 
-        }
-        else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
+        } else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
             if (jugadores.isEmpty()){
                 System.out.println("No hay jugadores registrados");
             } else{
@@ -124,6 +123,8 @@ public class Menu {
                 }
 
             }
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa")) {
+            listarVenta();
         }
         /* Describir casilla */
         else if (comandos_args[0].equals("describir") && num_args == 2) {
@@ -245,6 +246,13 @@ public class Menu {
 
     // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
     private void listarVenta() {
+        for (ArrayList <Casilla> casillas : tablero.getPosiciones()){
+            for (Casilla c : casillas){
+                if (c.getDuenho().getNombre().equals("Banca")){
+                    System.out.println(c.casEnVenta());;
+                }
+            }
+        }
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.

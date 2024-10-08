@@ -3,8 +3,7 @@ package monopoly;
 import partida.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
+import java.util.Objects;
 
 
 public class Tablero {
@@ -59,6 +58,12 @@ public class Tablero {
         Grupo grupoMarron = new Grupo(Solar15, Solar16, Solar17, "Marrón");
         grupos.put("rojo", grupoRojo);
         grupos.put("marron", grupoMarron);
+        Solar12.setGrupo(grupos.get("rojo"));
+        Solar13.setGrupo(grupos.get("rojo"));
+        Solar14.setGrupo(grupos.get("rojo"));
+        Solar15.setGrupo(grupos.get("marron"));
+        Solar16.setGrupo(grupos.get("marron"));
+        Solar17.setGrupo(grupos.get("marron"));
     }
 
     //Método para insertar las casillas del lado sur.
@@ -87,6 +92,11 @@ public class Tablero {
         Grupo grupoCyan = new Grupo(Solar3, Solar4, Solar5, "Cyan");
         grupos.put("negro", grupoNegro);
         grupos.put("cyan", grupoCyan);
+        Solar1.setGrupo(grupos.get("negro"));
+        Solar2.setGrupo(grupos.get("negro"));
+        Solar3.setGrupo(grupos.get("cyan"));
+        Solar4.setGrupo(grupos.get("cyan"));
+        Solar5.setGrupo(grupos.get("cyan"));
     }
 
     //Método que inserta casillas del lado oeste.
@@ -114,6 +124,12 @@ public class Tablero {
         Grupo grupoAmarillo = new Grupo(Solar9, Solar10, Solar11, "Amarillo");
         grupos.put("morado", grupoMorado);
         grupos.put("amarillo", grupoAmarillo);
+        Solar6.setGrupo(grupos.get("morado"));
+        Solar7.setGrupo(grupos.get("morado"));
+        Solar8.setGrupo(grupos.get("morado"));
+        Solar9.setGrupo(grupos.get("amarillo"));
+        Solar10.setGrupo(grupos.get("amarillo"));
+        Solar11.setGrupo(grupos.get("amarillo"));
     }
 
     //Método que inserta las casillas del lado este.
@@ -140,6 +156,11 @@ public class Tablero {
         Grupo grupoAzul = new Grupo(Solar21, Solar22, "Azul");
         grupos.put("verde", grupoVerde);
         grupos.put("azul", grupoAzul);
+        Solar18.setGrupo(grupos.get("verde"));
+        Solar19.setGrupo(grupos.get("verde"));
+        Solar20.setGrupo(grupos.get("verde"));
+        Solar21.setGrupo(grupos.get("azul"));
+        Solar22.setGrupo(grupos.get("azul"));
     }
 
 
@@ -200,9 +221,6 @@ public class Tablero {
             int padding = 16 - getRealLength(cnom); // Usar la longitud real
             if (padding < 0) padding = 0; // Asegura que padding no sea negativo
             str += String.format(Valor.RESET, "|") + cnom + " ".repeat(padding);
-
-
-
         }
         str += String.format(Valor.RESET, "|\n");
         str += separador;
@@ -257,7 +275,7 @@ public class Tablero {
     public Casilla encontrar_casilla(String nombre) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < posiciones.get(i).size(); j++) {
-                if (posiciones.get(i).get(j).getNombre() == nombre) {
+                if (Objects.equals(posiciones.get(i).get(j).getNombre(), nombre)) {
                     return posiciones.get(i).get(j);
                 }
             }
