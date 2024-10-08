@@ -148,23 +148,23 @@ public class Casilla {
             cadena +=("\n},");
         } else if (getNombre().equals("Imp1") || getNombre().equals("Imp2")){
             cadena =("{\n");
-            cadena +=("\ttipo: " + getTipo() + ",");
+            cadena +=("\ttipo: " + getTipo()  + "," + "\n");
             cadena +=("\ta pagar: " + getImpuesto());
             cadena +=("\n},");
         } else if (getTipo().equals("Transporte")){
             float alquiler1 = getValor()*0.1f;
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tpropietario: " + getDuenho());
-            cadena +=("\tvalor: " + getValor());
+            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\tpropietario: " + getDuenho() + "," + "\n");
+            cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler1);
             cadena +=("\n},");
         } else if (getTipo().equals("Servicio")){
             float alquiler2 = getValor()*0.1f;
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + ",");
-            cadena +=("\tpropietario: " + getDuenho());
-            cadena +=("\tvalor: " + getValor());
+            cadena += ("\ttipo: " + getTipo()  + "," + "\n");
+            cadena +=("\tpropietario: " + getDuenho() + "," + "\n");
+            cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler2);
             cadena +=("\n},");
         }

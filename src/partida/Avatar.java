@@ -13,8 +13,6 @@ public class Avatar {
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
 
-    private static final char[] letrasDisponibles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-    private static int letrasRestantes = letrasDisponibles.length;
 
     //Constructor vacío
     public Avatar() {
@@ -84,7 +82,7 @@ public class Avatar {
 
     private void generarId(ArrayList<Avatar> avCreados) {
         Random random = new Random();
-        boolean existe = false;
+        boolean existe;
 
         do {
 

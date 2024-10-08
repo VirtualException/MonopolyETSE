@@ -125,10 +125,14 @@ public class Menu {
             }
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa")) {
             listarVenta();
-        }
-        /* Describir casilla */
-        else if (comandos_args[0].equals("describir") && num_args == 2) {
+        } else if (comandos_args[0].equals("describir") && num_args == 2) {
             descCasilla(comandos_args[1]);
+        } else if (comandos_args[0].equals("jugador") && num_args == 1) {
+            if (jugadores.isEmpty()){
+                System.out.println("No hay jugadores registrados");
+            } else {
+                descTurno();
+            }
         }
 
 
@@ -151,10 +155,10 @@ public class Menu {
 
         for (Jugador i : jugadores) {
             if (Objects.equals(i.getNombre(), nombre)) {
-                System.out.println("{");
-                System.out.println("\tnombre: " + i.getNombre() + ",");
-                System.out.println("\tavatar: " + i.getAvatar().getId());
-                System.out.println("\tfortuna: " + i.getFortuna());
+                System.out.println("{\n");
+                System.out.print("\tnombre: " + i.getNombre()  + "," + "\n");
+                System.out.print("\tavatar: " + i.getAvatar().getId() + "," + "\n");
+                System.out.print("\tfortuna: " + i.getFortuna() + "," + "\n");
                 System.out.print("\tpropiedades: [");
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
@@ -164,13 +168,13 @@ public class Menu {
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.println("]");
+                System.out.println("]" + "," + "\n");
                 System.out.print("\tedificios: [");
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.println("]");
-                System.out.println("\n},");
+                System.out.print("]");
+                System.out.print("\n},");
             }
         }
     }
@@ -181,14 +185,23 @@ public class Menu {
     private void descAvatar(String ID) {
         for (Avatar i : avatares) {
             if (Objects.equals(i.getId(), ID)) {
-                System.out.println("{");
-                System.out.println("\tid: " + i.getId() + ",");
-                System.out.println("\ttipo: " + i.getTipo());
-                System.out.println("\tcasilla: " + i.getLugar().getNombre());
+                System.out.println("{\n");
+                System.out.print("\tid: " + i.getId() + "," + "\n");
+                System.out.print("\ttipo: " + i.getTipo() + "," + "\n");
+                System.out.print("\tcasilla: " + i.getLugar().getNombre() + "," + "\n");
                 System.out.print("\tjugador: " + i.getJugador().getNombre());
-                System.out.println("\n},");
+                System.out.print("\n},");
             }
         }
+    }
+
+    private void descTurno() {
+        String nombre = jugadores.get(turno).getNombre();
+        String avatar = jugadores.get(turno).getAvatar().getId();
+        System.out.println("{\n");
+        System.out.print("\tnombre: " + nombre  + "," + "\n");
+        System.out.print("\tavatar: " + avatar);
+        System.out.print("\n}");
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
