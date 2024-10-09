@@ -109,6 +109,9 @@ public class Casilla {
                 jugador.sumarFortuna(-pago);
                 /* El propietario recibe */
                 duenho.sumarFortuna(pago);
+
+                System.out.println("El juagdor " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
+
                 return true;
             }
 
