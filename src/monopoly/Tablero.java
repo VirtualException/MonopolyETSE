@@ -85,7 +85,7 @@ public class Tablero {
         ladoSur.add(Solar4);
         Casilla Solar5 = new Casilla("Solar5", "Solar", 10, Valor.VALOR_GRUPO_AZUL / 3, banca);
         ladoSur.add(Solar5);
-        ladoSur.add(new Casilla("Carcel", "Especial", 11, banca));
+        ladoSur.add(new Casilla("IrCarcel", "Especial", 11, banca));
 
         posiciones.add(ladoSur);
         Grupo grupoNegro = new Grupo(Solar1, Solar2, "Negro");
