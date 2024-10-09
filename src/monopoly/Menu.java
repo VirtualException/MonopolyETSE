@@ -170,16 +170,10 @@ public class Menu {
                 for (Casilla p : i.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
-                System.out.println("],");
+                System.out.println("]");
                 System.out.print("\thipotecas: [");
-                for (Casilla p : i.getPropiedades()) {
-                    System.out.print(p.getNombre() + ", ");
-                }
-                System.out.println("],");
+                System.out.println("]");
                 System.out.print("\tedificios: [");
-                for (Casilla p : i.getPropiedades()) {
-                    System.out.print(p.getNombre() + ", ");
-                }
                 System.out.print("]\n},\n");
             }
         }
