@@ -91,6 +91,10 @@ public class Menu {
         else if (comandos_args[0].equals("acabar") && comandos_args[1].equals("turno") && num_args == 2) {
             acabarTurno();
         }
+        else if (comandos_args[0].equals("comprar") && num_args == 2){
+            String nombreCasilla = comandos_args[1];
+            comprar(nombreCasilla);
+        }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
             lanzarDados();
         }
@@ -292,7 +296,7 @@ public class Menu {
             System.out.println("ERROR. No hay avatares en la casilla actual.");
             return;
         }
-        
+
 
         if(!avEncontrado){
             System.out.println("ERROR. El avatar no se encuentra en la casilla que se quiere comprar.");
