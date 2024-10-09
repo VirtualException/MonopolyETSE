@@ -82,7 +82,7 @@ public class Jugador {
         //if (this.avatar.getLugar().getNombre().equals("IrCarcel")){
 
             for(ArrayList<Casilla> arrayList : pos){
-                for(Casilla casilla : arrayList){
+                for(Casilla casilla : arrayList) {
                     if(casilla.getNombre().equals("Carcel")){
 
                         this.avatar.getLugar().eliminarAvatar(this.avatar);
@@ -96,7 +96,9 @@ public class Jugador {
     }
 
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public void moverJugador(ArrayList<ArrayList<Casilla>> pos, int tirada) {
+    public void moverJugador(Tablero tablero, int tirada) {
+
+        ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
         Casilla c = this.getAvatar().getLugar();
 
@@ -105,36 +107,11 @@ public class Jugador {
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
 
-        String tipo = c.getTipo();
-        /* Depende de donde caímos, hacer algo */
-        if (tipo == "Solar") {
+        boolean solvente = c.evaluarCasilla(tablero, this, tablero.getBanca(), tirada);
 
+        if (!solvente) {
+            System.out.println("Jugador en banca rota, se acaba la partida");
         }
-        else if (tipo == "Transporte") {
-
-        }
-        else if (tipo == "Comunidad") {
-
-        }
-        else if (tipo == "Servicio") {
-
-        }
-        else if (tipo == "Suerte") {
-
-        }
-        /* Tipo especial */
-        else {
-            /* Cae en cárcel */
-            if (c.getNombre() == "IrCarcel") {
-                this.encarcelar(pos);
-            }
-            /* Cae en cárcel */
-            if (c.getNombre() == "Parking") {
-
-            }
-
-        }
-
 
     }
 

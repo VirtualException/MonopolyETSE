@@ -88,8 +88,58 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Jugador actual, Jugador banca, int tirada) {
-        return false;
+    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, int tirada) {
+
+        boolean solvente = true;
+        String tipo = this.getTipo();
+
+        /* Depende de donde caímos, hacer algo */
+        if (tipo == "Solar") {
+
+            /* Si hay dueño */
+            if (duenho != banca) {
+                float pago = valor;
+                /* Si no puede pagarlo */
+                if (jugador.getFortuna() < pago) {
+                    System.out.println("Dinero insuficiente.");
+                    return false;
+                }
+                /* El jugador paga al propietario */
+                jugador.sumarGastos(pago);
+                jugador.sumarFortuna(-pago);
+                /* El propietario recibe */
+                duenho.sumarFortuna(pago);
+                return true;
+            }
+
+        }
+        else if (tipo == "Transporte") {
+
+        }
+        else if (tipo == "Comunidad") {
+
+        }
+        else if (tipo == "Servicio") {
+
+        }
+        else if (tipo == "Suerte") {
+
+        }
+        /* Tipo especial */
+        else {
+            /* Cae en cárcel */
+            if (nombre == "IrCarcel") {
+                jugador.encarcelar(tab.getPosiciones());
+            }
+            /* Cae en cárcel */
+            if (nombre == "Parking") {
+                float bote = this.getValor();
+                jugador.sumarFortuna(bote);
+                this.setValor(0);
+            }
+        }
+
+        return solvente;
     }
 
 
