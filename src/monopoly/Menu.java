@@ -275,38 +275,23 @@ public class Menu {
         Jugador jugadorActual = jugadores.get(turno);
         Avatar av = jugadorActual.getAvatar();
         Casilla casillaActual = tablero.encontrar_casilla(nombre); 
-        boolean avEncontrado = false;
 
         //Comprobamos que el nombre de la casilla que queremos comprar existe.
         if(casillaActual == null){
             System.out.println("ERROR. Esta casilla no existe.");
         }
 
-        /*Recorremos el array de avatares de la casilla actual, buscando el avatar del jugador que tiene el turno.
-         *Si encontramos el avatar, compramos la casilla. Si no lo encontramos imprimimos un mensaje de error.
-         */
-        if(!(casillaActual.getAvatares() == null || casillaActual.getAvatares().isEmpty())){
-            for(Avatar avatar : casillaActual.getAvatares()){
-                if(av.equals(avatar)){
-                    avEncontrado = true;
-                    break;
-                }
-            }
-        } else{
-            System.out.println("ERROR. No hay avatares en la casilla actual.");
+        //Comprobamos que la casilla en la que se encuentra el avatar es la casilla que se quiere comprar.
+        if(!av.getLugar().equals(casillaActual)){
+            System.out.println("ERROR. No se puede comprar esta casilla porque no estás en ella.");
             return;
         }
 
-
-        if(!avEncontrado){
-            System.out.println("ERROR. El avatar no se encuentra en la casilla que se quiere comprar.");
-            return;
+        if(casillaActual != null){
+            casillaActual.comprarCasilla(jugadorActual, banca);
+            System.out.println("El jugador " + jugadorActual.getNombre() + " compra la casilla " + nombre + " por " +
+            casillaActual.getValor() + "€. Su fortuna actual es " + jugadorActual.getFortuna() + "€.");
         }
-
-        casillaActual.comprarCasilla(jugadorActual, banca);
-
-        System.out.println("El jugador " + jugadorActual.getNombre() + " compra la casilla " + nombre + " por " +
-        casillaActual.getValor() + "€. Su fortuna actual es " + jugadorActual.getFortuna() + "€.");
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
