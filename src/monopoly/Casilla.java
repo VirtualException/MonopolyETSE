@@ -223,7 +223,7 @@ public class Casilla {
         } else if (getTipo().equals("Transporte")){
             float alquiler1 = getValor()*0.1f;
             cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + "," + "\n");
+            cadena +=("\ttipo: " + getTipo() + "," + "\n");
             cadena +=("\tpropietario: " + getDuenho() + "," + "\n");
             cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler1);
@@ -236,6 +236,19 @@ public class Casilla {
             cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler2);
             cadena +=("\n},");
+        } else if (getNombre().equals("Parking")){
+            cadena = ("{\n");
+            cadena +=("\tbote: " + getValor() + "," + "\n");
+            cadena +=("\tjugadores: [");
+            if(getAvatares() != null){
+                for (Avatar a : getAvatares()){
+                    cadena +=(a.getJugador().getNombre() + ", ");
+                } 
+            } else {
+                cadena +=("");
+            }
+            cadena+=("]");
+            cadena+=("\n},");
         } else if (getNombre().equals("Carcel")){
             cadena =("{\n");
             cadena +=("\tsalir: " + (Valor.SUMA_VUELTA*0.25)  + "," + "\n");
