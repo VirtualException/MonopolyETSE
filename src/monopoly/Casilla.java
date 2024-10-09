@@ -91,10 +91,10 @@ public class Casilla {
     public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, int tirada) {
 
         boolean solvente = true;
-        String tipo = this.getTipo();
+        String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
-        if (tipo.equals("Solar")) {
+        if (tipoCasilla.equals("Solar")) {
 
             /* Si hay dueño */
             if (duenho != banca) {
@@ -113,16 +113,16 @@ public class Casilla {
             }
 
         }
-        else if (tipo.equals("Transporte")) {
+        else if (tipoCasilla.equals("Transporte")) {
 
         }
-        else if (tipo.equals("Comunidad")) {
+        else if (tipoCasilla.equals("Comunidad")) {
 
         }
-        else if (tipo.equals("Servicio")) {
+        else if (tipoCasilla.equals("Servicio")) {
 
         }
-        else if (tipo.equals("Suerte")) {
+        else if (tipoCasilla.equals("Suerte")) {
 
         }
         /* Tipo especial */
@@ -242,8 +242,8 @@ public class Casilla {
             cadena +=("\tjugadores: ");
             if (getAvatares() != null){
                 for (Avatar a : getAvatares()){
-                    String nombre = a.getJugador().getNombre();
-                    cadena += ("[" + nombre + "]");
+                    String nombreJugador = a.getJugador().getNombre();
+                    cadena += ("[" + nombreJugador + "]");
                 }
             } else {
                 cadena += ("[]");
