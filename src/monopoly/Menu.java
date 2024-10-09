@@ -287,8 +287,9 @@ public class Menu {
             return;
         }
 
-        if(casillaActual != null){
-            casillaActual.comprarCasilla(jugadorActual, banca);
+        boolean compraExitosa = casillaActual.comprarCasilla(jugadorActual, banca);
+
+        if(compraExitosa){
             System.out.println("El jugador " + jugadorActual.getNombre() + " compra la casilla " + nombre + " por " +
             casillaActual.getValor() + "€. Su fortuna actual es " + jugadorActual.getFortuna() + "€.");
         }
