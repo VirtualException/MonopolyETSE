@@ -65,24 +65,6 @@ public class Avatar {
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
      */
-    /*private void generarId(ArrayList<Avatar> avCreados) {
-
-        Random letraRandom = new Random();
-        boolean existe;
-
-        do {
-            existe = false;
-            this.id = String.valueOf(letraRandom.nextInt(26) + 'A');
-
-            /* Si no existe en ningún avatar, salimos */
-            /*for(Avatar avatar : avCreados){
-                if(avatar.getId().equals(this.id)){
-                    existe = true;
-                }
-            }
-        } while(existe);
-    }*/
-
     private void generarId(ArrayList<Avatar> avCreados) {
         Random random = new Random();
         boolean existe;
@@ -102,8 +84,6 @@ public class Avatar {
         } while (existe);
 
     }
-
-
 
 
 
