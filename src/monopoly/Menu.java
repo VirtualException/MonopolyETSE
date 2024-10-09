@@ -131,6 +131,12 @@ public class Menu {
             } else {
                 descTurno();
             }
+        } else if (comandos_args[0].equals("salir") && comandos_args[1].equals("carcel") && num_args == 2) {
+            if (jugadores.get(turno).getAvatar().getLugar().getNombre().equals("Carcel")){
+                salirCarcel();
+            } else {
+                System.out.println("El jugador no se encuentra en la casilla de Carcel.");
+            }
         }
 
         /* Comando salida */
@@ -192,14 +198,12 @@ public class Menu {
     }
 
     private void descTurno() {
-        // String nombre = jugadores.get(turno).getNombre();
-        // String avatar = jugadores.get(turno).getAvatar().getId();
-        // System.out.println("{\n");
-        // System.out.print("\tnombre: " + nombre  + "," + "\n");
-        // System.out.print("\tavatar: " + avatar);
-        // System.out.print("\n}\n");
-
-        descAvatar(jugadores.get(turno).getAvatar().getId());
+         String nombre = jugadores.get(turno).getNombre();
+         String avatar = jugadores.get(turno).getAvatar().getId();
+         System.out.println("{\n");
+         System.out.print("\tnombre: " + nombre  + "," + "\n");
+         System.out.print("\tavatar: " + avatar);
+         System.out.print("\n}\n");
     }
 
     /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
@@ -267,6 +271,10 @@ public class Menu {
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
+        System.out.println("El jugador " + jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25 + " y sale de la cárcel. Puede lanzar los dados.");
+        banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25));
+        jugadores.get(turno).sumarGastos((float) (Valor.SUMA_VUELTA*0.25));
+        jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25)));
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
