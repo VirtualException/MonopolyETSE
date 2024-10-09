@@ -236,6 +236,19 @@ public class Casilla {
             cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler2);
             cadena +=("\n},");
+        } else if (getNombre().equals("Carcel")){
+            cadena =("{\n");
+            cadena +=("\tsalir: " + (Valor.SUMA_VUELTA*0.25)  + "," + "\n");
+            cadena +=("\tjugadores: ");
+            if (getAvatares() != null){
+                for (Avatar a : getAvatares()){
+                    String nombre = a.getJugador().getNombre();
+                    cadena += ("[" + nombre + "]");
+                }
+            } else {
+                cadena += ("[]");
+            }
+            cadena +=("\n},");
         }
         return cadena;
     }
