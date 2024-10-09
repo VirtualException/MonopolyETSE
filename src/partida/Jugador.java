@@ -28,7 +28,7 @@ public class Jugador {
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
         this.nombre = nombre;
-        if (tipoAvatar != "Banca") this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
+        if (tipoAvatar.equals("Banca")) this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
         this.gastos = 0.0f;
         this.enCarcel = false;

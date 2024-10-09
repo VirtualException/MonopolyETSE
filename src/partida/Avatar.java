@@ -40,11 +40,14 @@ public class Avatar {
         int nuevaPosicion = this.lugar.getPosicion() + valorTirada;
 
         if(nuevaPosicion > 40){
+
+            nuevaPosicion -= 40;
+
             if(!this.lugar.getNombre().equals("IrCarcel")){
                 jugador.setVueltas(jugador.getVueltas() + 1);
                 jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
             }
-            nuevaPosicion -= 40;    
+
         } 
 
         for(ArrayList<Casilla> arrayList : casillas){

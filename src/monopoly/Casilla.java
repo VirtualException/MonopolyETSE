@@ -94,7 +94,7 @@ public class Casilla {
         String tipo = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
-        if (tipo == "Solar") {
+        if (tipo.equals("Solar")) {
 
             /* Si hay dueño */
             if (duenho != banca) {
@@ -113,26 +113,26 @@ public class Casilla {
             }
 
         }
-        else if (tipo == "Transporte") {
+        else if (tipo.equals("Transporte")) {
 
         }
-        else if (tipo == "Comunidad") {
+        else if (tipo.equals("Comunidad")) {
 
         }
-        else if (tipo == "Servicio") {
+        else if (tipo.equals("Servicio")) {
 
         }
-        else if (tipo == "Suerte") {
+        else if (tipo.equals("Suerte")) {
 
         }
         /* Tipo especial */
         else {
             /* Cae en cárcel */
-            if (nombre == "IrCarcel") {
+            if (nombre.equals("IrCarcel")) {
                 jugador.encarcelar(tab.getPosiciones());
             }
             /* Cae en cárcel */
-            if (nombre == "Parking") {
+            if (nombre.equals("Parking")) {
                 float bote = this.getValor();
                 jugador.sumarFortuna(bote);
                 this.setValor(0);
