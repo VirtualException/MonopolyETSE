@@ -155,17 +155,17 @@ public class Casilla {
     public boolean  comprarCasilla(Jugador solicitante, Jugador banca) {
         
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
-            System.out.println("ERROR. Esta casilla no se puede comprar.");
+            System.out.println("Esta casilla no se puede comprar.");
             return false;
         }
 
         if(!this.duenho.equals(banca)){
-            System.out.println("ERROR. Esta casilla ya pertenece a otro jugador.");
+            System.out.println("Esta casilla ya pertenece a otro jugador.");
             return false;
         }
 
         if(solicitante.getFortuna() < this.valor){
-            System.out.println("ERROR. No tienes suficiente dinero para comprar esta casilla.");
+            System.out.println("No tienes suficiente dinero para comprar esta casilla.");
             return false;
         }
 
@@ -298,6 +298,7 @@ public class Casilla {
     }
 
 
+    /* número de casas */
     public int getCasasN() {
         int sum = 0;
         for (Edificio e : edificios) {
@@ -306,6 +307,7 @@ public class Casilla {
         }
         return sum;
     }
+    /* número de hoteles */
     public int getHotelesN() {
         int sum = 0;
         for (Edificio e : edificios) {
@@ -314,6 +316,7 @@ public class Casilla {
         }
         return sum;
     }
+    /* número de piscinas */
     public int getPiscinasN() {
         int sum = 0;
         for (Edificio e : edificios) {
@@ -322,6 +325,8 @@ public class Casilla {
         }
         return sum;
     }
+
+    /* número de pistas */
     public int getPistasN() {
         int sum = 0;
         for (Edificio e : edificios) {

@@ -54,8 +54,8 @@ public class Tablero {
         ladoNorte.add(new Casilla("IrCarcel", "Especial", 31, banca));
 
         posiciones.add(ladoNorte);
-        Grupo grupoRojo = new Grupo(Solar12, Solar13, Solar14, "Rojo");
-        Grupo grupoMarron = new Grupo(Solar15, Solar16, Solar17, "Marrón");
+        Grupo grupoRojo = new Grupo(Solar12, Solar13, Solar14, "rojo");
+        Grupo grupoMarron = new Grupo(Solar15, Solar16, Solar17, "marron");
         grupos.put("rojo", grupoRojo);
         grupos.put("marron", grupoMarron);
         Solar12.setGrupo(grupos.get("rojo"));
@@ -88,8 +88,8 @@ public class Tablero {
         ladoSur.add(new Casilla("Carcel", "Especial", 11, banca));
 
         posiciones.add(ladoSur);
-        Grupo grupoNegro = new Grupo(Solar1, Solar2, "Negro");
-        Grupo grupoCyan = new Grupo(Solar3, Solar4, Solar5, "Cyan");
+        Grupo grupoNegro = new Grupo(Solar1, Solar2, "negro");
+        Grupo grupoCyan = new Grupo(Solar3, Solar4, Solar5, "cyan");
         grupos.put("negro", grupoNegro);
         grupos.put("cyan", grupoCyan);
         Solar1.setGrupo(grupos.get("negro"));
@@ -120,8 +120,8 @@ public class Tablero {
         ladoOeste.add(Solar11);
 
         posiciones.add(ladoOeste);
-        Grupo grupoMorado = new Grupo(Solar6, Solar7, Solar8, "Morado");
-        Grupo grupoAmarillo = new Grupo(Solar9, Solar10, Solar11, "Amarillo");
+        Grupo grupoMorado = new Grupo(Solar6, Solar7, Solar8, "morado");
+        Grupo grupoAmarillo = new Grupo(Solar9, Solar10, Solar11, "amarillo");
         grupos.put("morado", grupoMorado);
         grupos.put("amarillo", grupoAmarillo);
         Solar6.setGrupo(grupos.get("morado"));
@@ -152,8 +152,8 @@ public class Tablero {
         ladoEste.add(Solar22);
 
         posiciones.add(ladoEste);
-        Grupo grupoVerde = new Grupo(Solar18, Solar19, Solar20, "Verde");
-        Grupo grupoAzul = new Grupo(Solar21, Solar22, "Azul");
+        Grupo grupoVerde = new Grupo(Solar18, Solar19, Solar20, "verde");
+        Grupo grupoAzul = new Grupo(Solar21, Solar22, "azul");
         grupos.put("verde", grupoVerde);
         grupos.put("azul", grupoAzul);
         Solar18.setGrupo(grupos.get("verde"));
@@ -178,7 +178,9 @@ public class Tablero {
         }
 
         Casilla cas = encontrar_casilla(nombre);
-        String scolor = cas.getGrupo().getColorGrupo();
+        String scolor = "";
+        if (cas.getGrupo() != null) scolor = cas.getGrupo().getColorGrupo();
+
         switch (scolor) {
             case "rojo":
                 representacion = String.format(Valor.RED, nombre, avataresConAmpersand);
@@ -205,6 +207,7 @@ public class Tablero {
                 representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand);
                 break;
             default:
+                representacion = String.format(Valor.WHITE, nombre, avataresConAmpersand);
                 break;
         }
 
