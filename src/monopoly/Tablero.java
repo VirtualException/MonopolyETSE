@@ -181,6 +181,7 @@ public class Tablero {
         String scolor = "";
         if (cas.getGrupo() != null) scolor = cas.getGrupo().getColorGrupo();
 
+
         switch (scolor) {
             case "rojo":
                 representacion = String.format(Valor.RED, nombre, avataresConAmpersand);
@@ -207,6 +208,7 @@ public class Tablero {
                 representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand);
                 break;
             default:
+                /* por defecto */
                 representacion = String.format(Valor.WHITE, nombre, avataresConAmpersand);
                 break;
         }
