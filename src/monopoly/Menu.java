@@ -98,7 +98,7 @@ public class Menu {
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
             lanzarDados();
         } else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 3) {
-            lanzarDadosManual(Integer.valueOf(comandos_args[2]));
+            lanzarDadosManual(Integer.parseInt(comandos_args[2]));
         }
         /* Describir */
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {

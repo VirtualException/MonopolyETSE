@@ -131,11 +131,11 @@ public class Casilla {
         /* Tipo especial */
         else {
             /* Cae en cárcel */
-            if (nombre.equals("IrCarcel")) {
+            if (nombre.equals("IrCarcel") || nombre.equals("Carcel") ) {
                 jugador.encarcelar(tab.getPosiciones());
             }
             /* Cae en cárcel */
-            if (nombre.equals("Parking")) {
+            else if (nombre.equals("Parking")) {
                 float bote = this.getValor();
                 jugador.sumarFortuna(bote);
                 this.setValor(0);
