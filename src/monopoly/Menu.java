@@ -97,6 +97,8 @@ public class Menu {
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
             lanzarDados();
+        } else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && comandos_args[1].equals("manual") && num_args == 2) {
+            lanzarDadosManual();
         }
         /* Describir */
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
@@ -235,6 +237,51 @@ public class Menu {
 
         dado1.hacerTirada();
         dado2.hacerTirada();
+
+        System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
+
+        /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
+        if (dado1.equals(dado2)) {
+            System.out.println("Doble!");
+            if (j.getTiradas() == 1) {
+                System.out.println("A la cárcel!");
+                j.setTiradas(0);
+                /* Ir a la cárcel */
+                j.encarcelar(tablero.getPosiciones());
+                this.acabarTurno();
+            }
+            /* El jugador puede tirar de nuevo */
+            j.setTiradas(1);
+        }
+
+        /* El jugador no puede tirar de nuevo */
+        j.setTiradas(-1);
+
+        /* mover jugador, etc.. */
+        j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
+
+        System.out.println(tablero);
+    }
+
+
+    private void lanzarDadosManual() {
+
+        if (jugadores.isEmpty()) {
+            System.out.println("No hay jugadores!");
+            return;
+        }
+
+        Jugador j = jugadores.get(turno);
+
+        if (j.getTiradas() == -1) {
+            System.out.println("El jugador ya tiró.");
+            return;
+        }
+
+        System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
+
+        dado1.hacerTiradaManual();
+        dado2.hacerTiradaManual();
 
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
