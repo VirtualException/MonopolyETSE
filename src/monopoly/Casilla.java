@@ -18,6 +18,7 @@ public class Casilla {
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
 
+    private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
     private ArrayList<Edificio> edificios;
 
     //Constructores:
@@ -34,6 +35,7 @@ public class Casilla {
         this.valor = valor;
         this.posicion = posicion;
         this.duenho = duenho;
+        this.contarCaer = new int[10];
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
@@ -59,8 +61,6 @@ public class Casilla {
         this.duenho = duenho;
     }
 
-
-
     //Método utilizado para añadir un avatar al array de avatares en casilla.
     public void anhadirAvatar(Avatar av) {
         if(avatares.contains(av)){
@@ -70,20 +70,14 @@ public class Casilla {
         }
     }
 
-
-
-
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
         if(avatares.isEmpty()){
-            System.out.println("ERROR.No hay ningún avatar.");
+            System.out.println("No hay ningún avatar.");
         } else {
             avatares.remove(av);
         }
     }
-
-
-
 
     /*Método para evaluar qué hacer en una casilla concreta. Parámetros:
      * - Jugador cuyo avatar está en esa casilla.
@@ -91,13 +85,16 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, int tirada) {
+    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, int tirada, int turno) {
 
         boolean solvente = true;
         String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
         if (tipoCasilla.equals("Solar")) {
+
+            /* El jugador cayó una vez más en esta casilla */
+            this.contarCaer[turno]++;
 
             /* Si hay dueño */
             if (duenho != banca) {

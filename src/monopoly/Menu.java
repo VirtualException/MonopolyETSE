@@ -256,7 +256,7 @@ public class Menu {
         j.setTiradas(-1);
 
         /* mover jugador, etc.. */
-        j.moverJugador(tablero, dado1.getValor() + dado2.getValor());
+        j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
 
         System.out.println(tablero);
     }
