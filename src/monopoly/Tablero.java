@@ -165,7 +165,7 @@ public class Tablero {
 
 
 
-    public String stringToColor(int casilla, String nombre) {
+    public String casillaToColorString(int casilla, String nombre) {
 
         /* Hay que convertir palabras en los valores de "Valor.ALGO" */
         String representacion = "";
@@ -177,29 +177,36 @@ public class Tablero {
             avataresConAmpersand.append(av.getId());
         }
 
-        /* Aquí no hay que usar GRUPOS? */
-
-        if (casilla == 1 || casilla == 2 || casilla == 3 || casilla == 4 ||
-                casilla == 5 || casilla == 6  || casilla == 8 || casilla == 11 ||
-                casilla == 13 || casilla == 16 || casilla == 18 || casilla == 21 ||
-                casilla == 23 || casilla == 26 || casilla == 29 || casilla == 31 ||
-                casilla == 34 || casilla == 36 || casilla == 37 || casilla == 39){
-            representacion = String.format(Valor.BLACK, nombre, avataresConAmpersand);
-        } else if (casilla == 7 || casilla == 9 || casilla == 10){
-            representacion = String.format(Valor.CYAN, nombre, avataresConAmpersand);
-        } else if (casilla == 12 || casilla == 14 || casilla == 15){
-            representacion = String.format(Valor.ROSA, nombre, avataresConAmpersand);
-        } else if (casilla == 17 || casilla == 19 || casilla == 20){
-            representacion = String.format(Valor.YELLOW, nombre, avataresConAmpersand);
-        } else if (casilla == 22 || casilla == 24 || casilla == 25){
-            representacion = String.format(Valor.RED, nombre, avataresConAmpersand);
-        } else if (casilla == 27 || casilla == 28 || casilla == 30){
-            representacion = String.format(Valor.BROWN, nombre, avataresConAmpersand);
-        } else if (casilla == 32 || casilla == 33 || casilla == 35){
-            representacion = String.format(Valor.GREEN, nombre, avataresConAmpersand);
-        } else if (casilla == 38 || casilla == 40){
-            representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand);
+        Casilla cas = encontrar_casilla(nombre);
+        String scolor = cas.getGrupo().getColorGrupo();
+        switch (scolor) {
+            case "rojo":
+                representacion = String.format(Valor.RED, nombre, avataresConAmpersand);
+                break;
+            case "marron":
+                representacion = String.format(Valor.BROWN, nombre, avataresConAmpersand);
+                break;
+            case "negro":
+                representacion = String.format(Valor.BLACK, nombre, avataresConAmpersand);
+                break;
+            case "cyan":
+                representacion = String.format(Valor.CYAN, nombre, avataresConAmpersand);
+                break;
+            case "amarillo":
+                representacion = String.format(Valor.YELLOW, nombre, avataresConAmpersand);
+                break;
+            case "morado":
+                representacion = String.format(Valor.PURPLE, nombre, avataresConAmpersand);
+                break;
+            case "verde":
+                representacion = String.format(Valor.GREEN, nombre, avataresConAmpersand);
+                break;
+            case "azul":
+                representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand);
+                break;
+            default:
         }
+
         return representacion;
     }
 
@@ -216,7 +223,7 @@ public class Tablero {
 
         /* Lado de arriba */
         for (int i = 0; i < posiciones.get(2).size(); i++) {
-            String cnom = stringToColor(posiciones.get(2).get(i).getPosicion(), posiciones.get(2).get(i).getNombre());
+            String cnom = casillaToColorString(posiciones.get(2).get(i).getPosicion(), posiciones.get(2).get(i).getNombre());
 
             int padding = 16 - getRealLength(cnom); // Usar la longitud real
             if (padding < 0) padding = 0; // Asegura que padding no sea negativo
@@ -228,12 +235,12 @@ public class Tablero {
         /* Ambos lados */
         for (int i = 0; i < 9; i++) {
             /* Lado izquierdo */
-            String cnomIzq = stringToColor(posiciones.get(1).get(8 - i).getPosicion(), posiciones.get(1).get(8 - i).getNombre());
+            String cnomIzq = casillaToColorString(posiciones.get(1).get(8 - i).getPosicion(), posiciones.get(1).get(8 - i).getNombre());
             int paddingIzq = 16 - getRealLength(cnomIzq); // Usar la longitud real
             if (paddingIzq < 0) paddingIzq = 0; // Asegura que padding no sea negativo
 
             /* Lado derecho */
-            String cnomDer = stringToColor(posiciones.get(3).get(i).getPosicion(), posiciones.get(3).get(i).getNombre());
+            String cnomDer = casillaToColorString(posiciones.get(3).get(i).getPosicion(), posiciones.get(3).get(i).getNombre());
             int paddingDer = 16 - getRealLength(cnomDer); // Usar la longitud real
             if (paddingDer < 0) paddingDer = 0; // Asegura que padding no sea negativo
 
@@ -252,7 +259,7 @@ public class Tablero {
 
         /* Lado de abajo */
         for (int i = posiciones.get(0).size() - 1; i >= 0; i--) {
-            String cnom = stringToColor(posiciones.get(0).get(i).getPosicion(), posiciones.get(0).get(i).getNombre());
+            String cnom = casillaToColorString(posiciones.get(0).get(i).getPosicion(), posiciones.get(0).get(i).getNombre());
             int padding = 16 - getRealLength(cnom); // Usar la longitud real
             if (padding < 0) padding = 0; // Asegura que padding no sea negativo
             str += String.format(Valor.RESET, "|") + cnom + " ".repeat(padding);
