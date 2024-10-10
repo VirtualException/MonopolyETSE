@@ -41,7 +41,7 @@ public class Avatar {
 
         if(nuevaPosicion > 40){
 
-            nuevaPosicion -= 40;
+            nuevaPosicion = nuevaPosicion % 40;
 
             if(!this.lugar.getNombre().equals("IrCarcel")){
                 jugador.setVueltas(jugador.getVueltas() + 1);
