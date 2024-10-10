@@ -1,6 +1,7 @@
 package monopoly;
 
 import java.util.ArrayList;
+
 import partida.*;
 
 
@@ -16,6 +17,8 @@ public class Casilla {
     private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
+
+    private ArrayList<Edificio> edificios;
 
     //Constructores:
     public Casilla() {
@@ -271,8 +274,6 @@ public class Casilla {
         }
         return cadena;
     }
-
-
 
     /* Método para mostrar información de una casilla en venta.
      * Valor devuelto: texto con esa información.
