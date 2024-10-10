@@ -205,6 +205,7 @@ public class Tablero {
                 representacion = String.format(Valor.BLUE, nombre, avataresConAmpersand);
                 break;
             default:
+                break;
         }
 
         return representacion;

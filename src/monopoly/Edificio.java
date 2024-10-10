@@ -9,9 +9,7 @@ public class Edificio {
     }
 
     public void setTipo(String tipo) {
-
-        if (    tipo.equals("casa") || tipo.equals("hotel") ||
-                tipo.equals("piscina") || tipo.equals("pista")) {
+        if (tipo.equals("casa") || tipo.equals("hotel") || tipo.equals("piscina") || tipo.equals("pista")) {
             this.tipo = tipo;
         }
     }

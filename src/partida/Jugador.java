@@ -96,7 +96,7 @@ public class Jugador {
     }
 
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public void moverJugador(Tablero tablero, int tirada) {
+    public void moverJugador(Tablero tablero, int tirada, int turno) {
 
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
@@ -107,7 +107,7 @@ public class Jugador {
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
 
-        boolean solvente = c.evaluarCasilla(tablero, this, tablero.getBanca(), tirada);
+        boolean solvente = c.evaluarCasilla(tablero, this, tablero.getBanca(), tirada, turno);
 
         if (!solvente) {
             System.out.println("Jugador en banca rota, se acaba la partida");
