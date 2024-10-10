@@ -39,4 +39,18 @@ public class Valor {
     public static final String ROSA = "\u001B[35m%-8s %-7s\u001B[0m"; // Se añadió %s
 
 
+    public static final float MULTIPLICADOR_CASA = (0.6f);
+    public static final float MULTIPLICADOR_HOTEL = (0.6f);
+    public static final float MULTIPLICADOR_PISCINA = (0.4f);
+    public static final float MULTIPLICADOR_PISTA_DE_DEPORTE = (1.25f);
+
+
+    public static final int ALQUILER_UNA_CASA = (5);
+    public static final int ALQUILER_DOS_CASA = (15);
+    public static final int ALQUILER_TRES_CASA = (35);
+    public static final int ALQUILER_CUATRO_CASA = (50);
+    public static final int ALQULER_HOTEL = (70);
+    public static final int ALQUILER_PISCINA = (25);
+    public static final int ALQUILER_PISTA_DE_DEPORTE = (25);
+
 }
