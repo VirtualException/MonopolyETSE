@@ -298,6 +298,38 @@ public class Casilla {
     }
 
 
+    public int getCasasN() {
+        int sum = 0;
+        for (Edificio e : edificios) {
+            if (e.getTipo().equals("casa"))
+                sum++;
+        }
+        return sum;
+    }
+    public int getHotelesN() {
+        int sum = 0;
+        for (Edificio e : edificios) {
+            if (e.getTipo().equals("hotel"))
+                sum++;
+        }
+        return sum;
+    }
+    public int getPiscinasN() {
+        int sum = 0;
+        for (Edificio e : edificios) {
+            if (e.getTipo().equals("piscina"))
+                sum++;
+        }
+        return sum;
+    }
+    public int getPistasN() {
+        int sum = 0;
+        for (Edificio e : edificios) {
+            if (e.getTipo().equals("pista"))
+                sum++;
+        }
+        return sum;
+    }
 
 
 
