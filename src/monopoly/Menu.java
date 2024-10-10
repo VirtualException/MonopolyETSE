@@ -232,6 +232,10 @@ public class Menu {
             System.out.println("El jugador ya tiró.");
             return;
         }
+        if (j.isEnCarcel()) {
+            System.out.println("No puede tirar, está en la cárcel.");
+            return;
+        }
 
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
 
