@@ -152,27 +152,30 @@ public class Casilla {
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
-    public void comprarCasilla(Jugador solicitante, Jugador banca) {
+    public boolean  comprarCasilla(Jugador solicitante, Jugador banca) {
         
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
             System.out.println("ERROR. Esta casilla no se puede comprar.");
-            return;
+            return false;
         }
 
         if(!this.duenho.equals(banca)){
             System.out.println("ERROR. Esta casilla ya pertenece a otro jugador.");
-            return;
+            return false;
         }
 
         if(solicitante.getFortuna() < this.valor){
             System.out.println("ERROR. No tienes suficiente dinero para comprar esta casilla.");
-            return;
+            return false;
         }
 
         solicitante.sumarFortuna(-valor);
         solicitante.sumarGastos(valor);
 
         this.duenho = solicitante;
+        solicitante.anhadirPropiedad(this);
+
+        return true;
     }
 
 
