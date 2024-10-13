@@ -1,7 +1,6 @@
 package monopoly;
 
 import java.util.ArrayList;
-
 import partida.*;
 
 
@@ -133,7 +132,7 @@ public class Casilla {
             System.out.println("evaluando tipo especial");
 
             /* Cae en cárcel */
-            if (nombre.equals("IrCarcel") || nombre.equals("Carcel") ) {
+            if (nombre.equals("IrCarcel")) {
                 jugador.encarcelar(tab.getPosiciones());
             }
             /* Cae en cárcel */

@@ -4,6 +4,10 @@ public class Edificio {
 
     private String tipo;
 
+    //Constructor vacío
+    public Edificio() {
+    }
+
     public String getTipo() {
         return tipo;
     }

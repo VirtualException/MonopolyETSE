@@ -37,6 +37,9 @@ public class Menu {
         dado1 = new Dado();
         dado2 = new Dado();
 
+        tirado = false;
+        solvente = false;
+
         System.out.println(this.tablero);
 
         Scanner scan = new Scanner(System.in);
@@ -228,7 +231,7 @@ public class Menu {
 
         Jugador j = jugadores.get(turno);
 
-        if (j.getTiradas() == -1) {
+        if (this.tirado) {
             System.out.println("El jugador ya tiró.");
             return;
         }
@@ -242,27 +245,36 @@ public class Menu {
         dado1.hacerTirada();
         dado2.hacerTirada();
 
+        /* El jugador no puede tirar de nuevo */
+        this.tirado = true;
+
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
         /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
         if (dado1.equals(dado2)) {
             System.out.println("Doble!");
-            if (j.getTiradas() == 1) {
-                System.out.println("A la cárcel!");
-                j.setTiradas(0);
-                /* Ir a la cárcel */
-                j.encarcelar(tablero.getPosiciones());
-                this.acabarTurno();
+            this.tirado = false;
+
+            if(j.isEnCarcel()){
+                j.setEnCarcel(false);
             }
-            /* El jugador puede tirar de nuevo */
-            j.setTiradas(1);
         }
 
-        /* El jugador no puede tirar de nuevo */
-        j.setTiradas(-1);
+        /* El jugador puede tirar de nuevo */
+        j.setTiradas(j.getTiradas() + 1);
 
-        /* mover jugador, etc.. */
-        j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
+        if (j.getTiradas() == 3) {
+            System.out.println("A la cárcel!");
+            /* Ir a la cárcel */
+            j.encarcelar(tablero.getPosiciones());
+            this.acabarTurno();
+        }
+        else{
+            if(!j.isEnCarcel()){
+            /* mover jugador, etc.. */
+            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
+            }
+        }
 
         System.out.println(tablero);
     }
@@ -277,7 +289,7 @@ public class Menu {
 
         Jugador j = jugadores.get(turno);
 
-        if (j.getTiradas() == -1) {
+        if (this.tirado) {
             System.out.println("El jugador ya tiró.");
             return;
         }
@@ -285,7 +297,7 @@ public class Menu {
         System.out.println("La tirada es: " + i + ".");
 
         /* El jugador no puede tirar de nuevo */
-        j.setTiradas(-1);
+        this.tirado = true;
 
         /* mover jugador, etc.. */
         j.moverJugador(tablero, i, turno);
@@ -305,6 +317,7 @@ public class Menu {
         //Comprobamos que el nombre de la casilla que queremos comprar existe.
         if(casillaActual == null){
             System.out.println("ERROR. Esta casilla no existe.");
+            return;
         }
 
         //Comprobamos que la casilla en la que se encuentra el avatar es la casilla que se quiere comprar.
@@ -343,7 +356,7 @@ public class Menu {
     // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
         if (jugadores.isEmpty()){
-            System.out.println("No hay jugadores resgitrados");
+            System.out.println("No hay jugadores registrados");
         } else {
             for (Jugador j : jugadores) {
                 descJugador(j.getNombre());
@@ -355,7 +368,7 @@ public class Menu {
     private void listarAvatares() {
 
         if (jugadores.isEmpty()){
-            System.out.println("No hay avatares resgitrados");
+            System.out.println("No hay avatares registrados");
         } else {
             for (Avatar a : avatares) {
                 descAvatar(a.getId());
@@ -369,6 +382,7 @@ public class Menu {
         Jugador j = jugadores.get(turno);
 
         j.setTiradas(0);
+        this.tirado = false;
 
         turno++;
         turno = turno % jugadores.size();

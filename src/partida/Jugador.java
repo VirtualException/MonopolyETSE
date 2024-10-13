@@ -162,10 +162,14 @@ public class Jugador {
     public void setTiradas(int tiradas) {
 
         /* Limitar el valor */
-        if (tiradas < -1 || tiradas > 1) {
+        if (tiradas < -1 || tiradas > 3) {
             return;
         }
 
         this.tiradas = tiradas;
+    }
+
+    public void setEnCarcel(boolean enCarcel){
+        this.enCarcel = enCarcel;
     }
 }
