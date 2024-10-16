@@ -39,7 +39,7 @@ public class Grupo {
     /* Método añade una casilla al array de casillas miembro de un grupo.
      * Parámetro: casilla que se quiere añadir.
      */
-    public void anhadirCasilla(Casilla miembro) {
+    public final void anhadirCasilla(Casilla miembro) {
         this.miembros.add(miembro);
         this.numCasillas++;
     }

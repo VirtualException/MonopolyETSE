@@ -24,6 +24,7 @@ public class Dado {
         Scanner c = new Scanner(System.in);
         System.out.print("Valor dado: ");
         this.valor = Integer.parseInt(c.nextLine());
+        c.close();
         return this.valor;
     }
 

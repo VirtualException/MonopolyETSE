@@ -18,7 +18,7 @@ public class Casilla {
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
 
     private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
-    private ArrayList<Edificio> edificios;
+    private ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.
 
     //Constructores:
     public Casilla() {
@@ -90,62 +90,86 @@ public class Casilla {
         String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
-        if (tipoCasilla.equals("Solar")) {
+        switch (tipoCasilla) {
+            case "Solar":
 
-            /* El jugador cayó una vez más en esta casilla */
-            this.contarCaer[turno]++;
-
-            /* Si hay dueño */
-            if (duenho != banca) {
-                float pago = valor;
-                /* Si no puede pagarlo */
-                if (jugador.getFortuna() < pago) {
-                    System.out.println("Dinero insuficiente.");
-                    return false;
+                incrementarSolares(tab);
+                /* El jugador cayó una vez más en esta casilla */
+                this.contarCaer[turno]++;
+                /* Si hay dueño */
+                if (duenho != banca) {
+                    float pago = valor;
+                    /* Si no puede pagarlo */
+                    if (jugador.getFortuna() < pago) {
+                        System.out.println("Dinero insuficiente.");
+                        return false;
+                    }
+                    /* El jugador paga al propietario */
+                    jugador.sumarGastos(pago);
+                    jugador.sumarFortuna(-pago);
+                    /* El propietario recibe */
+                    duenho.sumarFortuna(pago);
+                    
+                    System.out.println("El juagdor " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
+                    
+                    return true;
+                }   break;
+            case "Transporte":
+                break;
+            case "Comunidad":
+                break;
+            case "Servicio":
+                break;
+            case "Suerte":
+                break;
+            default:
+                System.out.println("evaluando tipo especial");
+                /* Cae en cárcel */
+                if (nombre.equals("IrCarcel")) {
+                    jugador.encarcelar(tab.getPosiciones());
                 }
-                /* El jugador paga al propietario */
-                jugador.sumarGastos(pago);
-                jugador.sumarFortuna(-pago);
-                /* El propietario recibe */
-                duenho.sumarFortuna(pago);
-
-                System.out.println("El juagdor " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
-
-                return true;
-            }
-
-        }
-        else if (tipoCasilla.equals("Transporte")) {
-
-        }
-        else if (tipoCasilla.equals("Comunidad")) {
-
-        }
-        else if (tipoCasilla.equals("Servicio")) {
-
-        }
-        else if (tipoCasilla.equals("Suerte")) {
-
-        }
-        /* Tipo especial */
-        else {
-            System.out.println("evaluando tipo especial");
-
-            /* Cae en cárcel */
-            if (nombre.equals("IrCarcel")) {
-                jugador.encarcelar(tab.getPosiciones());
-            }
-            /* Cae en cárcel */
-            else if (nombre.equals("Parking")) {
-                float bote = this.getValor();
-                jugador.sumarFortuna(bote);
-                this.setValor(0);
-            }
+                /* Cae en cárcel */
+                else if (nombre.equals("Parking")) {
+                    float bote = this.getValor();
+                    jugador.sumarFortuna(bote);
+                    this.setValor(0);
+                }   break;
         }
 
         return solvente;
     }
 
+
+
+    /* Método para incrementar el precio de los Solares un 5% si todos los jugadores han 
+     * completado 4 vueltas y los solares no han sido comprados previamente */
+    public void incrementarSolares(Tablero tab){
+        boolean vueltasCompletadas = true;
+
+        for(ArrayList<Casilla> arraylist : tab.getPosiciones()){
+            for(Casilla c : arraylist){
+                if(!c.getAvatares().isEmpty() && c.getDuenho().getNombre().equals("Banca")){
+
+                    // Comprobamos que todos los jugadores han completado 4 vueltas
+                    for(Avatar av : c.getAvatares()){
+                        if(av.getJugador().getVueltas() < 4){
+                            vueltasCompletadas = false;
+                            break;
+                        }                     
+                    }
+   
+                    // Aumentamos el precio de los Solares y reseteamos las vueltas de los jugadores
+                    if(vueltasCompletadas){
+                        this.valor*=1.05f;
+
+                        for(Avatar av : c.getAvatares()){
+                            av.getJugador().setVueltas(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 
@@ -278,22 +302,28 @@ public class Casilla {
      */
     public String casEnVenta() {
         String cadena = "";
-        if (getTipo().equals("Solar")){
-            cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + "," + "\n");
-            cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
-            cadena +=("\tvalor: " + getValor());
-            cadena +=("\n},");
-        }  else if (getTipo().equals("Transporte")){
-            cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + "," + "\n");
-            cadena +=("\tvalor: " + getValor() + "," + "\n");
-            cadena +=("\n},");
-        } else if (getTipo().equals("Servicio")){
-            cadena = ("{\n");
-            cadena += ("\ttipo: " + getTipo() + "," + "\n");
-            cadena +=("\tvalor: " + getValor() + "," + "\n");
-            cadena +=("\n},");
+        switch (getTipo()) {
+            case "Solar":
+                cadena = ("{\n");
+                cadena += ("\ttipo: " + getTipo() + "," + "\n");
+                cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
+                cadena +=("\tvalor: " + getValor());
+                cadena +=("\n},");
+                break;
+            case "Transporte":
+                cadena = ("{\n");
+                cadena += ("\ttipo: " + getTipo() + "," + "\n");
+                cadena +=("\tvalor: " + getValor() + "," + "\n");
+                cadena +=("\n},");
+                break;
+            case "Servicio":
+                cadena = ("{\n");
+                cadena += ("\ttipo: " + getTipo() + "," + "\n");
+                cadena +=("\tvalor: " + getValor() + "," + "\n");
+                cadena +=("\n},");
+                break;
+            default:
+                break;
         }
         return cadena;
     }

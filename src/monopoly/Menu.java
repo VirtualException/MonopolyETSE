@@ -11,7 +11,7 @@ public class Menu {
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
-    //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
+    private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
@@ -49,6 +49,7 @@ public class Menu {
             System.out.print("$> ");
             sair = this.analizarComando(scan.nextLine());
         }
+        scan.close();
     }
 
     
@@ -336,10 +337,10 @@ public class Menu {
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
-        System.out.println(jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25 + " y sale de la cárcel. Puede lanzar los dados.");
-        banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25));
-        jugadores.get(turno).sumarGastos((float) (Valor.SUMA_VUELTA*0.25));
-        jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25)));
+        System.out.println(jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25f + " y sale de la cárcel. Puede lanzar los dados.");
+        banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25f));
+        jugadores.get(turno).sumarGastos((float) (Valor.SUMA_VUELTA*0.25f));
+        jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25f)));
     }
 
     // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
