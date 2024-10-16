@@ -8,6 +8,18 @@ public class Edificio {
     public Edificio() {
     }
 
+
+
+
+    public void construirEdificio(String nombreEdificio){
+
+
+
+    }
+
+
+
+    // Getters y Setters
     public String getTipo() {
         return tipo;
     }

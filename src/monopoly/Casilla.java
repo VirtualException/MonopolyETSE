@@ -101,7 +101,7 @@ public class Casilla {
                     float pago = valor;
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago) {
-                        System.out.println("Dinero insuficiente.");
+                        System.out.println("Dinero insuficiente. El jugador debe declararse en bancarrota.");
                         return false;
                     }
                     /* El jugador paga al propietario */
@@ -110,7 +110,7 @@ public class Casilla {
                     /* El propietario recibe */
                     duenho.sumarFortuna(pago);
                     
-                    System.out.println("El juagdor " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
+                    System.out.println("El jugador " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
                     
                     return true;
                 }   break;
@@ -128,14 +128,13 @@ public class Casilla {
                 if (nombre.equals("IrCarcel")) {
                     jugador.encarcelar(tab.getPosiciones());
                 }
-                /* Cae en cárcel */
+                /* Cae en Parking */
                 else if (nombre.equals("Parking")) {
                     float bote = this.getValor();
                     jugador.sumarFortuna(bote);
                     this.setValor(0);
                 }   break;
         }
-
         return solvente;
     }
 

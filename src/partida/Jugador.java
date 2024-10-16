@@ -95,6 +95,8 @@ public class Jugador {
         //}
     }
 
+
+    
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
     public void moverJugador(Tablero tablero, int tirada, int turno) {
 
@@ -106,12 +108,53 @@ public class Jugador {
         this.getAvatar().moverAvatar(pos, tirada);
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
+    }
 
-        boolean solvente = c.evaluarCasilla(tablero, this, tablero.getBanca(), tirada, turno);
 
-        if (!solvente) {
-            System.out.println("Jugador en banca rota, se acaba la partida");
+
+    //Método para declararse en bancarrota
+    public void bancarrota(Jugador banca, boolean solvente){
+
+        Jugador jugador = this;
+        Jugador propietario = avatar.getLugar().getDuenho();
+
+        //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
+        if(!solvente){
+            if(propietario.equals(banca)){
+                for(Casilla c : jugador.propiedades){
+                    banca.anhadirPropiedad(c);
+                    c.setDuenho(banca);
+                    jugador.eliminarPropiedad(c);
+                }
+                System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+            } else {
+                for(Casilla c : jugador.propiedades){
+                    propietario.anhadirPropiedad(c);
+                    c.setDuenho(propietario);
+                    jugador.eliminarPropiedad(c);
+                }
+
+                propietario.sumarFortuna(jugador.fortuna);
+                jugador.setFortuna(0);
+                System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador" + propietario.getNombre());
+            }
+            eliminarJugador();     
+        } else {
+            for(Casilla c : jugador.propiedades){
+                banca.anhadirPropiedad(c);
+                c.setDuenho(banca);
+                jugador.eliminarPropiedad(c);
+            }
+            System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+            eliminarJugador();
         }
+    }
+
+
+
+
+    //Método para eliminar a un jugador de la partida
+    public void eliminarJugador(){
 
     }
 
@@ -149,6 +192,10 @@ public class Jugador {
     }
     public void setVueltas(int vueltas) {
         this.vueltas = vueltas;
+    }
+
+    public void setFortuna(float fortuna){
+        this.fortuna = fortuna;
     }
 
     public ArrayList<Casilla> getPropiedades(){
