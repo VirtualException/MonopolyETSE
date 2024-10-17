@@ -237,44 +237,49 @@ public class Menu {
             System.out.println("El jugador ya tiró.");
             return;
         }
-        if (j.isEnCarcel()) {
-            System.out.println("No puede tirar, está en la cárcel.");
-            return;
-        }
 
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
-
-        dado1.hacerTirada();
-        dado2.hacerTirada();
-
         /* El jugador no puede tirar de nuevo */
         this.tirado = true;
 
+        dado1.hacerTirada();
+        dado2.hacerTirada();
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
         /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
         if (dado1.equals(dado2)) {
             System.out.println("Doble!");
-            this.tirado = false;
 
+            /* Sale de la cárcel */
             if(j.isEnCarcel()){
                 j.setEnCarcel(false);
+                this.tirado = true;
+            }
+            /* Simplemente saca doble */
+            else {
+                this.tirado = false;
             }
         }
 
-        /* El jugador puede tirar de nuevo */
+        /* Si no sacamos doble y estamos en la cárcel, no salimos de ella */
+        if (j.isEnCarcel()) {
+            System.out.println("El jugador no sale de la cárcel.");
+            return;
+        }
+
         j.setTiradas(j.getTiradas() + 1);
 
         if (j.getTiradas() == 3) {
             System.out.println("A la cárcel!");
             /* Ir a la cárcel */
             j.encarcelar(tablero.getPosiciones());
+            j.setTiradas(0);
             this.acabarTurno();
         }
         else{
             if(!j.isEnCarcel()){
-            /* mover jugador, etc.. */
-            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
+                /* mover jugador, etc.. */
+                j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
             }
         }
 

@@ -125,7 +125,7 @@ public class Casilla {
             default:
                 System.out.println("evaluando tipo especial");
                 /* Cae en cárcel */
-                if (nombre.equals("IrCarcel")) {
+                if (nombre.equals("IrCarcel") || nombre.equals("Carcel")) {
                     jugador.encarcelar(tab.getPosiciones());
                 }
                 /* Cae en Parking */
