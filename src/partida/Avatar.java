@@ -24,7 +24,15 @@ public class Avatar {
      */
     public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) {
         this.generarId(avCreados);  //Crea un ID nuevo para un avatar distinto de los creados anteriormente
-        this.tipo = tipo;
+
+        if ("Pelota Coche Esfinge Sombrero".contains(tipo)) {
+            this.tipo = tipo;
+        }
+        else {
+            System.out.println("Tipo de avatar no reconocido, se toma Pelota por defecto.");
+            this.tipo = "Pelota";
+        }
+
         this.jugador = jugador;
         this.lugar = lugar;
     }
@@ -39,7 +47,7 @@ public class Avatar {
 
         int nuevaPosicion = this.lugar.getPosicion() + valorTirada;
 
-        if(nuevaPosicion > 40){
+        if(nuevaPosicion > 40) {
 
             nuevaPosicion = nuevaPosicion % 40;
 
@@ -51,8 +59,8 @@ public class Avatar {
         } 
 
         for(ArrayList<Casilla> arrayList : casillas){
-            for(Casilla casilla : arrayList){
-                if(casilla.getPosicion() == nuevaPosicion){
+            for(Casilla casilla : arrayList) {
+                if(casilla.getPosicion() == nuevaPosicion) {
                     this.lugar.eliminarAvatar(this);
                     this.lugar = casilla;
                     casilla.anhadirAvatar(this);
