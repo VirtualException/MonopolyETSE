@@ -113,7 +113,7 @@ public class Jugador {
 
 
     //Método para declararse en bancarrota
-    public void bancarrota(Jugador banca, boolean solvente){
+    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean solvente){
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
@@ -138,7 +138,8 @@ public class Jugador {
                 jugador.setFortuna(0);
                 System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador" + propietario.getNombre());
             }
-            eliminarJugador();     
+            solvente = true;  
+            eliminarJugador(jugadores, jugador);   
         } else {
             for(Casilla c : jugador.propiedades){
                 banca.anhadirPropiedad(c);
@@ -146,7 +147,7 @@ public class Jugador {
                 jugador.eliminarPropiedad(c);
             }
             System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
-            eliminarJugador();
+            eliminarJugador(jugadores, jugador);
         }
     }
 
@@ -154,8 +155,14 @@ public class Jugador {
 
 
     //Método para eliminar a un jugador de la partida
-    public void eliminarJugador(){
-
+    public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
+        for(Jugador j : jugadores){
+            if(j.equals(jugador)){
+                j.getAvatar().getLugar().eliminarAvatar(j.getAvatar());
+                jugadores.remove(j);
+            }
+        }
+        System.out.println("El jugador" + jugador.getNombre() + " se elimina de la partida");
     }
 
 

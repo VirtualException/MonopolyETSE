@@ -147,7 +147,7 @@ public class Menu {
             } else {
                 System.out.println("El jugador no se encuentra en la casilla de Carcel.");
             }
-        } else if (comandos_args[0].equals("bancarrota")){
+        } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
             bancarrota();
         }
         /* Comando salida */
@@ -383,10 +383,8 @@ public class Menu {
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
 
-        if(!solvente){
-            jugadorActual.bancarrota(banca, false);
-            solvente = true;
-        }
+        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca ,dado1.getValor() + dado2.getValor(),turno);
+        jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 
     // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
