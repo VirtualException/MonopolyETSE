@@ -291,7 +291,7 @@ public class Menu {
 
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
-            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
+            j.moverJugador(tablero, dado1.getValor() + dado2.getValor());
         }
         else {
             System.out.println("El jugador sigue en la cárcel.");

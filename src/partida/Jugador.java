@@ -98,7 +98,7 @@ public class Jugador {
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public void moverJugador(Tablero tablero, int tirada, int turno) {
+    public void moverJugador(Tablero tablero, int tirada) {
 
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
@@ -109,6 +109,20 @@ public class Jugador {
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
     }
+
+    public void teleportJugador(Tablero tablero, Casilla casilla) {
+
+        ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+
+        Casilla c = this.getAvatar().getLugar();
+
+        System.out.print("El avatar " + this.getAvatar().getId() + " avanza a " + casilla.getNombre() + " , desde " + c.getNombre());
+        this.getAvatar().teleportAvatar(pos, casilla);
+        c = this.getAvatar().getLugar();
+        System.out.println(" hasta " + c.getNombre() + ".");
+    }
+
+
 
 
 

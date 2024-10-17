@@ -61,6 +61,19 @@ public class Avatar {
         }
     }
 
+    public void teleportAvatar(ArrayList<ArrayList<Casilla>> casillas, Casilla c) {
+
+        for(ArrayList<Casilla> arrayList : casillas){
+            for(Casilla casilla : arrayList){
+                if(casilla.getPosicion() == c.getPosicion()){
+                    this.lugar.eliminarAvatar(this);
+                    this.lugar = casilla;
+                    casilla.anhadirAvatar(this);
+                }
+            }
+        }
+    }
+
     /*Método que permite generar un ID para un avatar. Sólo lo usamos en esta clase (por ello es privado).
      * El ID generado será una letra mayúscula. Parámetros:
      * - Un arraylist de los avatares ya creados, con el objetivo de evitar que se generen dos ID iguales.
