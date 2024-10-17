@@ -14,7 +14,7 @@ public class Jugador {
     private boolean enCarcel; //Será true si el jugador está en la carcel
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
-    private int tiradas; // Cuenta las tiradas dobles. 1 = Puede tirar de nuevo. 0 = Primera vez que tira. -1 = Ya tiró
+    private int tiradasDobles; // Cuenta las tiradas dobles.
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
 
     //Constructor vacío. Se usará para crear la banca.
@@ -186,6 +186,9 @@ public class Jugador {
     public int getTiradasCarcel(){
         return tiradasCarcel;
     }
+    public void setTiradasCarcel(int i) {
+        this.tiradasCarcel = i;
+    }
 
     public int getVueltas() {
         return vueltas;
@@ -202,18 +205,11 @@ public class Jugador {
         return propiedades;
     }
 
-    public int getTiradas() {
-        return tiradas;
+    public int getTiradasDobles() {
+        return tiradasDobles;
     }
-
-    public void setTiradas(int tiradas) {
-
-        /* Limitar el valor */
-        if (tiradas < -1 || tiradas > 3) {
-            return;
-        }
-
-        this.tiradas = tiradas;
+    public void setTiradasDobles(int tiradas) {
+        this.tiradasDobles = tiradas;
     }
 
     public void setEnCarcel(boolean enCarcel){

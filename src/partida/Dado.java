@@ -20,6 +20,12 @@ public class Dado {
         return this.valor;
     }
 
+    /* Tirada manual */
+    public int hacerTirada(int a) {
+        this.valor = a;
+        return this.valor;
+    }
+
     public int hacerTiradaManual() {
         Scanner c = new Scanner(System.in);
         System.out.print("Valor dado: ");

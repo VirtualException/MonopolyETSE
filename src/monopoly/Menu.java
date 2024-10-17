@@ -100,9 +100,10 @@ public class Menu {
             comprar(nombreCasilla);
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
-            lanzarDados();
-        } else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 3) {
-            lanzarDadosManual(Integer.parseInt(comandos_args[2]));
+            lanzarDados(0, 0); // Modo aleatorio
+        }
+        else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
+            lanzarDados(Integer.parseInt(comandos_args[2]), Integer.parseInt(comandos_args[3])); // Modo manual
         }
         /* Describir */
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
@@ -224,7 +225,7 @@ public class Menu {
     }
 
     //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
-    private void lanzarDados() {
+    private void lanzarDados(int a, int b) {
 
         if (jugadores.isEmpty()) {
             System.out.println("No hay jugadores!");
@@ -239,78 +240,71 @@ public class Menu {
         }
 
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
+
+        if (a == 0)
+            dado1.hacerTirada();
+        else
+            dado1.hacerTirada(a);
+        if (b == 0)
+            dado2.hacerTirada();
+        else
+            dado2.hacerTirada(b);
+
+        System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
+
         /* El jugador no puede tirar de nuevo */
         this.tirado = true;
 
-        dado1.hacerTirada();
-        dado2.hacerTirada();
-        System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
-
         /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
         if (dado1.equals(dado2)) {
+
             System.out.println("Doble!");
 
             /* Sale de la cárcel */
             if(j.isEnCarcel()){
-                j.setEnCarcel(false);
-                this.tirado = true;
+                j.setTiradasCarcel(j.getTiradasCarcel() + 1);
+                if (j.getTiradasCarcel() >= 3) {
+                    System.out.println("El jugador debe pagar para salír de la cárcel.");
+                    return;
+                }
+                else {
+                    System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
+                    j.setEnCarcel(false);
+                    this.tirado = false;
+                    return;
+                }
             }
+
             /* Simplemente saca doble */
-            else {
-                this.tirado = false;
+            j.setTiradasDobles(j.getTiradasDobles() + 1);
+
+            /* Ir a la cárcel porque tira 3 dobles seguidos */
+            if (j.getTiradasDobles() >= 3) {
+                System.out.println("A la cárcel!");
+                j.encarcelar(tablero.getPosiciones());
+                j.setTiradasDobles(0);
+                this.acabarTurno();
             }
+
+            /* Puede tirar de nuevo */
+            this.tirado = false;
+
         }
 
-        /* Si no sacamos doble y estamos en la cárcel, no salimos de ella */
-        if (j.isEnCarcel()) {
-            System.out.println("El jugador no sale de la cárcel.");
-            return;
+        if(!j.isEnCarcel()){
+            /* mover jugador, etc.. */
+            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
         }
-
-        j.setTiradas(j.getTiradas() + 1);
-
-        if (j.getTiradas() == 3) {
-            System.out.println("A la cárcel!");
-            /* Ir a la cárcel */
-            j.encarcelar(tablero.getPosiciones());
-            j.setTiradas(0);
-            this.acabarTurno();
-        }
-        else{
-            if(!j.isEnCarcel()){
-                /* mover jugador, etc.. */
-                j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), turno);
-            }
+        else {
+            System.out.println("El jugador sigue en la cárcel.");
         }
 
         System.out.println(tablero);
     }
 
 
-    private void lanzarDadosManual(int i) {
-
-        if (jugadores.isEmpty()) {
-            System.out.println("No hay jugadores!");
-            return;
-        }
-
-        Jugador j = jugadores.get(turno);
-
-        if (this.tirado) {
-            System.out.println("El jugador ya tiró.");
-            return;
-        }
-
-        System.out.println("La tirada es: " + i + ".");
-
-        /* El jugador no puede tirar de nuevo */
-        this.tirado = true;
-
-        /* mover jugador, etc.. */
-        j.moverJugador(tablero, i, turno);
-
-        System.out.println(tablero);
-    }
+    /* Ya no hace falta */
+    //private void lanzarDadosManual(int a, int b)
 
     /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
@@ -399,7 +393,7 @@ public class Menu {
 
         Jugador j = jugadores.get(turno);
 
-        j.setTiradas(0);
+        j.setTiradasDobles(0);
         this.tirado = false;
 
         turno++;
