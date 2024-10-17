@@ -120,20 +120,22 @@ public class Avatar {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public Jugador getJugador() {
         return jugador;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
-    }
-
     public Casilla getLugar() {
         return lugar;
+    }
+
+
+    
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
     }
 
     public void setLugar(Casilla lugar) {

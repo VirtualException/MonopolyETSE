@@ -69,7 +69,7 @@ public class Edificio {
 
 
 
-
+    // Método que devuelve una cadena con información de un edificio.
     public String listarEdificios(){
         String cadena = "";
 
@@ -84,19 +84,6 @@ public class Edificio {
         }
         return cadena;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -141,7 +128,7 @@ public class Edificio {
     }
 
 
-    
+
     public void setId(String id) {
         this.id = id;
     }

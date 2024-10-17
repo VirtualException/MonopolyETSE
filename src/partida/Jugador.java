@@ -43,7 +43,17 @@ public class Jugador {
         this.enCarcel = false;
         this.tiradasCarcel = 0;
         this.vueltas = 0;
+        this.tiradasDobles = 0;
+        this.dineroInvertido = 0.0f;
+        this.pagoTasasEImpuestos = 0.0f;
+        this.pagoDeAlquileres = 0.0f;
+        this.cobroDeAlquileres = 0.0f;
+        this.pasarPorCasillaDeSalida = 0.0f;
+        this.premiosInversionesOBote = 0.0f;
+        this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
+        this.hipotecas = new ArrayList<>();
+        this.edificios = new ArrayList<>();
     }
 
 
@@ -133,6 +143,24 @@ public class Jugador {
 
 
 
+    // Método que devuelve una cadena con las estadísticas del jugador.
+    public String estadisticasJugador(Jugador jugador){
+        String cadena = "";
+
+        cadena = ("{\n");
+        cadena += ("\tdineroInvertido: " + jugador.getDineroInvertido() + "," + "\n");
+        cadena += ("\tpagoTasasEImpuestos: " + jugador.getPagoTasasEImpuestos() + "," + "\n");
+        cadena += ("\tpagoDeAlquileres: " + jugador.getPagoDeAlquileres() + "," + "\n");
+        cadena += ("\tcobroDeAlquileres: " + jugador.getCobroDeAlquileres() + "," + "\n");
+        cadena += ("\tpasarPorCasillaDeSalida: " + jugador.getPasarPorCasillaDeSalida() + "," + "\n");
+        cadena += ("\tpremiosInversionesOBote: " + jugador.getPremiosInversionesOBote() + "," + "\n");
+        cadena += ("\tvecesEnLaCarcel: " + jugador.getVecesEnLaCarcel() + "\n");
+        cadena += ("}\n");
+
+        return cadena;
+    }
+
+    
 
 
     //Método para declararse en bancarrota
@@ -149,7 +177,7 @@ public class Jugador {
                     c.setDuenho(banca);
                     jugador.eliminarPropiedad(c);
                 }
-                System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
             } else {
                 for(Casilla c : jugador.propiedades){
                     propietario.anhadirPropiedad(c);
@@ -159,7 +187,7 @@ public class Jugador {
 
                 propietario.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0);
-                System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador" + propietario.getNombre());
+                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
             }
             solvente = true;  
             eliminarJugador(jugadores, jugador);   
@@ -169,8 +197,8 @@ public class Jugador {
                 c.setDuenho(banca);
                 jugador.eliminarPropiedad(c);
             }
-            System.out.println("El jugador" + this.nombre + "se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
-            eliminarJugador(jugadores, jugador);
+            System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+            eliminarJugador(jugadores, jugador); 
         }
     }
 
@@ -267,7 +295,7 @@ public class Jugador {
 
  
 
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

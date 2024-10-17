@@ -26,7 +26,7 @@ public class Menu {
     }
 
 
-    // Metodo para inciar una partida: crea los jugadores y avatares.
+    // Método para inciar una partida: crea los jugadores y avatares.
     private void iniciarPartida() {
 
         /* Crear banca y tablero */
@@ -54,7 +54,7 @@ public class Menu {
     }
 
     
-    /*Metodo que interpreta el comando introducido y toma la accion correspondiente.
+    /*Método que interpreta el comando introducido y toma la accion correspondiente.
     * Parámetro: cadena de caracteres (el comando).
     */
     private boolean analizarComando(String comando) {
@@ -153,6 +153,10 @@ public class Menu {
             bancarrota();
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
             listarEdificios();
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
+            String nombreJugador = comandos_args[1];
+            estadisticasJugador(nombreJugador);
+
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -166,7 +170,7 @@ public class Menu {
         return false;
     }
 
-    /*Metodo que realiza las acciones asociadas al comando 'describir jugador'.
+    /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
     private void descJugador(String nombre) {
@@ -193,7 +197,7 @@ public class Menu {
         }
     }
 
-    /*Metodo que realiza las acciones asociadas al comando 'describir avatar'.
+    /*Método que realiza las acciones asociadas al comando 'describir avatar'.
     * Parámetro: id del avatar a describir.
     */
     private void descAvatar(String ID) {
@@ -218,7 +222,7 @@ public class Menu {
          System.out.print("\n}\n");
     }
 
-    /* Metodo que realiza las acciones asociadas al comando 'describir nombre_casilla'.
+    /* Método que realiza las acciones asociadas al comando 'describir nombre_casilla'.
     * Parámetros: nombre de la casilla a describir.
     */
     private void descCasilla(String nombre) {
@@ -230,7 +234,7 @@ public class Menu {
         System.out.println(c.infoCasilla());
     }
 
-    //Metodo que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
+    // Método que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
     private void lanzarDados(int a, int b) {
 
         if (jugadores.isEmpty()) {
@@ -312,7 +316,7 @@ public class Menu {
     /* Ya no hace falta */
     //private void lanzarDadosManual(int a, int b)
 
-    /*Metodo que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
+    /*Método que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
     private void comprar(String nombre) {
@@ -341,7 +345,7 @@ public class Menu {
         }
     }
 
-    //Metodo que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
+    // Método que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
         System.out.println(jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25f + " y sale de la cárcel. Puede lanzar los dados.");
         banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25f));
@@ -349,7 +353,7 @@ public class Menu {
         jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25f)));
     }
 
-    // Metodo que realiza las acciones asociadas al comando 'listar enventa'.
+    // Método que realiza las acciones asociadas al comando 'listar enventa'.
     private void listarVenta() {
         for (ArrayList <Casilla> casillas : tablero.getPosiciones()){
             for (Casilla c : casillas){
@@ -360,7 +364,7 @@ public class Menu {
         }
     }
 
-    // Metodo que realiza las acciones asociadas al comando 'listar jugadores'.
+    // Método que realiza las acciones asociadas al comando 'listar jugadores'.
     private void listarJugadores() {
         if (jugadores.isEmpty()){
             System.out.println("No hay jugadores registrados");
@@ -371,7 +375,7 @@ public class Menu {
         }
     }
 
-    // Metodo que realiza las acciones asociadas al comando 'listar avatares'.
+    // Método que realiza las acciones asociadas al comando 'listar avatares'.
     private void listarAvatares() {
 
         if (jugadores.isEmpty()){
@@ -383,18 +387,41 @@ public class Menu {
         }
     }
 
+
+
+    // Método para listar los edificios construídos.
     private void listarEdificios(){
         if(edificios.isEmpty()){
             System.out.println("ERROR. No se ha construído ningún edificio.");
         } else {
             for(Edificio e : edificios){
-                e.listarEdificios();
+                System.out.println(e.listarEdificios());
             }
         }
     }
 
 
-    //Método para declararse en bancarrota
+    
+    // Método para imprimir las estadisticas de un jugador.
+    private void estadisticasJugador(String nombreJugador){
+        boolean encontrado = false;
+        
+        for(Jugador j : jugadores){
+            if(j.getNombre().equals(nombreJugador)){
+                encontrado = true;
+                System.out.println(j.estadisticasJugador(j));
+                break;
+            }
+        }
+
+        if(!encontrado){
+            System.out.println("ERROR. El jugador " + nombreJugador + " no existe.");
+        }
+    }
+
+
+
+    // Método para declararse en bancarrota
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
 
@@ -402,7 +429,9 @@ public class Menu {
         jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 
-    // Metodo que realiza las acciones asociadas al comando 'acabar turno'.
+
+
+    // Método que realiza las acciones asociadas al comando 'acabar turno'.
     private void acabarTurno() {
 
         Jugador j = jugadores.get(turno);
