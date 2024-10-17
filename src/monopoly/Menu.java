@@ -240,7 +240,6 @@ public class Menu {
         }
 
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
-
         if (a == 0)
             dado1.hacerTirada();
         else
@@ -249,7 +248,6 @@ public class Menu {
             dado2.hacerTirada();
         else
             dado2.hacerTirada(b);
-
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
 
         /* El jugador no puede tirar de nuevo */
