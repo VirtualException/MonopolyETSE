@@ -10,6 +10,7 @@ public class Menu {
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
+    private ArrayList<Edificio> edificios;  //Edificios en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
@@ -132,7 +133,7 @@ public class Menu {
                 }
 
             }
-        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa")) {
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
             listarVenta();
         } else if (comandos_args[0].equals("describir") && num_args == 2) {
             descCasilla(comandos_args[1]);
@@ -150,9 +151,11 @@ public class Menu {
             }
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
             bancarrota();
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
+            listarEdificios();
         }
         /* Comando salida */
-        else if (comandos_args[0].equals("exit")) {
+        else if (comandos_args[0].equals("exit") && num_args == 1) {
             return true;
         }
 
@@ -182,6 +185,9 @@ public class Menu {
                 System.out.print("\thipotecas: [");
                 System.out.println("]");
                 System.out.print("\tedificios: [");
+                for (Edificio e : i.getEdificios()) {
+                    System.out.print(e.getId() + ", ");
+                }
                 System.out.print("]\n},\n");
             }
         }
@@ -373,6 +379,16 @@ public class Menu {
         } else {
             for (Avatar a : avatares) {
                 descAvatar(a.getId());
+            }
+        }
+    }
+
+    private void listarEdificios(){
+        if(edificios.isEmpty()){
+            System.out.println("ERROR. No se ha construído ningún edificio.");
+        } else {
+            for(Edificio e : edificios){
+                e.listarEdificios();
             }
         }
     }

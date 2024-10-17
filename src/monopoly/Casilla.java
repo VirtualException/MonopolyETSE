@@ -71,7 +71,7 @@ public class Casilla {
 
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
-        if(avatares.isEmpty()){
+        if(avatares.isEmpty() || !avatares.contains(av)){
             System.out.println("No hay ningún avatar.");
         } else {
             avatares.remove(av);
@@ -244,7 +244,16 @@ public class Casilla {
             cadena +=("\talquiler hotel: " + alquiler*Valor.ALQULER_HOTEL + "," + "\n");
             cadena +=("\talquiler piscina: " + alquiler*Valor.ALQUILER_PISCINA + "," + "\n");
             cadena +=("\talquiler pista de deporte: " + alquiler*Valor.ALQUILER_PISTA_DE_DEPORTE);
-            cadena +=("\n},");
+            cadena +=("\tedificios construídos en esta casilla: [");
+            if(!edificios.isEmpty()){
+                for (Edificio e : edificios){
+                    cadena +=(e.getId() + ", ");
+                } 
+            } else {
+                cadena +=("");
+            }
+            cadena+=("]");
+            cadena+=("\n},");
         } else if (getNombre().equals("Imp1") || getNombre().equals("Imp2")){
             cadena =("{\n");
             cadena +=("\ttipo: " + getTipo()  + "," + "\n");

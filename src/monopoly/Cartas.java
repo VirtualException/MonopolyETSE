@@ -1,8 +1,7 @@
 package monopoly;
 
-import partida.Jugador;
-
 import java.util.*;
+import partida.*;
 
 public class Cartas {
     private int id;
@@ -75,56 +74,73 @@ public class Cartas {
             hacerRandom(c.getTipo());
 
             for (Cartas casillas : this.cartasSuerte){
-                if (casillas.id == 1){
-                    System.out.println(cartasSuerte.get(1).getMensaje());
-                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion());
-                } else if (casillas.id == 2){
-                    System.out.println(cartasSuerte.get(2).getMensaje());
-                    jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
-                } else if (casillas.id == 3){
-                    System.out.println(cartasSuerte.get(3).getMensaje());
-                    jugador.sumarFortuna(300000.0f);
-                } else if (casillas.id == 4){
-                    System.out.println(cartasSuerte.get(4).getMensaje());
-                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion());
-                } else if (casillas.id == 5){
-                    System.out.println(cartasSuerte.get(5).getMensaje());
-                    jugador.encarcelar(tablero.getPosiciones());
-                } else if (casillas.id == 6){
-                    System.out.println(cartasSuerte.get(6).getMensaje());
-                    jugador.sumarFortuna(1000000.0f);
+                switch (casillas.id) {
+                    case 1:
+                        System.out.println(cartasSuerte.get(1).getMensaje());
+                        jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion());
+                        break;
+                    case 2:
+                        System.out.println(cartasSuerte.get(2).getMensaje());
+                        jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
+                        break;
+                    case 3:
+                        System.out.println(cartasSuerte.get(3).getMensaje());
+                        jugador.sumarFortuna(300000.0f);
+                        break;
+                    case 4:
+                        System.out.println(cartasSuerte.get(4).getMensaje());
+                        jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion());
+                        break;
+                    case 5:
+                        System.out.println(cartasSuerte.get(5).getMensaje());
+                        jugador.encarcelar(tablero.getPosiciones());
+                        break;
+                    case 6:
+                        System.out.println(cartasSuerte.get(6).getMensaje());
+                        jugador.sumarFortuna(1000000.0f);
+                        break;
+                    default:
+                        break;
                 }
             }
 
             for (Cartas casillas : this.cartasComunidad){
-                if (casillas.id == 1){
-                    System.out.println(cartasComunidad.get(1).getMensaje());
-                    jugador.sumarFortuna(-500000.0f);
-                    jugador.sumarGastos(500000.0f);
-                    banca.sumarFortuna(500000.0f);
-                } else if (casillas.id == 2){
-                    System.out.println(cartasComunidad.get(2).getMensaje());
-                    jugador.encarcelar(tablero.getPosiciones());
-                } else if (casillas.id == 3){
-                    System.out.println(cartasComunidad.get(3).getMensaje());
-                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion());
-                } else if (casillas.id == 4){
-                    System.out.println(cartasComunidad.get(4).getMensaje());
-                    jugador.sumarFortuna(2000000.0f);
-                } else if (casillas.id == 5){
-                    System.out.println(cartasComunidad.get(5).getMensaje());
-                    jugador.sumarFortuna(-1000000.0f);
-                    jugador.sumarGastos(1000000.0f);
-                    banca.sumarFortuna(1000000.0f);
-                } else if (casillas.id == 6){
-                    System.out.println(cartasComunidad.get(6).getMensaje());
-                    for (Jugador j : jugadores){
-                        if (!j.equals(jugador)){
-                            jugador.sumarFortuna(-200000.0f);
-                            jugador.sumarGastos(200000.0f);
-                            j.sumarFortuna(200000.0f);
-                        }
-                    }
+                switch (casillas.id) {
+                    case 1:
+                        System.out.println(cartasComunidad.get(1).getMensaje());
+                        jugador.sumarFortuna(-500000.0f);
+                        jugador.sumarGastos(500000.0f);
+                        banca.sumarFortuna(500000.0f);
+                        break;
+                    case 2:
+                        System.out.println(cartasComunidad.get(2).getMensaje());
+                        jugador.encarcelar(tablero.getPosiciones());
+                        break;
+                    case 3:
+                        System.out.println(cartasComunidad.get(3).getMensaje());
+                        jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion());
+                        break;
+                    case 4:
+                        System.out.println(cartasComunidad.get(4).getMensaje());
+                        jugador.sumarFortuna(2000000.0f);
+                        break;
+                    case 5:
+                        System.out.println(cartasComunidad.get(5).getMensaje());
+                        jugador.sumarFortuna(-1000000.0f);
+                        jugador.sumarGastos(1000000.0f);
+                        banca.sumarFortuna(1000000.0f);
+                        break;
+                    case 6:
+                        System.out.println(cartasComunidad.get(6).getMensaje());
+                        for (Jugador j : jugadores){
+                            if (!j.equals(jugador)){
+                                jugador.sumarFortuna(-200000.0f);
+                                jugador.sumarGastos(200000.0f);
+                                j.sumarFortuna(200000.0f);
+                            }
+                        }   break;
+                    default:
+                        break;
                 }
             }
         }

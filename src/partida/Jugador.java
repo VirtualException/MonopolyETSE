@@ -15,7 +15,16 @@ public class Jugador {
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private int tiradasDobles; // Cuenta las tiradas dobles.
+    private float dineroInvertido;
+    private float pagoTasasEImpuestos;
+    private float pagoDeAlquileres;
+    private float cobroDeAlquileres;
+    private float pasarPorCasillaDeSalida;
+    private float premiosInversionesOBote;
+    private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
+    private ArrayList<Hipoteca> hipotecas;
+    private ArrayList<Edificio> edificios;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -184,56 +193,150 @@ public class Jugador {
     //Getters y Setters
 
 
-    public String getNombre(){
+    public String getNombre() {
         return nombre;
     }
 
-    public Avatar getAvatar(){
+    public Avatar getAvatar() {
         return avatar;
     }
 
-    public float getFortuna(){
+    public float getFortuna() {
         return fortuna;
     }
 
-    public float getGastos(){
+    public float getGastos() {
         return gastos;
     }
 
-    public boolean isEnCarcel(){
+    public boolean isEnCarcel() {
         return enCarcel;
     }
 
-    public int getTiradasCarcel(){
+    public int getTiradasCarcel() {
         return tiradasCarcel;
-    }
-    public void setTiradasCarcel(int i) {
-        this.tiradasCarcel = i;
     }
 
     public int getVueltas() {
         return vueltas;
     }
-    public void setVueltas(int vueltas) {
-        this.vueltas = vueltas;
-    }
-
-    public void setFortuna(float fortuna){
-        this.fortuna = fortuna;
-    }
-
-    public ArrayList<Casilla> getPropiedades(){
-        return propiedades;
-    }
 
     public int getTiradasDobles() {
         return tiradasDobles;
     }
-    public void setTiradasDobles(int tiradas) {
-        this.tiradasDobles = tiradas;
+
+    public float getDineroInvertido() {
+        return dineroInvertido;
     }
 
-    public void setEnCarcel(boolean enCarcel){
+    public float getPagoTasasEImpuestos() {
+        return pagoTasasEImpuestos;
+    }
+
+    public float getPagoDeAlquileres() {
+        return pagoDeAlquileres;
+    }
+
+    public float getCobroDeAlquileres() {
+        return cobroDeAlquileres;
+    }
+
+    public float getPasarPorCasillaDeSalida() {
+        return pasarPorCasillaDeSalida;
+    }
+
+    public float getPremiosInversionesOBote() {
+        return premiosInversionesOBote;
+    }
+
+    public int getVecesEnLaCarcel() {
+        return vecesEnLaCarcel;
+    }
+
+    public ArrayList<Casilla> getPropiedades() {
+        return propiedades;
+    }
+
+    public ArrayList<Hipoteca> getHipotecas() {
+        return hipotecas;
+    }
+
+    public ArrayList<Edificio> getEdificios() {
+        return edificios;
+    }
+
+ 
+
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setFortuna(float fortuna) {
+        this.fortuna = fortuna;
+    }
+
+    public void setGastos(float gastos) {
+        this.gastos = gastos;
+    }
+
+    public void setEnCarcel(boolean enCarcel) {
         this.enCarcel = enCarcel;
+    }
+
+    public void setTiradasCarcel(int tiradasCarcel) {
+        this.tiradasCarcel = tiradasCarcel;
+    }
+
+    public void setVueltas(int vueltas) {
+        this.vueltas = vueltas;
+    }
+
+    public void setTiradasDobles(int tiradasDobles) {
+        this.tiradasDobles = tiradasDobles;
+    }
+
+    public void setDineroInvertido(float dineroInvertido) {
+        this.dineroInvertido = dineroInvertido;
+    }
+
+    public void setPagoTasasEImpuestos(float pagoTasasEImpuestos) {
+        this.pagoTasasEImpuestos = pagoTasasEImpuestos;
+    }
+
+    public void setPagoDeAlquileres(float pagoDeAlquileres) {
+        this.pagoDeAlquileres = pagoDeAlquileres;
+    }
+
+    public void setCobroDeAlquileres(float cobroDeAlquileres) {
+        this.cobroDeAlquileres = cobroDeAlquileres;
+    }
+
+    public void setPasarPorCasillaDeSalida(float pasarPorCasillaDeSalida) {
+        this.pasarPorCasillaDeSalida = pasarPorCasillaDeSalida;
+    }
+
+    public void setPremiosInversionesOBote(float premiosInversionesOBote) {
+        this.premiosInversionesOBote = premiosInversionesOBote;
+    }
+
+    public void setVecesEnLaCarcel(int vecesEnLaCarcel) {
+        this.vecesEnLaCarcel = vecesEnLaCarcel;
+    }
+
+    public void setPropiedades(ArrayList<Casilla> propiedades) {
+        this.propiedades = propiedades;
+    }
+
+    public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
+        this.hipotecas = hipotecas;
+    }
+
+    public void setEdificios(ArrayList<Edificio> edificios) {
+        this.edificios = edificios;
     }
 }
