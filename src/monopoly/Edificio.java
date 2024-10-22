@@ -1,6 +1,5 @@
 package monopoly;
 
-import java.util.ArrayList;
 import partida.*;
 
 public class Edificio {
@@ -12,21 +11,57 @@ public class Edificio {
     private float coste;
     private String tipo;
 
-    // Constructor vacío
-    public Edificio() {
-    }
-
 
     // Constructor edificio
-    public Edificio(Jugador duenho, Casilla casilla, Grupo grupo, String tipo, float coste){
-        this.id = generarID(tipo);
-        this.duenho = duenho;
-        this.casilla = casilla;
-        this.grupo = grupo;
-        this.coste = coste;
+    public Edificio(Jugador j, String tipo) {
+
+        /* Solo inicializamos lo básico, el resto solo es necesario si el edificio se puede contruir */
+        this.duenho = j;
+        this.casilla = j.getAvatar().getLugar();
+        this.grupo = casilla.getGrupo();
         this.tipo = tipo;
     }
 
+    /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
+    public boolean contruir() {
+
+        /* Evaluar normas de edificación para el juagdor que quiere contruir */
+
+        /* Tipo inválido */
+        if (!"casa hotel piscina pista".contains(tipo)) {
+            System.out.println("El edificio no es de un tipo válido.");
+            return true;
+        }
+
+        /* Comprobar si alguna regla no se cumple */
+        if (!casilla.getTipo().equals("Solar")) {
+            System.out.println("La casilla no es un solar.");
+            return true;
+        }
+        if (!grupo.esDuenhoGrupo(duenho)) {
+            System.out.println("El jugador no es el dueño del grupo.");
+            return true;
+        }
+        if (!casilla.haCaidoDosVeces(duenho)) {
+            System.out.println("El jugador no ha caído dos veces aquí.");
+            return true;
+        }
+
+        this.id = generarID(tipo);
+
+        /* El multiplicador depende del tipo */
+        float mult = switch (tipo) {
+            case "casa" -> Valor.MULTIPLICADOR_CASA;
+            case "hotel" -> Valor.MULTIPLICADOR_HOTEL;
+            case "piscina" -> Valor.MULTIPLICADOR_PISCINA;
+            case "pista" -> Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
+            default -> 1.f;
+        };
+
+        this.coste = casilla.getValor() * mult;
+
+        return false;
+    }
 
 
     // Método para añadir un edificio al ArrayList de edificios.
@@ -65,11 +100,9 @@ public class Edificio {
     }
 
 
-
-    /* Los edificios se deberían listar desde la casilla no???? */
     // Método que devuelve una cadena con información de un edificio.
-    public String imprimirEdificio(){
-        String cadena = "";
+    public String stringEdificio(){
+        String cadena;
         cadena = ("{\n");
         cadena += ("\tid: " + id + "," + "\n");
         cadena += ("\tpropietario: " + duenho.getNombre() + "," + "\n");
@@ -80,16 +113,6 @@ public class Edificio {
 
         return cadena;
     }
-
-
-
-
-    public void construirEdificio(String nombreEdificio){
-
-
-
-    }
-
 
      
     // Getters y Setters

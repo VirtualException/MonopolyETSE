@@ -34,6 +34,7 @@ public class Casilla {
         this.valor = valor;
         this.posicion = posicion;
         this.duenho = duenho;
+        this.edificios = new ArrayList<>();
         this.contarCaer = new int[10];
     }
 
@@ -84,7 +85,7 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, int tirada, int turno) {
+    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca) {
 
         boolean solvente = true;
         String tipoCasilla = this.getTipo();
@@ -95,9 +96,9 @@ public class Casilla {
 
                 incrementarSolares(tab);
                 /* El jugador cayó una vez más en esta casilla */
-                this.contarCaer[turno]++;
+                this.contarCaer[jugador.getIndice()]++;
                 /* Si hay dueño */
-                if (duenho != banca) {
+                if (duenho != banca && duenho != jugador) {
                     float pago = valor;
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago) {
@@ -122,8 +123,10 @@ public class Casilla {
                 break;
             case "Suerte":
                 break;
+            case "Impuesto":
+                break;
             default:
-                System.out.println("evaluando tipo especial");
+                System.out.println("Evaluando tipo especial");
                 /* Cae en cárcel */
                 if (nombre.equals("IrCarcel") || nombre.equals("Carcel")) {
                     jugador.encarcelar(tab.getPosiciones());
@@ -184,7 +187,7 @@ public class Casilla {
         }
 
         if(!this.duenho.equals(banca)){
-            System.out.println("Esta casilla ya pertenece a otro jugador.");
+            System.out.println("Esta casilla ya pertenece a un jugador.");
             return false;
         }
 
@@ -375,6 +378,11 @@ public class Casilla {
         return sum;
     }
 
+    public boolean haCaidoDosVeces(Jugador j) {
+        int veces = contarCaer[j.getIndice()];
+        return veces >= 2;
+    }
+
 
 
 
@@ -455,5 +463,8 @@ public class Casilla {
 
     public ArrayList<Edificio> getEdificios() {
         return this.edificios;
+    }
+    public void setEdificios(ArrayList<Edificio> e) {
+        this.edificios = e;
     }
 }

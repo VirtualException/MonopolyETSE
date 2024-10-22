@@ -25,6 +25,7 @@ public class Jugador {
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     //private ArrayList<Hipoteca> hipotecas;
     //private ArrayList<Edificio> edificios;
+    private int indice; /* Index dentro del array de jugadores */
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -35,7 +36,7 @@ public class Jugador {
      * avatares creados (usado para dos propósitos: evitar que dos jugadores tengan el mismo nombre y
      * que dos avatares tengan mismo ID). Desde este constructor también se crea el avatar.
      */
-    public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados) {
+    public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados, int index) {
         this.nombre = nombre;
         if (!tipoAvatar.equals("Banca")) this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
@@ -54,6 +55,7 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         //this.hipotecas = new ArrayList<>();
         //this.edificios = new ArrayList<>();
+        this.indice = index;
     }
 
 
@@ -127,6 +129,8 @@ public class Jugador {
         this.getAvatar().moverAvatar(pos, tirada);
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
+
+        c.evaluarCasilla(tablero, this, tablero.getBanca());
     }
 
     public void teleportJugador(Tablero tablero, Casilla casilla) {
@@ -145,7 +149,7 @@ public class Jugador {
 
     // Método que devuelve una cadena con las estadísticas del jugador.
     public String estadisticasJugador(Jugador jugador){
-        String cadena = "";
+        String cadena;
 
         cadena = ("{\n");
         cadena += ("\tdineroInvertido: " + jugador.getDineroInvertido() + "," + "\n");
@@ -295,7 +299,9 @@ public class Jugador {
         /* Casillas del jugador */
         for (Casilla c : this.propiedades) {
             /* Añadir todos los edificios de las casillas del jugador */
-            edificios.addAll(c.getEdificios());
+            for (Edificio e : c.getEdificios()) {
+                edificios.add(e);
+            }
         }
 
         return edificios;
@@ -366,6 +372,10 @@ public class Jugador {
 
     public void setPropiedades(ArrayList<Casilla> propiedades) {
         this.propiedades = propiedades;
+    }
+
+    public int getIndice() {
+        return indice;
     }
 
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {

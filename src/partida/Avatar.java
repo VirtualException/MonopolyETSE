@@ -129,14 +129,6 @@ public class Avatar {
     }
 
 
-    
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
-    }
 
     public void setLugar(Casilla lugar) {
         this.lugar = lugar;

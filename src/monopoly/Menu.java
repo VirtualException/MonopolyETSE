@@ -32,7 +32,7 @@ public class Menu {
         /* Crear banca y tablero */
         avatares = new ArrayList<>();
         jugadores = new ArrayList<>();
-        banca = new Jugador("Banca", "Banca", null, null); /* No tiene casilla ni avatar asociado */
+        banca = new Jugador("Banca", "Banca", null, null, -1); /* No tiene casilla ni avatar asociado */
         tablero = new Tablero(banca);
 
         dado1 = new Dado();
@@ -67,7 +67,7 @@ public class Menu {
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
 
-            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares));
+            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
             avatares.add(jugadores.getLast().getAvatar());
 
             tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
@@ -87,6 +87,8 @@ public class Menu {
         }
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
             listarVenta();
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
+        listarEdificios();
         }
         /* Ver tablero */
         else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
@@ -97,11 +99,13 @@ public class Menu {
             acabarTurno();
         }
         else if (comandos_args[0].equals("comprar") && num_args == 2){
-            String nombreCasilla = comandos_args[1];
-            comprar(nombreCasilla);
+            comprar(comandos_args[1]);
+        }
+        else if (comandos_args[0].equals("edificar") && num_args == 2){
+            edificar(comandos_args[1]);
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
-            lanzarDados(0, 0); // Modo aleatorio
+            lanzarDados(-1, -1); // Modo aleatorio
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
             lanzarDados(Integer.parseInt(comandos_args[2]), Integer.parseInt(comandos_args[3])); // Modo manual
@@ -115,7 +119,7 @@ public class Menu {
             for (Avatar a : avatares){
                 if (a.getId().equals(comandos_args[2])){
                     descAvatar(comandos_args[2]);
-                    return false;
+                    return false;  /* Ya imprimimos, así que salimos */
                 }
             }
         } else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
@@ -126,7 +130,7 @@ public class Menu {
             for (Jugador j : jugadores){
                 if (j.getNombre().equals(comandos_args[2])){
                     descJugador(comandos_args[2]);
-                    return false;
+                    return false; /* Ya imprimimos, así que salimos */
                 }
             }
         } else if (comandos_args[0].equals("describir") && num_args == 2) {
@@ -134,15 +138,13 @@ public class Menu {
         } else if (comandos_args[0].equals("jugador") && num_args == 1) {
             descTurno();
         } else if (comandos_args[0].equals("salir") && comandos_args[1].equals("carcel") && num_args == 2) {
-            if (jugadores.get(turno).getAvatar().getLugar().getNombre().equals("Carcel")){
+            if (jugadores.get(turno).isEnCarcel()) {
                 salirCarcel();
             } else {
-                System.out.println("El jugador no se encuentra en la casilla de Carcel.");
+                System.out.println("El jugador no se encuentra en la cárcel.");
             }
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
             bancarrota();
-        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
-            listarEdificios();
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
             String nombreJugador = comandos_args[1];
             estadisticasJugador(nombreJugador);
@@ -237,30 +239,25 @@ public class Menu {
             System.out.println("No hay jugadores!");
             return;
         }
-
         Jugador j = jugadores.get(turno);
-
         if (this.tirado) {
             System.out.println("El jugador ya tiró.");
             return;
         }
-
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
 
-        if (a == 0)
+        if (a == -1)
             dado1.hacerTirada();
         else
             dado1.hacerTirada(a);
-        if (b == 0)
+        if (b == -1)
             dado2.hacerTirada();
         else
             dado2.hacerTirada(b);
 
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
-
         /* El jugador no puede tirar de nuevo */
         this.tirado = true;
-
         /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
         if (dado1.equals(dado2)) {
 
@@ -273,7 +270,6 @@ public class Menu {
                     System.out.println("El jugador debe pagar para salír de la cárcel.");
                     return;
                 }
-
                 System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
                 j.setEnCarcel(false);
                 this.tirado = false;
@@ -298,6 +294,7 @@ public class Menu {
 
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
+            System.out.println("Moviendo jugador...");
             j.moverJugador(tablero, dado1.getValor() + dado2.getValor());
         }
         else {
@@ -322,13 +319,13 @@ public class Menu {
 
         //Comprobamos que el nombre de la casilla que queremos comprar existe.
         if(casillaActual == null){
-            System.out.println("ERROR. Esta casilla no existe.");
+            System.out.println("Esta casilla no existe.");
             return;
         }
 
         //Comprobamos que la casilla en la que se encuentra el avatar es la casilla que se quiere comprar.
         if(!av.getLugar().equals(casillaActual)){
-            System.out.println("ERROR. No se puede comprar esta casilla porque no estás en ella.");
+            System.out.println("No se puede comprar esta casilla porque no estás en ella.");
             return;
         }
 
@@ -340,9 +337,25 @@ public class Menu {
         }
     }
 
+    /* Contruir edificio */
+    private void edificar(String tipo) {
+        Jugador j = jugadores.get(turno);
+
+        /* El edificio es el encargado de comprobar las reglas, y en caso de éxito, se añade a la lista de edificios. */
+        Edificio e = new Edificio(j, tipo);
+        if (!e.contruir()) {
+            /* Si tod va bien, el edificio se añade a la lista de edificios  */
+            ArrayList<Edificio> edificios = j.getEdificios();
+            edificios.add(e);
+            j.getAvatar().getLugar().setEdificios(edificios);
+        }
+    }
+
     // Método que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
     private void salirCarcel() {
         System.out.println(jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25f + " y sale de la cárcel. Puede lanzar los dados.");
+        tirado = false;
+        jugadores.get(turno).setEnCarcel(false);
         banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25f));
         jugadores.get(turno).sumarGastos((float) (Valor.SUMA_VUELTA*0.25f));
         jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25f)));
@@ -388,7 +401,7 @@ public class Menu {
     private void listarEdificios(){
         for (Jugador j : jugadores) {
             for (Edificio e : j.getEdificios()) {
-                e.imprimirEdificio();
+                System.out.println(e.stringEdificio());
             }
         }
     }
@@ -417,8 +430,8 @@ public class Menu {
     // Método para declararse en bancarrota
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
-
-        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca ,dado1.getValor() + dado2.getValor(),turno);
+    /* ? */
+        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca);
         jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 
