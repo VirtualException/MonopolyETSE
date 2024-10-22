@@ -318,11 +318,10 @@ public class Menu {
         Casilla casillaActual = tablero.encontrar_casilla(nombre); 
 
         //Comprobamos que el nombre de la casilla que queremos comprar existe.
-        if(casillaActual == null){
+        if (casillaActual == null) {
             System.out.println("Esta casilla no existe.");
             return;
         }
-
         //Comprobamos que la casilla en la que se encuentra el avatar es la casilla que se quiere comprar.
         if(!av.getLugar().equals(casillaActual)){
             System.out.println("No se puede comprar esta casilla porque no estás en ella.");
@@ -343,11 +342,15 @@ public class Menu {
 
         /* El edificio es el encargado de comprobar las reglas, y en caso de éxito, se añade a la lista de edificios. */
         Edificio e = new Edificio(j, tipo);
-        if (!e.contruir()) {
-            /* Si tod va bien, el edificio se añade a la lista de edificios  */
+        if (!Edificio.contruir(e)) {
+            /* Si todo va bien, el edificio se añade a la lista de edificios  */
             ArrayList<Edificio> edificios = j.getEdificios();
             edificios.add(e);
+            System.out.println("Añadiendo edificio a la lista de la casilla...");
             j.getAvatar().getLugar().setEdificios(edificios);
+        }
+        else {
+            System.out.println("El edificio no se contruyó.");
         }
     }
 

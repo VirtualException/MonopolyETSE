@@ -23,43 +23,116 @@ public class Edificio {
     }
 
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
-    public boolean contruir() {
+    static public boolean contruir(Edificio edificio) {
 
         /* Evaluar normas de edificación para el juagdor que quiere contruir */
 
         /* Tipo inválido */
-        if (!"casa hotel piscina pista".contains(tipo)) {
+        if (!"casa hotel piscina pista".contains(edificio.tipo)) {
             System.out.println("El edificio no es de un tipo válido.");
             return true;
         }
 
         /* Comprobar si alguna regla no se cumple */
-        if (!casilla.getTipo().equals("Solar")) {
+        if (!edificio.casilla.getTipo().equals("Solar")) {
             System.out.println("La casilla no es un solar.");
             return true;
         }
-        if (!grupo.esDuenhoGrupo(duenho)) {
+        if (!edificio.grupo.esDuenhoGrupo(edificio.duenho)) {
             System.out.println("El jugador no es el dueño del grupo.");
             return true;
         }
-        if (!casilla.haCaidoDosVeces(duenho)) {
+        /*if (!edificio.casilla.haCaidoDosVeces(edificio.duenho)) {
             System.out.println("El jugador no ha caído dos veces aquí.");
+            return true;
+        }*/
+
+        System.out.println("Contruyendo " + edificio.tipo + ".");
+
+        /* (!) Contruye el edificio del tipo correspondiente si hay 4 del anterior tipo. */
+        float mult;
+        switch (edificio.tipo) {
+            /* SI EL EDIFICIO ES CASA */
+            case "casa":
+                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_CASA;
+                if (edificio.casilla.getCasasN() == 4) {
+                    System.out.println("Ya hay 4 contrucciones del mismo tipo.");
+                    return true;
+                }
+                break;
+
+            /* SI EL EDIFICIO ES HOTEL */
+            case "hotel":
+                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_HOTEL;
+                if (edificio.casilla.getHotelesN() == 4) {
+                    System.out.println("Ya hay 4 contrucciones del tipo hotel.");
+                    return true;
+                }
+                if (edificio.casilla.getCasasN() == 4) {
+                    /* Eliminar casas */
+                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("casa"));
+                }
+                else {
+                    System.out.println("No hay suficientes casas para un hotel.");
+                    return true;
+                }
+                break;
+
+            /* SI EL EDIFICIO ES PISCINA */
+            case "piscina":
+                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_PISCINA;
+                if (edificio.casilla.getPiscinasN() == 4) {
+                    System.out.println("Ya hay 4 contrucciones del tipo piscina.");
+                    return true;
+                }
+                if (edificio.casilla.getHotelesN() == 4) {
+                    /* Eliminar hoteles */
+                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("hotel"));
+                }
+                else {
+                    System.out.println("No hay suficientes hoteles para una piscina.");
+                    return true;
+                }
+                break;
+
+            /* SI EL EDIFICIO ES PISTA DE DEPORTE */
+            case "pista":
+                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
+                if (edificio.casilla.getPiscinasN() == 4) {
+                    System.out.println("Ya hay 4 contrucciones del tipo pista de deporte.");
+                    return true;
+                }
+                if (edificio.casilla.getPiscinasN() == 4) {
+                    /* Eliminar piscinas */
+                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("piscina"));
+                }
+                else {
+                    System.out.println("No hay suficientes piscinas para una pista de deporte.");
+                    return true;
+                }
+                break;
+
+            /* TIPO INVÁLIDO */
+            default:
+                System.out.println("Tipo de contrucción inválido.");
+                return true; /* Salir de la función con código de error */
+        };
+
+        edificio.id = edificio.generarID(edificio.tipo);
+
+        /* El jugador gasta dinero */
+
+        if (edificio.coste > edificio.duenho.getFortuna()) {
+            System.out.println("Fortuna insuficiente para edificar.");
             return true;
         }
 
-        this.id = generarID(tipo);
+        System.out.println(edificio.id + " contruído.");
 
-        /* El multiplicador depende del tipo */
-        float mult = switch (tipo) {
-            case "casa" -> Valor.MULTIPLICADOR_CASA;
-            case "hotel" -> Valor.MULTIPLICADOR_HOTEL;
-            case "piscina" -> Valor.MULTIPLICADOR_PISCINA;
-            case "pista" -> Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
-            default -> 1.f;
-        };
+        edificio.duenho.setGastos(edificio.coste);
+        edificio.duenho.sumarFortuna(-edificio.coste);
 
-        this.coste = casilla.getValor() * mult;
-
+        /* Todo correcto */
         return false;
     }
 
