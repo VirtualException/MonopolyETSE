@@ -23,8 +23,8 @@ public class Jugador {
     private float premiosInversionesOBote;
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
-    private ArrayList<Hipoteca> hipotecas;
-    private ArrayList<Edificio> edificios;
+    //private ArrayList<Hipoteca> hipotecas;
+    //private ArrayList<Edificio> edificios;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -52,8 +52,8 @@ public class Jugador {
         this.premiosInversionesOBote = 0.0f;
         this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
-        this.hipotecas = new ArrayList<>();
-        this.edificios = new ArrayList<>();
+        //this.hipotecas = new ArrayList<>();
+        //this.edificios = new ArrayList<>();
     }
 
 
@@ -285,11 +285,19 @@ public class Jugador {
         return propiedades;
     }
 
-    public ArrayList<Hipoteca> getHipotecas() {
-        return hipotecas;
-    }
+    //public ArrayList<Hipoteca> getHipotecas() {
+    //    return hipotecas;
+    //}
 
     public ArrayList<Edificio> getEdificios() {
+        ArrayList<Edificio> edificios = new ArrayList<>();
+
+        /* Casillas del jugador */
+        for (Casilla c : this.propiedades) {
+            /* Añadir todos los edificios de las casillas del jugador */
+            edificios.addAll(c.getEdificios());
+        }
+
         return edificios;
     }
 
@@ -360,11 +368,11 @@ public class Jugador {
         this.propiedades = propiedades;
     }
 
-    public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
-        this.hipotecas = hipotecas;
-    }
+    //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
+    //    this.hipotecas = hipotecas;
+    //}
 
-    public void setEdificios(ArrayList<Edificio> edificios) {
-        this.edificios = edificios;
-    }
+    //public void setEdificios(ArrayList<Edificio> edificios) {
+    //    this.edificios = edificios;
+    //}
 }

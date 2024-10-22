@@ -10,7 +10,7 @@ public class Menu {
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
-    private ArrayList<Edificio> edificios;  //Edificios en la partida.
+    //private ArrayList<Edificio> edificios;  //Edificios en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
@@ -110,39 +110,29 @@ public class Menu {
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
             if (jugadores.isEmpty()){
                 System.out.println("No hay avatares registrados");
-            } else{
-                for (Avatar a : avatares){
-                    if (a.getId().equals(comandos_args[2])){
-                        descAvatar(comandos_args[2]);
-                    } else {
-                        System.out.println("El avatar indicado no existe");
-                    }
+                return false;
+            }
+            for (Avatar a : avatares){
+                if (a.getId().equals(comandos_args[2])){
+                    descAvatar(comandos_args[2]);
+                    return false;
                 }
             }
-
         } else if (comandos_args[0].equals("describir") && comandos_args[1].equals("jugador") && num_args == 3) {
             if (jugadores.isEmpty()){
                 System.out.println("No hay jugadores registrados");
-            } else{
-                for (Jugador j : jugadores){
-                    if (j.getNombre().equals(comandos_args[2])){
-                        descJugador(comandos_args[2]);
-                    } else {
-                        System.out.println("El jugador indicado no existe");
-                    }
-                }
-
+                return false;
             }
-        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
-            listarVenta();
+            for (Jugador j : jugadores){
+                if (j.getNombre().equals(comandos_args[2])){
+                    descJugador(comandos_args[2]);
+                    return false;
+                }
+            }
         } else if (comandos_args[0].equals("describir") && num_args == 2) {
             descCasilla(comandos_args[1]);
         } else if (comandos_args[0].equals("jugador") && num_args == 1) {
-            if (jugadores.isEmpty()){
-                System.out.println("No hay jugadores registrados");
-            } else {
-                descTurno();
-            }
+            descTurno();
         } else if (comandos_args[0].equals("salir") && comandos_args[1].equals("carcel") && num_args == 2) {
             if (jugadores.get(turno).getAvatar().getLugar().getNombre().equals("Carcel")){
                 salirCarcel();
@@ -214,12 +204,18 @@ public class Menu {
     }
 
     private void descTurno() {
-         String nombre = jugadores.get(turno).getNombre();
-         String avatar = jugadores.get(turno).getAvatar().getId();
-         System.out.println("{\n");
-         System.out.print("\tnombre: " + nombre  + "," + "\n");
-         System.out.print("\tavatar: " + avatar);
-         System.out.print("\n}\n");
+
+        if (jugadores.isEmpty()) {
+            System.out.println("No hay jugadores.");
+            return;
+        }
+
+        String nombre = jugadores.get(turno).getNombre();
+        String avatar = jugadores.get(turno).getAvatar().getId();
+        System.out.println("{\n");
+        System.out.print("\tnombre: " + nombre  + "," + "\n");
+        System.out.print("\tavatar: " + avatar);
+        System.out.print("\n}\n");
     }
 
     /* Método que realiza las acciones asociadas al comando 'describir nombre_casilla'.
@@ -277,12 +273,11 @@ public class Menu {
                     System.out.println("El jugador debe pagar para salír de la cárcel.");
                     return;
                 }
-                else {
-                    System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
-                    j.setEnCarcel(false);
-                    this.tirado = false;
-                    return;
-                }
+
+                System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
+                j.setEnCarcel(false);
+                this.tirado = false;
+                return;
             }
 
             /* Simplemente saca doble */
@@ -391,11 +386,9 @@ public class Menu {
 
     // Método para listar los edificios construídos.
     private void listarEdificios(){
-        if(edificios.isEmpty()){
-            System.out.println("ERROR. No se ha construído ningún edificio.");
-        } else {
-            for(Edificio e : edificios){
-                System.out.println(e.listarEdificios());
+        for (Jugador j : jugadores) {
+            for (Edificio e : j.getEdificios()) {
+                e.imprimirEdificio();
             }
         }
     }

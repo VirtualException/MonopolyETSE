@@ -11,8 +11,6 @@ public class Edificio {
     private Grupo grupo;
     private float coste;
     private String tipo;
-    private static ArrayList<Edificio> edificios = new ArrayList<>();
-
 
     // Constructor vacío
     public Edificio() {
@@ -27,30 +25,29 @@ public class Edificio {
         this.grupo = grupo;
         this.coste = coste;
         this.tipo = tipo;
-        edificios.add(this);
     }
 
 
 
     // Método para añadir un edificio al ArrayList de edificios.
-    public void anhadirEdificio(Edificio edificio){
-        if(!edificios.contains(edificio)){
-            edificios.add(edificio);
-        } else {
-            System.out.println("ERROR. Este edificio ya ha sido construído.");
-        }
-    }
+    //public void anhadirEdificio(Edificio edificio){
+    //    if(!edificios.contains(edificio)){
+    //        edificios.add(edificio);
+    //    } else {
+    //        System.out.println("ERROR. Este edificio ya ha sido construído.");
+    //    }
+    //}
 
 
 
     // Método para eliminar un edificio del ArrayList de edificios.
-    public void eliminarEdificio(Edificio edificio){
-        if(edificios.isEmpty() || !edificios.contains(edificio)){
-            System.out.println("ERROR. No ha sido posible eliminar el edificio");
-        } else {
-            edificios.remove(edificio);
-        }
-    }
+    //public void eliminarEdificio(Edificio edificio){
+    //    if(edificios.isEmpty() || !edificios.contains(edificio)){
+    //        System.out.println("ERROR. No ha sido posible eliminar el edificio");
+    //    } else {
+    //        edificios.remove(edificio);
+    //    }
+    //}
 
 
 
@@ -59,7 +56,7 @@ public class Edificio {
 
         int contadorTipo = 0;
 
-        for(Edificio e : edificios){
+        for(Edificio e : casilla.getEdificios()){
             if(e.getTipo().equals(tipo)){
                 contadorTipo++;
             }
@@ -69,19 +66,18 @@ public class Edificio {
 
 
 
+    /* Los edificios se deberían listar desde la casilla no???? */
     // Método que devuelve una cadena con información de un edificio.
-    public String listarEdificios(){
+    public String imprimirEdificio(){
         String cadena = "";
+        cadena = ("{\n");
+        cadena += ("\tid: " + id + "," + "\n");
+        cadena += ("\tpropietario: " + duenho.getNombre() + "," + "\n");
+        cadena += ("\tcasilla: " + casilla.getNombre() + "," + "\n");
+        cadena += ("\tgrupo: " + grupo.getColorGrupo() + "," + "\n");
+        cadena += ("\tcoste: " + coste + "\n");
+        cadena += ("},\n");
 
-        for(Edificio e : edificios){
-            cadena = ("{\n");
-            cadena += ("\tid: " + e.id + "," + "\n");
-            cadena += ("\tpropietario: " + e.duenho.getNombre() + "," + "\n");
-            cadena += ("\tcasilla: " + e.casilla.getNombre() + "," + "\n");
-            cadena += ("\tgrupo: " + e.grupo.getColorGrupo() + "," + "\n");
-            cadena += ("\tcoste: " + e.coste + "\n");
-            cadena += ("},\n");
-        }
         return cadena;
     }
 
@@ -123,9 +119,9 @@ public class Edificio {
         return this.tipo;
     }
 
-    public static ArrayList<Edificio> getEdificios() {
-        return edificios;
-    }
+    //public static ArrayList<Edificio> getEdificios() {
+    //    return edificios;
+    //}
 
 
 
@@ -155,7 +151,7 @@ public class Edificio {
         }
     }
 
-    public static void setEdificios(ArrayList<Edificio> edificios) {
-        Edificio.edificios = edificios;
-    }
+    //public static void setEdificios(ArrayList<Edificio> edificios) {
+    //    Edificio.edificios = edificios;
+    //}
 }

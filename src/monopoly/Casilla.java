@@ -452,4 +452,8 @@ public class Casilla {
     public void setAvatares(ArrayList<Avatar> avatares) {
         this.avatares = avatares;
     }
+
+    public ArrayList<Edificio> getEdificios() {
+        return this.edificios;
+    }
 }
