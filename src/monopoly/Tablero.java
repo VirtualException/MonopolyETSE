@@ -168,7 +168,7 @@ public class Tablero {
     public String casillaToColorString(int casilla, String nombre) {
 
         /* Hay que convertir palabras en los valores de "Valor.ALGO" */
-        String representacion = "";
+        String representacion;
         StringBuilder avataresConAmpersand = new StringBuilder();
         if (!encontrar_casilla(nombre).getAvatares().isEmpty()){
             avataresConAmpersand.append("&");

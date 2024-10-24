@@ -176,19 +176,11 @@ public class Jugador {
         //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
             if(propietario.equals(banca)){
-                for(Casilla c : jugador.propiedades){
-                    banca.anhadirPropiedad(c);
-                    c.setDuenho(banca);
-                    jugador.eliminarPropiedad(c);
-                }
+                traspasarPropiedadesJugador(banca, jugador);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+       
             } else {
-                for(Casilla c : jugador.propiedades){
-                    propietario.anhadirPropiedad(c);
-                    c.setDuenho(propietario);
-                    jugador.eliminarPropiedad(c);
-                }
-
+                traspasarPropiedadesJugador(propietario, jugador);
                 propietario.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
@@ -196,28 +188,30 @@ public class Jugador {
             solvente = true;  
             eliminarJugador(jugadores, jugador);   
         } else {
-            for(Casilla c : jugador.propiedades){
-                banca.anhadirPropiedad(c);
-                c.setDuenho(banca);
-                jugador.eliminarPropiedad(c);
-            }
+            traspasarPropiedadesJugador(banca, jugador);
             System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
             eliminarJugador(jugadores, jugador); 
         }
     }
 
-
-
+    private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
+        for(Casilla c : jugador.propiedades){
+            nuevoPropietario.anhadirPropiedad(c);
+            c.setDuenho(nuevoPropietario);
+            jugador.eliminarPropiedad(c);
+        }
+         
+    }
 
     //Método para eliminar a un jugador de la partida
-    public void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
+    private void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
         for(Jugador j : jugadores){
             if(j.equals(jugador)){
                 j.getAvatar().getLugar().eliminarAvatar(j.getAvatar());
                 jugadores.remove(j);
             }
         }
-        System.out.println("El jugador" + jugador.getNombre() + " se elimina de la partida");
+        System.out.println("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");
     }
 
 

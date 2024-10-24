@@ -36,6 +36,7 @@ public class Casilla {
         this.duenho = duenho;
         this.edificios = new ArrayList<>();
         this.contarCaer = new int[10];
+        this.hipoteca = valor / 2f;
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.

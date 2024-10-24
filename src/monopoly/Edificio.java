@@ -1,5 +1,6 @@
 package monopoly;
 
+import java.util.ArrayList;
 import partida.*;
 
 public class Edificio {
@@ -23,7 +24,7 @@ public class Edificio {
     }
 
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
-    static public boolean contruir(Edificio edificio) {
+    static public boolean contruir(Edificio edificio, Tablero tablero) {
 
         /* Evaluar normas de edificación para el juagdor que quiere contruir */
 
@@ -116,9 +117,9 @@ public class Edificio {
             default:
                 System.out.println("Tipo de contrucción inválido.");
                 return true; /* Salir de la función con código de error */
-        };
+        }
 
-        edificio.id = edificio.generarID(edificio.tipo);
+        edificio.id = edificio.generarID(edificio.tipo, tablero);
 
         /* El jugador gasta dinero */
 
@@ -160,13 +161,17 @@ public class Edificio {
 
 
     // Método para generar el ID del edificio.
-    private String generarID(String tipo){
+    private String generarID(String tipo, Tablero tablero){
 
         int contadorTipo = 0;
 
-        for(Edificio e : casilla.getEdificios()){
-            if(e.getTipo().equals(tipo)){
-                contadorTipo++;
+        for(ArrayList<Casilla> arraylist : tablero.getPosiciones()){
+            for(Casilla c : arraylist){
+                for(Edificio e : c.getEdificios()){
+                    if(e.getTipo().equals(tipo)){
+                        contadorTipo++;
+                    }
+                }
             }
         }
         return tipo + "-" + (contadorTipo + 1);
@@ -215,11 +220,6 @@ public class Edificio {
         return this.tipo;
     }
 
-    //public static ArrayList<Edificio> getEdificios() {
-    //    return edificios;
-    //}
-
-
 
     public void setId(String id) {
         this.id = id;
@@ -246,8 +246,4 @@ public class Edificio {
             this.tipo = tipo;
         }
     }
-
-    //public static void setEdificios(ArrayList<Edificio> edificios) {
-    //    Edificio.edificios = edificios;
-    //}
 }

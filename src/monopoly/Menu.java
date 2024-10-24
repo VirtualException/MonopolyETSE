@@ -162,6 +162,14 @@ public class Menu {
         return false;
     }
 
+
+    private void crearEdificio(){
+        // Edificio = new Edificio ( ...)
+        // casilla.addEdificio(edificio)
+        // this.edificios.add(edificio)
+        // 
+    }
+
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
@@ -342,7 +350,7 @@ public class Menu {
 
         /* El edificio es el encargado de comprobar las reglas, y en caso de éxito, se añade a la lista de edificios. */
         Edificio e = new Edificio(j, tipo);
-        if (!Edificio.contruir(e)) {
+        if (!Edificio.contruir(e, tablero)) {
             /* Si todo va bien, el edificio se añade a la lista de edificios  */
             ArrayList<Edificio> edificios = j.getEdificios();
             edificios.add(e);
