@@ -95,24 +95,48 @@ public class Casilla {
         switch (tipoCasilla) {
             case "Solar":
 
-                incrementarSolares(tab);
                 /* El jugador cayó una vez más en esta casilla */
                 this.contarCaer[jugador.getIndice()]++;
                 /* Si hay dueño */
                 if (duenho != banca && duenho != jugador) {
-                    float pago = valor;
+
+                    /* !!!! Calcular cuanto tiene que pagar !!!! */
+
+                    /* Alquiler inicial = 10% */
+                    float pago_alquiler = valor * 10.f;
+
+                    /* Si el dueño del solar tiene el grupo, se dobla el valor. */
+                    if (this.grupo.esDuenhoGrupo(this.duenho)) {
+                        pago_alquiler *= 2;
+                    }
+
+                    /* Sumar alquiler dependiendo de las edificaciones. */
+                    switch (this.getCasasN()) {
+                        case 1 -> pago_alquiler += pago_alquiler * 5;
+                        case 2 -> pago_alquiler += pago_alquiler * 15;
+                        case 3 -> pago_alquiler += pago_alquiler * 35;
+                        case 4 -> pago_alquiler += pago_alquiler * 50;
+                    }
+                    pago_alquiler += pago_alquiler * 70 * this.getHotelesN();
+                    pago_alquiler += pago_alquiler * 25 * this.getPiscinasN();
+                    pago_alquiler += pago_alquiler * 25 * this.getPistasN();
+
+
+
                     /* Si no puede pagarlo */
-                    if (jugador.getFortuna() < pago) {
+                    if (jugador.getFortuna() < pago_alquiler) {
                         System.out.println("Dinero insuficiente. El jugador debe declararse en bancarrota.");
                         return false;
                     }
                     /* El jugador paga al propietario */
-                    jugador.sumarGastos(pago);
-                    jugador.sumarFortuna(-pago);
+                    jugador.sumarGastos(pago_alquiler);
+                    jugador.setPagoDeAlquileres(jugador.getPagoDeAlquileres() + pago_alquiler);
+                    jugador.sumarFortuna(-pago_alquiler);
                     /* El propietario recibe */
-                    duenho.sumarFortuna(pago);
+                    duenho.sumarFortuna(pago_alquiler);
+                    duenho.setCobroDeAlquileres(duenho.getCobroDeAlquileres() + pago_alquiler);
                     
-                    System.out.println("El jugador " + jugador.getNombre() + " paga " + pago + " € de alquiler.");
+                    System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
                     
                     return true;
                 }   break;
@@ -128,8 +152,8 @@ public class Casilla {
                 break;
             default:
                 System.out.println("Evaluando tipo especial");
-                /* Cae en cárcel */
-                if (nombre.equals("IrCarcel") || nombre.equals("Carcel")) {
+                /* Cae en IrCárcel */
+                if (nombre.equals("IrCarcel")) {
                     jugador.encarcelar(tab.getPosiciones());
                 }
                 /* Cae en Parking */
@@ -141,41 +165,6 @@ public class Casilla {
         }
         return solvente;
     }
-
-
-
-    /* Método para incrementar el precio de los Solares un 5% si todos los jugadores han 
-     * completado 4 vueltas y los solares no han sido comprados previamente */
-    public void incrementarSolares(Tablero tab){
-        boolean vueltasCompletadas = true;
-
-        for(ArrayList<Casilla> arraylist : tab.getPosiciones()){
-            for(Casilla c : arraylist){
-                if(!c.getAvatares().isEmpty() && c.getDuenho().getNombre().equals("Banca")){
-
-                    // Comprobamos que todos los jugadores han completado 4 vueltas
-                    for(Avatar av : c.getAvatares()){
-                        if(av.getJugador().getVueltas() < 4){
-                            vueltasCompletadas = false;
-                            break;
-                        }                     
-                    }
-   
-                    // Aumentamos el precio de los Solares y reseteamos las vueltas de los jugadores
-                    if(vueltasCompletadas){
-                        this.valor*=1.05f;
-
-                        for(Avatar av : c.getAvatares()){
-                            av.getJugador().setVueltas(0);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
 
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.

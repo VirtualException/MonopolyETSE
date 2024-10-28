@@ -77,6 +77,7 @@ public class Avatar {
                     this.lugar.eliminarAvatar(this);
                     this.lugar = casilla;
                     casilla.anhadirAvatar(this);
+                    return;
                 }
             }
         }

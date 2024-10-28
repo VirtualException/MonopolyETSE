@@ -110,6 +110,8 @@ public class Jugador {
                         this.avatar.setLugar(casilla);
                         casilla.anhadirAvatar(this.avatar);
                         this.enCarcel = true;
+
+                        return;
                     }
                 }
             }

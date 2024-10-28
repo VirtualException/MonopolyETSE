@@ -109,6 +109,7 @@ public class Menu {
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
             lanzarDados(Integer.parseInt(comandos_args[2]), Integer.parseInt(comandos_args[3])); // Modo manual
+            incrementarSolares();
         }
         /* Describir */
         else if (comandos_args[0].equals("describir") && comandos_args[1].equals("avatar") && num_args == 3) {
@@ -163,12 +164,12 @@ public class Menu {
     }
 
 
-    private void crearEdificio(){
-        // Edificio = new Edificio ( ...)
-        // casilla.addEdificio(edificio)
-        // this.edificios.add(edificio)
-        // 
-    }
+    //private void crearEdificio() {
+    //    // Edificio = new Edificio ( ...)
+    //    // casilla.addEdificio(edificio)
+    //    // this.edificios.add(edificio)
+    //    //
+    //}
 
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
@@ -338,6 +339,8 @@ public class Menu {
 
         boolean compraExitosa = casillaActual.comprarCasilla(jugadorActual, banca);
 
+        jugadorActual.setDineroInvertido(jugadorActual.getDineroInvertido() + casillaActual.getValor());
+
         if(compraExitosa){
             System.out.println("El jugador " + jugadorActual.getNombre() + " compra la casilla " + nombre + " por " +
             casillaActual.getValor() + "€. Su fortuna actual es " + jugadorActual.getFortuna() + "€.");
@@ -348,9 +351,12 @@ public class Menu {
     private void edificar(String tipo) {
         Jugador j = jugadores.get(turno);
 
-        /* El edificio es el encargado de comprobar las reglas, y en caso de éxito, se añade a la lista de edificios. */
+        /* El edificio es el encargado de comprobar las reglas, y en caso de
+        éxito, se añade a la lista de edificios. Además se suman los gastos. */
+
         Edificio e = new Edificio(j, tipo);
-        if (!Edificio.contruir(e, tablero)) {
+
+        if (!Edificio.construir(e, tablero)) {
             /* Si todo va bien, el edificio se añade a la lista de edificios  */
             ArrayList<Edificio> edificios = j.getEdificios();
             edificios.add(e);
@@ -462,6 +468,42 @@ public class Menu {
         j = jugadores.get(turno);
 
         System.out.println("El jugador actual es " + j.getNombre() + ".");
+
+    }
+
+    /* Método para incrementar el precio de los Solares un 5% si todos los jugadores han
+     * completado 4 vueltas y los solares no han sido comprados previamente */
+    public void incrementarSolares() {
+        boolean vueltasCompletadas = true;
+
+        // Comprobamos que todos los jugadores han completado 4 vueltas
+
+        for(Jugador j : jugadores){
+            if(j.getVueltas() < 4){
+                vueltasCompletadas = false;
+                break;
+            }
+        }
+
+        /* Si no se dieron 4 vueltas, salimos. */
+        if (!vueltasCompletadas)
+            return;
+
+        /* Si se dieron, incrementamos. */
+
+        // Aumentamos el precio de los Solares
+        for (ArrayList<Casilla> lados : tablero.getPosiciones()){
+            for (Casilla c : lados) {
+                if (!c.getAvatares().isEmpty() && c.getDuenho().getNombre().equals("Banca")) {
+                    c.setValor(c.getValor() * 1.05f);
+                }
+            }
+        }
+
+        /* Reseteamos las vueltas de los jugadores */
+        for (Jugador j : jugadores) {
+            j.setVueltas(0);
+        }
 
     }
 }
