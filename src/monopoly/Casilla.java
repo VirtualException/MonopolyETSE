@@ -169,7 +169,7 @@ public class Casilla {
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
-    public boolean  comprarCasilla(Jugador solicitante, Jugador banca) {
+    public boolean comprarCasilla(Jugador solicitante, Jugador banca) {
         
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
             System.out.println("Esta casilla no se puede comprar.");

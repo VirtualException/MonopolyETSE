@@ -89,6 +89,9 @@ public class Menu {
             listarVenta();
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
         listarEdificios();
+        } else if(comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 3){
+            String colorGrupo = comandos_args[2];
+            listarEdificiosGrupo(colorGrupo);
         }
         /* Ver tablero */
         else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
@@ -420,6 +423,21 @@ public class Menu {
             for (Edificio e : j.getEdificios()) {
                 System.out.println(e.stringEdificio());
             }
+        }
+    }
+
+
+    // Método para listar los edificios construídos en un grupo.
+    private void listarEdificiosGrupo(String colorGrupo){
+
+        if(tablero.getGrupos().containsKey(colorGrupo)){
+
+            Grupo g = tablero.getGrupos().get(colorGrupo);
+            System.out.println(g.StringEdificosGrupo());
+            //funciones para imprimir cuantos edificios se pueden o no construír
+
+        } else {
+            System.out.println("El grupo " + colorGrupo + " no existe.");
         }
     }
 

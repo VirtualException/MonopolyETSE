@@ -193,6 +193,8 @@ public class Edificio {
         return cadena;
     }
 
+
+
      
     // Getters y Setters
 

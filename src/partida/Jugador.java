@@ -154,12 +154,12 @@ public class Jugador {
         String cadena;
 
         cadena = ("{\n");
-        cadena += ("\tdineroInvertido: " + jugador.getDineroInvertido() + "," + "\n");
-        cadena += ("\tpagoTasasEImpuestos: " + jugador.getPagoTasasEImpuestos() + "," + "\n");
-        cadena += ("\tpagoDeAlquileres: " + jugador.getPagoDeAlquileres() + "," + "\n");
-        cadena += ("\tcobroDeAlquileres: " + jugador.getCobroDeAlquileres() + "," + "\n");
-        cadena += ("\tpasarPorCasillaDeSalida: " + jugador.getPasarPorCasillaDeSalida() + "," + "\n");
-        cadena += ("\tpremiosInversionesOBote: " + jugador.getPremiosInversionesOBote() + "," + "\n");
+        cadena += ("\tdineroInvertido: " + jugador.getDineroInvertido() + ",\n");
+        cadena += ("\tpagoTasasEImpuestos: " + jugador.getPagoTasasEImpuestos() + ",\n");
+        cadena += ("\tpagoDeAlquileres: " + jugador.getPagoDeAlquileres() + ",\n");
+        cadena += ("\tcobroDeAlquileres: " + jugador.getCobroDeAlquileres() + ",\n");
+        cadena += ("\tpasarPorCasillaDeSalida: " + jugador.getPasarPorCasillaDeSalida() + ",\n");
+        cadena += ("\tpremiosInversionesOBote: " + jugador.getPremiosInversionesOBote() + ",\n");
         cadena += ("\tvecesEnLaCarcel: " + jugador.getVecesEnLaCarcel() + "\n");
         cadena += ("}\n");
 
