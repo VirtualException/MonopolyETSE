@@ -64,6 +64,10 @@ public class Menu {
         int num_args = split.length;
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
+        boolean tiene_deudas = jugadores.get(turno).getDeudas() > 0;
+        if (tiene_deudas)
+            System.out.println("Atención! Debes solucionar tus deudas! Vende/Hipoteca propiedades.");
+
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
 
@@ -102,12 +106,15 @@ public class Menu {
             acabarTurno();
         }
         else if (comandos_args[0].equals("comprar") && num_args == 2){
+            if (tiene_deudas) return false;
             comprar(comandos_args[1]);
         }
         else if (comandos_args[0].equals("edificar") && num_args == 2){
+            if (tiene_deudas) return false;
             edificar(comandos_args[1]);
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
+            if (tiene_deudas) return false;
             lanzarDados(-1, -1); // Modo aleatorio
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
@@ -142,6 +149,7 @@ public class Menu {
         } else if (comandos_args[0].equals("jugador") && num_args == 1) {
             descTurno();
         } else if (comandos_args[0].equals("salir") && comandos_args[1].equals("carcel") && num_args == 2) {
+            if (tiene_deudas) return false;
             if (jugadores.get(turno).isEnCarcel()) {
                 salirCarcel();
             } else {
@@ -307,7 +315,7 @@ public class Menu {
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
             System.out.println("Moviendo jugador...");
-            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
+            float deuda = j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
         }
         else {
             System.out.println("El jugador sigue en la cárcel.");
@@ -466,7 +474,7 @@ public class Menu {
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
     /* ? */
-        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca);
+        //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
         jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 

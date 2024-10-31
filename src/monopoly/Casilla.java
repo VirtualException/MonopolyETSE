@@ -88,9 +88,9 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
+    public float evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
 
-        boolean solvente = true;
+        float deuda = 0;
         String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
@@ -126,7 +126,8 @@ public class Casilla {
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago_alquiler) {
                         System.out.println("Dinero insuficiente. El jugador debe declararse en bancarrota.");
-                        return false;
+                        deuda = pago_alquiler - jugador.getFortuna();
+                        break;
                     }
                     /* El jugador paga al propietario */
                     jugador.sumarGastos(pago_alquiler);
@@ -143,11 +144,11 @@ public class Casilla {
             case "Transporte":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
-                    return true;
+                    break;
                 }
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -159,39 +160,53 @@ public class Casilla {
 
                 break;
             case "Comunidad":
-                Cartas carta = new Cartas();
-                Scanner scanner = new Scanner(System.in);
-                int opcion = -1;
-
+                Cartas carta1 = new Cartas(); //Creamos carta
+                Scanner scanner1 = new Scanner(System.in);
+                int opcion1;
                 System.out.println("Has caído en una casilla de Comunidad, por favor, escoge una carta");
-
                 while (true) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
-                        opcion = Integer.parseInt(scanner.nextLine());
-
-                        if (opcion >= 1 && opcion <= 6) {
+                        opcion1 = Integer.parseInt(scanner1.nextLine()); //hacemos un parse int
+                        if (opcion1 >= 1 && opcion1 <= 6) {
                             break; // Si el número está en el rango, sale del bucle
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
-
                     } catch (NumberFormatException e) {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-
-                carta.accion(this, jugador, banca, jugadores, tab, opcion);
+                carta1.accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
                 break;
-
+            case "Suerte":
+                Cartas carta2 = new Cartas(); //Creamos carta
+                Scanner scanner2 = new Scanner(System.in);
+                int opcion2;
+                System.out.println("Has caído en una casilla de Suerte, por favor, escoge una carta");
+                while (true) {
+                    System.out.print("Escoge un valor del 1 al 6: ");
+                    try {
+                        opcion2 = Integer.parseInt(scanner2.nextLine()); //hacemos un parse int
+                        if (opcion2 >= 1 && opcion2 <= 6) {
+                            break; // Si el número está en el rango, sale del bucle
+                        } else {
+                            System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
+                    }
+                }
+                carta2.accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funciona de las cartas
+                break;
             case "Servicio":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
-                    return true;
+                    break;
                 }
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -201,12 +216,10 @@ public class Casilla {
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
                 break;
-            case "Suerte":
-                break;
             case "Impuesto":
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -229,7 +242,7 @@ public class Casilla {
                     this.setValor(0);
                 }   break;
         }
-        return solvente;
+        return deuda;
     }
 
     /*Método usado para comprar una casilla determinada. Parámetros:
@@ -237,7 +250,7 @@ public class Casilla {
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
     public boolean comprarCasilla(Jugador solicitante, Jugador banca) {
 
-        if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
+        if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicio")){
             System.out.println("Esta casilla no se puede comprar.");
             return false;
         }
