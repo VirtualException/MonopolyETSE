@@ -159,6 +159,21 @@ public class Casilla {
             case "Comunidad":
                 break;
             case "Servicio":
+                /* Si no hay dueño */
+                if (duenho == banca || duenho == jugador) {
+                    return true;
+                }
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
+                    solvente = false;
+                    break;
+                }
+
+                System.out.println("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
+                jugador.sumarGastos(valor);
+                jugador.sumarFortuna(-valor);
+                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
+                duenho.sumarFortuna(valor);
                 break;
             case "Suerte":
                 break;
