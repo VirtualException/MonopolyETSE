@@ -136,8 +136,8 @@ public class Casilla {
 
                     System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
 
-                    return true;
-                }   break;
+                }
+                break;
             case "Transporte":
                 break;
             case "Comunidad":
@@ -147,6 +147,16 @@ public class Casilla {
             case "Suerte":
                 break;
             case "Impuesto":
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto.");
+                    solvente = false;
+                }
+
+                System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");
+                jugador.sumarGastos(valor);
+                jugador.sumarFortuna(-valor);
+                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
+                banca.sumarFortuna(valor);
                 break;
             default:
                 System.out.println("Evaluando tipo especial");
