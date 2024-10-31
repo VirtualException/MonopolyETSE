@@ -161,10 +161,8 @@ public class Casilla {
             case "Comunidad":
                 Cartas carta = new Cartas();
                 Scanner scanner = new Scanner(System.in);
-                int opcion = -1;
-
+                int opcion;
                 System.out.println("Has caído en una casilla de Comunidad, por favor, escoge una carta");
-
                 while (true) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
@@ -175,15 +173,12 @@ public class Casilla {
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
-
                     } catch (NumberFormatException e) {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-
                 carta.accion(this, jugador, banca, jugadores, tab, opcion);
                 break;
-
             case "Servicio":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {

@@ -448,7 +448,7 @@ public class Menu {
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
     /* ? */
-        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca);
+        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
         jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 
