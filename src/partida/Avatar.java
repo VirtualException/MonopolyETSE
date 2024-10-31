@@ -69,6 +69,33 @@ public class Avatar {
         }
     }
 
+    public void moverAvatarAtras(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
+
+        int nuevaPosicion = this.lugar.getPosicion() - Math.abs(valorTirada); // Resta el valor para moverse hacia atrás
+
+        // Ajuste en caso de que la posición sea negativa
+        if (nuevaPosicion < 0) {
+            nuevaPosicion = 40 + (nuevaPosicion % 40); // Ajuste para el tablero circular
+
+            if (!this.lugar.getNombre().equals("IrCarcel")) {
+                jugador.setVueltas(jugador.getVueltas() - 1);
+                jugador.sumarFortuna((float) Valor.SUMA_VUELTA * (-1));
+            }
+        }
+
+        // Mover el avatar a la nueva casilla
+        for (ArrayList<Casilla> arrayList : casillas) {
+            for (Casilla casilla : arrayList) {
+                if (casilla.getPosicion() == nuevaPosicion) {
+                    this.lugar.eliminarAvatar(this);
+                    this.lugar = casilla;
+                    casilla.anhadirAvatar(this);
+                    return; // Salimos del bucle una vez encontrado
+                }
+            }
+        }
+    }
+
     public void teleportAvatar(ArrayList<ArrayList<Casilla>> casillas, Casilla c) {
 
         for(ArrayList<Casilla> arrayList : casillas){

@@ -146,7 +146,6 @@ public class Jugador {
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
     public float moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
-
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
         Casilla c = this.getAvatar().getLugar();
@@ -158,6 +157,38 @@ public class Jugador {
 
         this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
         return deudas;
+    }
+
+    public float moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+
+        if (this.getAvatar().getTipo().equals("Pelota")){
+            if (tirada > 4){
+                ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+
+                Casilla c = this.getAvatar().getLugar();
+
+                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                this.getAvatar().moverAvatar(pos, tirada);
+                c = this.getAvatar().getLugar();
+                System.out.println(" hasta " + c.getNombre() + ".");
+
+                this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                return deudas;
+            } else {
+                ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
+                Casilla c = this.getAvatar().getLugar();
+
+                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                this.getAvatar().moverAvatarAtras(pos, tirada);
+                c = this.getAvatar().getLugar();
+                System.out.println(" hasta " + c.getNombre() + ".");
+
+                this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                return deudas;
+            }
+        }
+                return deudas;
+
     }
 
     public void teleportJugador(Tablero tablero, Casilla casilla) {
