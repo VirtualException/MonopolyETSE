@@ -120,28 +120,64 @@ public class Jugador {
     }
 
 
+    // Método para hipotecar una propiedad
     public void hipotecarPropiedad(Jugador jugador, Casilla c) {
 
-        if (this.deudas == 0.f) {
-            System.out.println("No tienes deudas, no puedes hipotecar.");
-            return;
-        }
-
-        if (!c.getHipotecada()) {
-            if (c.getTipo().equals("Solar")) {
-                this.sumarFortuna((c.getPrecioOriginal() / c.getGrupo().getMiembros().size()) / 2);
-                c.setHipotecada(true);
-            } else if (c.getTipo().equals("Transporte")) {
-                this.sumarFortuna(((float) Valor.SUMA_VUELTA) / 2);
-                c.setHipotecada(true);
-            } else if (c.getTipo().equals("Servicios")) {
-                this.sumarFortuna((float) (0.75f * Valor.SUMA_VUELTA) / 2);
-                c.setHipotecada(true);
-            } else {
-                System.out.println("No se puede hipotecar esta casilla.");
-            }
-        }
+    // Verificamos que el jugador tenga deudas
+    if (this.deudas == 0.f) {
+        System.out.println("No tienes deudas, no puedes hipotecar.");
+        return;
     }
+
+    float precioHipoteca;
+
+    // Verificamos que el jugador posee la propiedad
+    if (this.propiedades.contains(c)) {
+        
+        // Verificamos que la propiedad no esté hipotecada
+        if (!c.getHipotecada()) {
+
+            switch (c.getTipo()) {
+                case "Solar":
+
+                    // Verificamos que el solar no tenga edificios
+                    if (c.getEdificios() != null && c.getEdificios().isEmpty()) {
+                        precioHipoteca = (c.getPrecioOriginal() / c.getGrupo().getMiembros().size()) / 2;
+                        jugador.sumarFortuna(precioHipoteca);
+                        c.setHipotecada(true);
+                        System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                    } else {
+                        System.out.println("No puedes hipotecar " + c.getNombre() + " porque tiene edificios. Debes vender todos los edificios.");
+                    }
+                    break;
+                
+                case "Transporte":
+                    precioHipoteca = (float) Valor.SUMA_VUELTA / 2;
+                    jugador.sumarFortuna(precioHipoteca);
+                    c.setHipotecada(true);
+                    System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    break;
+                
+                case "Servicios":
+                    precioHipoteca = (float) (0.75f * Valor.SUMA_VUELTA) / 2;
+                    jugador.sumarFortuna(precioHipoteca);
+                    c.setHipotecada(true);
+                    System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    break;
+                
+                default:
+                    System.out.println("Tipo de casilla no válido para hipotecar.");
+                    break;
+            }
+        } else {
+            System.out.println(jugador.getNombre() + " no puede hipotecar " + c.getNombre() + ". Ya está hipotecada.");
+        }
+    } else {
+        System.out.println(jugador.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+    }
+}
+
+    
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
