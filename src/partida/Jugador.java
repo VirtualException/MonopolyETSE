@@ -120,50 +120,30 @@ public class Jugador {
     }
 
 
-       public void hipotecarPropiedad(Jugador jugador,Casilla casilla, boolean solvente) {
+    public void hipotecarPropiedad(Jugador jugador,Casilla casilla) {
 
-        if(!solvente){
-            for(Casilla c : propiedades){
-                if(c.equals(casilla) && c.getHipotecada() == false){
-                    if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("negro")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_NEGRO / 2) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("cyan")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_AZUL / 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("morado")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_ROSA / 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("amarillo")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_AMARELO/ 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("rojo")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_VERMELLO / 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("marron")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_MARRON / 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("verde")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_VERDE / 3) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Solar") && c.getGrupo().getColorGrupo().equals("azul")){
-                        this.sumarFortuna((Valor.VALOR_GRUPO_AZUL_OSCURO / 2) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Transporte")){
-                        this.sumarFortuna(((float)Valor.SUMA_VUELTA) / 2);
-                        c.setHipotecada(true);
-                    } else if(c.getTipo().equals("Servicios")){
-                        this.sumarFortuna((float)(0.75f * Valor.SUMA_VUELTA) / 2);
-                        c.setHipotecada(true);
-                    }
+        if (this.deudas == 0.f) {
+            System.out.println("No tienes deudas, no puedes hipotecar.");
+            return;
+        }
+
+        for(Casilla c : propiedades) {
+            if (c.equals(casilla) && !c.getHipotecada()) {
+                if (c.getTipo().equals("Solar")) {
+                    this.sumarFortuna(c.getPrecioOriginal() / 2);
+                    c.setHipotecada(true);
+                }
+                else if (c.getTipo().equals("Transporte")) {
+                    this.sumarFortuna(((float) Valor.SUMA_VUELTA) / 2);
+                    c.setHipotecada(true);
+                }
+                else if (c.getTipo().equals("Servicios")) {
+                    this.sumarFortuna((float) (0.75f * Valor.SUMA_VUELTA) / 2);
+                    c.setHipotecada(true);
                 }
             }
-        } else {
-            while(solvente){
-                System.out.println("No puedes hipotecar esta propiedad porque tienes dinero suficiente para pagar.");   
-            }
         }
-       }
+    }
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/

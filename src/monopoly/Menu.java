@@ -100,6 +100,7 @@ public class Menu {
         }
         /* Acciones jugador */
         else if (comandos_args[0].equals("acabar") && comandos_args[1].equals("turno") && num_args == 2) {
+            if (tiene_deudas) return false;
             acabarTurno();
         }
         else if (comandos_args[0].equals("comprar") && num_args == 2){
