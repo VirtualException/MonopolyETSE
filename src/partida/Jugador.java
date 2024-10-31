@@ -24,8 +24,6 @@ public class Jugador {
     private float premiosInversionesOBote;
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
-    //private ArrayList<Hipoteca> hipotecas;
-    //private ArrayList<Edificio> edificios;
     private int indice; /* Index dentro del array de jugadores */
 
     //Constructor vacío. Se usará para crear la banca.
@@ -124,7 +122,7 @@ public class Jugador {
     public void hipotecarPropiedad(Jugador jugador, Casilla c) {
 
     // Verificamos que el jugador tenga deudas
-    if (this.deudas == 0.f) {
+    if (jugador.deudas == 0.f) {
         System.out.println("No tienes deudas, no puedes hipotecar.");
         return;
     }
@@ -132,7 +130,7 @@ public class Jugador {
     float precioHipoteca;
 
     // Verificamos que el jugador posee la propiedad
-    if (this.propiedades.contains(c)) {
+    if (jugador.propiedades.contains(c)) {
         
         // Verificamos que la propiedad no esté hipotecada
         if (!c.getHipotecada()) {
@@ -176,6 +174,68 @@ public class Jugador {
         System.out.println(jugador.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
     }
 }
+
+
+
+    // Método para deshipotecar una propiedad
+    public void deshipotecarPropiedad(Jugador jugador, Casilla c){
+        
+        float precioDeshipoteca;
+
+        // Verificamos que el jugador posee la propiedad
+        if(jugador.propiedades.contains(c)){
+            if(c.getHipotecada()){
+                switch (c.getTipo()) {
+                    case "Solar":
+                        precioDeshipoteca = (float) (1.1*(c.getPrecioOriginal() / c.getGrupo().getMiembros().size()) / 2);
+
+                        if(jugador.getFortuna() >= precioDeshipoteca){
+                            jugador.sumarFortuna(precioDeshipoteca);
+                            jugador.sumarGastos(precioDeshipoteca);
+                            c.setHipotecada(false);
+                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                        } else {
+                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                        }
+                        break;
+                
+                    case "Transporte":
+                        precioDeshipoteca = (float) (1.1*(Valor.SUMA_VUELTA / 2));
+
+                        if(jugador.fortuna >= precioDeshipoteca){
+                            jugador.sumarFortuna(-precioDeshipoteca);
+                            jugador.sumarGastos(precioDeshipoteca);
+                            c.setHipotecada(false);
+                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                        } else {
+                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                        }
+                        break;
+                
+                    case "Servicios":
+                        precioDeshipoteca = (float) (1.1*((0.75f * Valor.SUMA_VUELTA) / 2));
+
+                        if(jugador.fortuna >= precioDeshipoteca){
+                            jugador.sumarFortuna(-precioDeshipoteca);
+                            jugador.sumarGastos(precioDeshipoteca);
+                            c.setHipotecada(false);
+                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                        } else {
+                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                        }
+                        break;
+                
+                    default:
+                        System.out.println("Tipo de casilla no válido para deshipotecar.");
+                        break;
+                }
+            } else {
+                System.out.println(jugador.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No está hipotecada.");
+            } 
+        } else {
+            System.out.println(jugador.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+        }
+    }
 
     
 
@@ -223,8 +283,7 @@ public class Jugador {
                 return deudas;
             }
         }
-                return deudas;
-
+        return deudas;
     }
 
     public void teleportJugador(Tablero tablero, Casilla casilla) {

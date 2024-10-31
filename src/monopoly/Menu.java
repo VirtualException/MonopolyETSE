@@ -153,9 +153,12 @@ public class Menu {
             } else {
                 System.out.println("El jugador no se encuentra en la cárcel.");
             }
-        } else if (comandos_args[0].equals("hipotecar") && comandos_args[0].equals("2")  ) {
+        } else if (comandos_args[0].equals("hipotecar") && num_args == 2) {
             String nombreCasilla = comandos_args[1];
             hipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
+        } else if (comandos_args[0].equals("deshipotecar") && num_args == 2){
+            String nombreCasilla = comandos_args[1];
+            deshipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
             bancarrota();
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
@@ -468,6 +471,12 @@ public class Menu {
     // Método para hipotecar una propiedad
     private void hipotecarPropiedad(Jugador jugador, Casilla c){
         jugador.hipotecarPropiedad(jugador, c);
+    }
+
+
+    // Método para deshipotecar una propiedad
+    private void deshipotecarPropiedad(Jugador jugador, Casilla c){
+        jugador.deshipotecarPropiedad(jugador, c);
     }
 
 
