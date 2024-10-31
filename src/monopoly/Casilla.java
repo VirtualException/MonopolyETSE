@@ -105,11 +105,6 @@ public class Casilla {
                     /* Alquiler inicial = 10% */
                     float pago_alquiler = valor * 10.f;
 
-                    /* Si el dueño del solar tiene el grupo, se dobla el valor. */
-                    if (this.grupo.esDuenhoGrupo(this.duenho)) {
-                        pago_alquiler *= 2;
-                    }
-
                     /* Sumar alquiler dependiendo de las edificaciones. */
                     switch (this.getCasasN()) {
                         case 1 -> pago_alquiler += pago_alquiler * 5;
@@ -121,7 +116,10 @@ public class Casilla {
                     pago_alquiler += pago_alquiler * 25 * this.getPiscinasN();
                     pago_alquiler += pago_alquiler * 25 * this.getPistasN();
 
-
+                    /* Si el dueño del solar tiene el grupo, se dobla el valor. */
+                    if (this.grupo.esDuenhoGrupo(this.duenho)) {
+                        pago_alquiler *= 2;
+                    }
 
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago_alquiler) {
@@ -135,9 +133,9 @@ public class Casilla {
                     /* El propietario recibe */
                     duenho.sumarFortuna(pago_alquiler);
                     duenho.setCobroDeAlquileres(duenho.getCobroDeAlquileres() + pago_alquiler);
-                    
+
                     System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
-                    
+
                     return true;
                 }   break;
             case "Transporte":
@@ -170,7 +168,7 @@ public class Casilla {
      * - Jugador que solicita la compra de la casilla.
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
     public boolean comprarCasilla(Jugador solicitante, Jugador banca) {
-        
+
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
             System.out.println("Esta casilla no se puede comprar.");
             return false;
@@ -241,7 +239,7 @@ public class Casilla {
             if(!edificios.isEmpty()){
                 for (Edificio e : edificios){
                     cadena +=(e.getId() + ", ");
-                } 
+                }
             } else {
                 cadena +=("");
             }
@@ -275,7 +273,7 @@ public class Casilla {
             if(getAvatares() != null){
                 for (Avatar a : getAvatares()){
                     cadena +=(a.getJugador().getNombre() + ", ");
-                } 
+                }
             } else {
                 cadena +=("");
             }
@@ -374,6 +372,21 @@ public class Casilla {
     }
 
 
+    public float getPrecioOriginal() {
+        float precio_original = switch (grupo.getColorGrupo()) {
+            case "negro" -> Valor.VALOR_GRUPO_NEGRO;
+            case "cyan" -> Valor.VALOR_GRUPO_AZUL;
+            case "rosa" -> Valor.VALOR_GRUPO_ROSA;
+            case "amarillo" -> Valor.VALOR_GRUPO_AMARELO;
+            case "vermello" -> Valor.VALOR_GRUPO_VERMELLO;
+            case "marron" -> Valor.VALOR_GRUPO_MARRON;
+            case "verde" -> Valor.VALOR_GRUPO_VERDE;
+            case "azul" -> Valor.VALOR_GRUPO_AZUL_OSCURO;
+            default -> 0.f;
+        };
+        precio_original /= grupo.getMiembros().size();
+        return  precio_original;
+    }
 
 
     //Getters y Setters

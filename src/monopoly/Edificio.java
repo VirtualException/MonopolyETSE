@@ -2,6 +2,7 @@ package monopoly;
 
 import java.util.ArrayList;
 import partida.*;
+import monopoly.Valor;
 
 public class Edificio {
 
@@ -43,19 +44,32 @@ public class Edificio {
             System.out.println("El jugador no es el dueño del grupo.");
             return true;
         }
-        /*if (!edificio.casilla.haCaidoDosVeces(edificio.duenho)) {
+        if (!edificio.casilla.haCaidoDosVeces(edificio.duenho)) {
             System.out.println("El jugador no ha caído dos veces aquí.");
             return true;
-        }*/
+        }
+
+        int grupo_size = edificio.casilla.getGrupo().getMiembros().size();
+        if (edificio.casilla.getCasasN() == grupo_size &&
+            edificio.casilla.getHotelesN() == grupo_size &&
+            edificio.casilla.getPiscinasN() == grupo_size &&
+            edificio.casilla.getPistasN() == grupo_size) {
+            System.out.println("Máximo de edificios alcanzados!");
+            return true;
+        }
 
         System.out.println("Contruyendo " + edificio.tipo + ".");
 
-        /* (!) Contruye el edificio del tipo correspondiente si hay 4 del anterior tipo. */
+        /* Contruye el edificio del tipo correspondiente si hay 4 del anterior tipo. */
+
+        /* Coste original */
+        float precio_original = edificio.casilla.getPrecioOriginal();
+
         float mult;
         switch (edificio.tipo) {
             /* SI EL EDIFICIO ES CASA */
             case "casa":
-                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_CASA;
+                edificio.coste = precio_original * Valor.MULTIPLICADOR_CASA;
                 if (edificio.casilla.getCasasN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del mismo tipo.");
                     return true;
@@ -64,7 +78,7 @@ public class Edificio {
 
             /* SI EL EDIFICIO ES HOTEL */
             case "hotel":
-                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_HOTEL;
+                edificio.coste = precio_original * Valor.MULTIPLICADOR_HOTEL;
                 if (edificio.casilla.getHotelesN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del tipo hotel.");
                     return true;
@@ -81,7 +95,7 @@ public class Edificio {
 
             /* SI EL EDIFICIO ES PISCINA */
             case "piscina":
-                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_PISCINA;
+                edificio.coste = precio_original * Valor.MULTIPLICADOR_PISCINA;
                 if (edificio.casilla.getPiscinasN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del tipo piscina.");
                     return true;
@@ -98,7 +112,7 @@ public class Edificio {
 
             /* SI EL EDIFICIO ES PISTA DE DEPORTE */
             case "pista":
-                edificio.coste = edificio.casilla.getValor() * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
+                edificio.coste = precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
                 if (edificio.casilla.getPiscinasN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del tipo pista de deporte.");
                     return true;

@@ -510,7 +510,7 @@ public class Menu {
         /* Si se dieron, incrementamos. */
 
         // Aumentamos el precio de los Solares
-        for (ArrayList<Casilla> lados : tablero.getPosiciones()){
+        for (ArrayList<Casilla> lados : tablero.getPosiciones()) {
             for (Casilla c : lados) {
                 if (!c.getAvatares().isEmpty() && c.getDuenho().getNombre().equals("Banca")) {
                     c.setValor(c.getValor() * 1.05f);
