@@ -178,23 +178,6 @@ public class Casilla {
                 }
                 carta1.accion(this, jugador, banca, jugadores, tab, opcion1);
                 break;
-            case "Servicio":
-                /* Si no hay dueño */
-                if (duenho == banca || duenho == jugador) {
-                    return true;
-                }
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
-                    solvente = false;
-                    break;
-                }
-
-                System.out.println("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
-                jugador.sumarGastos(valor);
-                jugador.sumarFortuna(-valor);
-                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
-                duenho.sumarFortuna(valor);
-                break;
             case "Suerte":
                 Cartas carta2 = new Cartas();
                 Scanner scanner2 = new Scanner(System.in);
@@ -214,6 +197,23 @@ public class Casilla {
                     }
                 }
                 carta2.accion(this, jugador, banca, jugadores, tab, opcion2);
+                break;
+            case "Servicio":
+                /* Si no hay dueño */
+                if (duenho == banca || duenho == jugador) {
+                    return true;
+                }
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
+                    solvente = false;
+                    break;
+                }
+
+                System.out.println("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
+                jugador.sumarGastos(valor);
+                jugador.sumarFortuna(-valor);
+                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
+                duenho.sumarFortuna(valor);
                 break;
             case "Impuesto":
                 if (jugador.getFortuna() < valor) {
