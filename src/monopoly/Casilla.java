@@ -1,6 +1,8 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import partida.*;
 
 
@@ -86,7 +88,7 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca) {
+    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
 
         boolean solvente = true;
         String tipoCasilla = this.getTipo();
@@ -157,7 +159,31 @@ public class Casilla {
 
                 break;
             case "Comunidad":
+                Cartas carta = new Cartas();
+                Scanner scanner = new Scanner(System.in);
+                int opcion = -1;
+
+                System.out.println("Has caído en una casilla de Comunidad, por favor, escoge una carta");
+
+                while (true) {
+                    System.out.print("Escoge un valor del 1 al 6: ");
+                    try {
+                        opcion = Integer.parseInt(scanner.nextLine());
+
+                        if (opcion >= 1 && opcion <= 6) {
+                            break; // Si el número está en el rango, sale del bucle
+                        } else {
+                            System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
+                        }
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
+                    }
+                }
+
+                carta.accion(this, jugador, banca, jugadores, tab, opcion);
                 break;
+
             case "Servicio":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {

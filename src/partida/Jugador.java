@@ -121,7 +121,7 @@ public class Jugador {
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public void moverJugador(Tablero tablero, int tirada) {
+    public void moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
@@ -132,7 +132,7 @@ public class Jugador {
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
 
-        c.evaluarCasilla(tablero, this, tablero.getBanca());
+        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
     }
 
     public void teleportJugador(Tablero tablero, Casilla casilla) {
