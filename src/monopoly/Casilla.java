@@ -139,6 +139,22 @@ public class Casilla {
                 }
                 break;
             case "Transporte":
+                /* Si no hay dueño */
+                if (duenho == banca || duenho == jugador) {
+                    return true;
+                }
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte.");
+                    solvente = false;
+                    break;
+                }
+
+                System.out.println("El jugador " + jugador.getNombre() + " paga el transporte por " + valor + "€.");
+                jugador.sumarGastos(valor);
+                jugador.sumarFortuna(-valor);
+                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
+                duenho.sumarFortuna(valor);
+
                 break;
             case "Comunidad":
                 break;
@@ -150,6 +166,7 @@ public class Casilla {
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto.");
                     solvente = false;
+                    break;
                 }
 
                 System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");

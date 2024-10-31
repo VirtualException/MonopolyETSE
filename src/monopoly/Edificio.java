@@ -37,7 +37,7 @@ public class Edificio {
 
         /* Comprobar si alguna regla no se cumple */
         if (!edificio.casilla.getTipo().equals("Solar")) {
-            System.out.println("La casilla no es un solar.");
+            System.out.println("La casilla no es un solar, no se puede contruir.");
             return true;
         }
         if (!edificio.grupo.esDuenhoGrupo(edificio.duenho)) {
