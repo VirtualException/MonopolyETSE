@@ -92,7 +92,7 @@ public class Menu {
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
             listarVenta();
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
-        listarEdificios();
+            listarEdificios();
         }
         /* Ver tablero */
         else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
@@ -100,6 +100,7 @@ public class Menu {
         }
         /* Acciones jugador */
         else if (comandos_args[0].equals("acabar") && comandos_args[1].equals("turno") && num_args == 2) {
+            if (tiene_deudas) return false;
             acabarTurno();
         }
         else if (comandos_args[0].equals("comprar") && num_args == 2){

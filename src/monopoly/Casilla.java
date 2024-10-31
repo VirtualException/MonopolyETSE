@@ -228,6 +228,10 @@ public class Casilla {
                 jugador.sumarFortuna(-valor);
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 banca.sumarFortuna(valor);
+                /* Bote del parking */
+                Casilla parking = tab.encontrar_casilla("Parking");
+                parking.sumarValor(valor);
+
                 break;
             default:
                 System.out.println("Evaluando tipo especial");
@@ -240,7 +244,8 @@ public class Casilla {
                     float bote = this.getValor();
                     jugador.sumarFortuna(bote);
                     this.setValor(0);
-                }   break;
+                }
+                break;
         }
         return deuda;
     }
