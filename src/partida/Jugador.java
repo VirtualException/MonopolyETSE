@@ -129,7 +129,7 @@ public class Jugador {
 
         if (!c.getHipotecada()) {
             if (c.getTipo().equals("Solar")) {
-                this.sumarFortuna(c.getPrecioOriginal() / 2);
+                this.sumarFortuna(c.getPrecioOriginal() / c.getGrupo().getMiembros().size());
                 c.setHipotecada(true);
             } else if (c.getTipo().equals("Transporte")) {
                 this.sumarFortuna(((float) Valor.SUMA_VUELTA) / 2);
