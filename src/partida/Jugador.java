@@ -120,27 +120,25 @@ public class Jugador {
     }
 
 
-    public void hipotecarPropiedad(Jugador jugador,Casilla casilla) {
+    public void hipotecarPropiedad(Jugador jugador, Casilla c) {
 
         if (this.deudas == 0.f) {
             System.out.println("No tienes deudas, no puedes hipotecar.");
             return;
         }
 
-        for(Casilla c : propiedades) {
-            if (c.equals(casilla) && !c.getHipotecada()) {
-                if (c.getTipo().equals("Solar")) {
-                    this.sumarFortuna(c.getPrecioOriginal() / 2);
-                    c.setHipotecada(true);
-                }
-                else if (c.getTipo().equals("Transporte")) {
-                    this.sumarFortuna(((float) Valor.SUMA_VUELTA) / 2);
-                    c.setHipotecada(true);
-                }
-                else if (c.getTipo().equals("Servicios")) {
-                    this.sumarFortuna((float) (0.75f * Valor.SUMA_VUELTA) / 2);
-                    c.setHipotecada(true);
-                }
+        if (!c.getHipotecada()) {
+            if (c.getTipo().equals("Solar")) {
+                this.sumarFortuna(c.getPrecioOriginal() / 2);
+                c.setHipotecada(true);
+            } else if (c.getTipo().equals("Transporte")) {
+                this.sumarFortuna(((float) Valor.SUMA_VUELTA) / 2);
+                c.setHipotecada(true);
+            } else if (c.getTipo().equals("Servicios")) {
+                this.sumarFortuna((float) (0.75f * Valor.SUMA_VUELTA) / 2);
+                c.setHipotecada(true);
+            } else {
+                System.out.println("No se puede hipotecar esta casilla.");
             }
         }
     }
