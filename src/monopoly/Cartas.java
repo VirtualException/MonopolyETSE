@@ -66,22 +66,18 @@ public class Cartas {
         }
     }
 
-    public void accion(Casilla c, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores, Tablero tablero) {
+    public void accion(Casilla c, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores, Tablero tablero, int opcion) {
 
         if (c.getTipo().equals("Suerte")) {
 
             hacerRandom(c.getTipo());
-            int opcion1;
             for (Cartas carta1 : this.cartasSuerte) {
 
-                do {
                     hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
-                    opcion1 = carta1.getId(); // Selecciona el ID de la primera carta barajada
-
-                    switch (opcion1) {
+                    switch (opcion) {
                         case 1:
                             System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion());
+                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion(), jugadores);
                             break;
                         case 2:
                             System.out.println(cartasSuerte.get(0).getMensaje());
@@ -93,7 +89,7 @@ public class Cartas {
                             break;
                         case 4:
                             System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion());
+                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion(), jugadores);
                             break;
                         case 5:
                             System.out.println(cartasSuerte.get(0).getMensaje());
@@ -107,22 +103,17 @@ public class Cartas {
                             // Si no es un caso válido, el bucle continúa
                             break;
                     }
-
-                } while (opcion1 < 1 || opcion1 > 6);
             }
         }
 
         if (c.getTipo().equals("Comunidad")) {
 
             hacerRandom(c.getTipo());
-            int opcion2;
 
             for (Cartas carta2 : this.cartasComunidad) {
-                do {
                     hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
-                    opcion2 = carta2.getId(); // Selecciona el ID de la primera carta barajada
 
-                    switch (opcion2) {
+                    switch (opcion) {
                         case 1:
                             System.out.println(cartasComunidad.get(0).getMensaje());
                             jugador.sumarFortuna(-500000.0f);
@@ -135,7 +126,7 @@ public class Cartas {
                             break;
                         case 3:
                             System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion());
+                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion(), jugadores);
                             break;
                         case 4:
                             System.out.println(cartasComunidad.get(0).getMensaje());
@@ -161,8 +152,6 @@ public class Cartas {
                             // No hace nada, el bucle se repite si no es uno de los casos válidos.
                             break;
                     }
-
-                } while (opcion2 < 1 || opcion2 > 6); // Repite hasta que el ID esté entre 1 y 6
             }
         }
     }
