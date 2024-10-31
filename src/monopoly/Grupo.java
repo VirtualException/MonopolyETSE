@@ -60,6 +60,74 @@ public class Grupo {
 
 
 
+// Método que devuelve una cadena con información de los edificios de un grupo
+    public String StringEdificosGrupo(){
+        StringBuilder cadena = new StringBuilder();
+        
+        for(Casilla c : miembros){
+            cadena.append("{\n");
+            cadena.append("\tpropiedad: ").append(c.getNombre()).append(",\n");
+            cadena.append("\thoteles: ");
+            if(c.getEdificios() != null){
+                cadena.append("[");
+                for(Edificio e : c.getEdificios()){
+                    if(e.getTipo().equals("hotel")){
+                        cadena.append(e.getId()).append(", ");  
+                    } 
+                }
+                cadena.append("],\n");
+            } else {
+                cadena.append("-,\n");
+            }
+
+            cadena.append("\tcasas: ");
+            if(c.getEdificios() != null){
+                cadena.append("[");
+                for(Edificio e : c.getEdificios()){
+                    if(e.getTipo().equals("casa")){
+                        cadena.append(e.getId()).append(", ");  
+                    } 
+                }
+                cadena.append("],\n");
+            } else {
+                cadena.append("-,\n");
+            }
+
+            cadena.append("\tpiscinas: ");
+            if(c.getEdificios() != null){
+                cadena.append("[");
+                for(Edificio e : c.getEdificios()){
+                    if(e.getTipo().equals("piscina")){
+                        cadena.append(e.getId()).append(", ");  
+                    } 
+                }
+                cadena.append("],\n");
+            } else {
+                cadena.append("-,\n");
+            }
+
+            cadena.append("\tpistasDeDeporte: ");
+            if(c.getEdificios() != null){
+                cadena.append("[");
+                for(Edificio e : c.getEdificios()){
+                    if(e.getTipo().equals("pista")){
+                        cadena.append(e.getId()).append(", ");  
+                    } 
+                }
+                cadena.append("],\n");
+            } else {
+                cadena.append("-,\n");
+            }
+
+            cadena.append("\talquiler: ").append(c.getValor()*0.10f).append("\n");
+            cadena.append("},\n");
+        }
+        return cadena.toString();
+    }
+
+
+
+
     //Getters y Setters
 
 

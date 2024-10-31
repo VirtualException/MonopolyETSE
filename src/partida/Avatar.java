@@ -129,8 +129,6 @@ public class Avatar {
         return lugar;
     }
 
-
-
     public void setLugar(Casilla lugar) {
         this.lugar = lugar;
     }

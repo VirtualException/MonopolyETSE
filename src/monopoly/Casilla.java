@@ -2,7 +2,6 @@ package monopoly;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import partida.*;
 
 
@@ -18,6 +17,7 @@ public class Casilla {
     private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
+    private boolean hipotecada;
 
     private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
     private ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.
@@ -39,6 +39,7 @@ public class Casilla {
         this.edificios = new ArrayList<>();
         this.contarCaer = new int[10];
         this.hipoteca = valor / 2f;
+        this.hipotecada = false;
     }
 
     /*Constructor utilizado para inicializar las casillas de tipo IMPUESTOS.
@@ -51,6 +52,7 @@ public class Casilla {
         this.posicion = posicion;
         this.duenho = duenho;// La banca es dueño de la casilla de impuestos
         this.impuesto = impuesto;
+        this.hipotecada = false;
     }
 
     /*Constructor utilizado para crear las otras casillas (Suerte, Caja de comunidad y Especiales):
@@ -62,6 +64,7 @@ public class Casilla {
         this.tipo = tipo;
         this.posicion = posicion;
         this.duenho = duenho;
+        this.hipotecada = false;
     }
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
@@ -253,7 +256,7 @@ public class Casilla {
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
-    public boolean  comprarCasilla(Jugador solicitante, Jugador banca) {
+    public boolean comprarCasilla(Jugador solicitante, Jugador banca) {
 
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicio")){
             System.out.println("Esta casilla no se puede comprar.");
@@ -555,5 +558,13 @@ public class Casilla {
     }
     public void setEdificios(ArrayList<Edificio> e) {
         this.edificios = e;
+    }
+
+    public boolean getHipotecada(){
+        return hipotecada;
+    }
+
+    public void setHipotecada(boolean hipotecada){
+        this.hipotecada = hipotecada;
     }
 }
