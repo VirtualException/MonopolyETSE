@@ -88,9 +88,9 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public boolean evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
+    public float evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
 
-        boolean solvente = true;
+        float deuda = 0;
         String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
@@ -126,7 +126,8 @@ public class Casilla {
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago_alquiler) {
                         System.out.println("Dinero insuficiente. El jugador debe declararse en bancarrota.");
-                        return false;
+                        deuda = pago_alquiler - jugador.getFortuna();
+                        break;
                     }
                     /* El jugador paga al propietario */
                     jugador.sumarGastos(pago_alquiler);
@@ -143,11 +144,11 @@ public class Casilla {
             case "Transporte":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
-                    return true;
+                    break;
                 }
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -201,11 +202,11 @@ public class Casilla {
             case "Servicio":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
-                    return true;
+                    break;
                 }
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -218,7 +219,7 @@ public class Casilla {
             case "Impuesto":
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto.");
-                    solvente = false;
+                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -241,7 +242,7 @@ public class Casilla {
                     this.setValor(0);
                 }   break;
         }
-        return solvente;
+        return deuda;
     }
 
     /*Método usado para comprar una casilla determinada. Parámetros:
@@ -249,7 +250,7 @@ public class Casilla {
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
     public boolean  comprarCasilla(Jugador solicitante, Jugador banca) {
 
-        if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicios")){
+        if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicio")){
             System.out.println("Esta casilla no se puede comprar.");
             return false;
         }

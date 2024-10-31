@@ -64,6 +64,14 @@ public class Menu {
         int num_args = split.length;
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
+        if (jugadores.get(turno).getDeudas() > 0) {
+            System.out.println("Atención! Debes solucionar tus deudas! Vende/Hipoteca propiedades.");
+
+            /* Aqui de debe analizar el comando */
+
+            return false;
+        }
+
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
 
@@ -304,7 +312,7 @@ public class Menu {
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
             System.out.println("Moviendo jugador...");
-            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
+            float deuda = j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
         }
         else {
             System.out.println("El jugador sigue en la cárcel.");
@@ -448,7 +456,7 @@ public class Menu {
     private void bancarrota(){
         Jugador jugadorActual = jugadores.get(turno);
     /* ? */
-        solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
+        //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
         jugadorActual.bancarrota(jugadores, banca, solvente);
     }
 
