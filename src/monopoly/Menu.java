@@ -153,7 +153,7 @@ public class Menu {
             } else {
                 System.out.println("El jugador no se encuentra en la cárcel.");
             }
-        } else if (comandos_args[0].equals("hipotecar") ) {
+        } else if (comandos_args[0].equals("hipotecar") && comandos_args[0].equals("2")  ) {
 
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
             bancarrota();
