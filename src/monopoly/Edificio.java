@@ -69,6 +69,10 @@ public class Edificio {
         switch (edificio.tipo) {
             /* SI EL EDIFICIO ES CASA */
             case "casa":
+                /* Comprobar máximo de edificios. */
+                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2 && edificio.casilla.getHotelesN() == 2 && edificio.casilla.getCasasN() == 2) {
+                    System.out.println("Máximo de edificio alcanzado.");
+                }
                 edificio.coste = precio_original * Valor.MULTIPLICADOR_CASA;
                 if (edificio.casilla.getCasasN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del mismo tipo.");
@@ -79,6 +83,10 @@ public class Edificio {
             /* SI EL EDIFICIO ES HOTEL */
             case "hotel":
                 edificio.coste = precio_original * Valor.MULTIPLICADOR_HOTEL;
+                /* Comprobar máximo de edificios. */
+                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2 && edificio.casilla.getHotelesN() == 2) {
+                    System.out.println("Máximo de edificio alcanzado.");
+                }
                 if (edificio.casilla.getHotelesN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del tipo hotel.");
                     return true;
@@ -96,6 +104,10 @@ public class Edificio {
             /* SI EL EDIFICIO ES PISCINA */
             case "piscina":
                 edificio.coste = precio_original * Valor.MULTIPLICADOR_PISCINA;
+                /* Comprobar máximo de edificios. */
+                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2) {
+                    System.out.println("Máximo de edificio alcanzado.");
+                }
                 if (edificio.casilla.getPiscinasN() == 4) {
                     System.out.println("Ya hay 4 contrucciones del tipo piscina.");
                     return true;
@@ -113,8 +125,8 @@ public class Edificio {
             /* SI EL EDIFICIO ES PISTA DE DEPORTE */
             case "pista":
                 edificio.coste = precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
-                if (edificio.casilla.getPiscinasN() == 4) {
-                    System.out.println("Ya hay 4 contrucciones del tipo pista de deporte.");
+                if (edificio.casilla.getPistasN() == 2) {
+                    System.out.println("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
                     return true;
                 }
                 if (edificio.casilla.getPiscinasN() == 4) {
