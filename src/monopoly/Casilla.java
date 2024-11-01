@@ -461,6 +461,19 @@ public class Casilla {
     }
 
 
+
+    // Método para eliminar un edificio
+    public void eliminarEdificio(String tipoEdificio){
+        for(Edificio e : edificios){
+            if(e.getTipo().equals(tipoEdificio)){
+                edificios.remove(e);
+                break;
+            }
+        }
+    }
+
+
+
     public float getPrecioOriginal() {
         float precio_original = switch (grupo.getColorGrupo()) {
             case "negro" -> Valor.VALOR_GRUPO_NEGRO;

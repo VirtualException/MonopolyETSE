@@ -2,7 +2,6 @@ package monopoly;
 
 import java.util.ArrayList;
 import partida.*;
-import monopoly.Valor;
 
 public class Edificio {
 
@@ -164,26 +163,6 @@ public class Edificio {
         return false;
     }
 
-
-    // Método para añadir un edificio al ArrayList de edificios.
-    //public void anhadirEdificio(Edificio edificio){
-    //    if(!edificios.contains(edificio)){
-    //        edificios.add(edificio);
-    //    } else {
-    //        System.out.println("ERROR. Este edificio ya ha sido construído.");
-    //    }
-    //}
-
-
-
-    // Método para eliminar un edificio del ArrayList de edificios.
-    //public void eliminarEdificio(Edificio edificio){
-    //    if(edificios.isEmpty() || !edificios.contains(edificio)){
-    //        System.out.println("ERROR. No ha sido posible eliminar el edificio");
-    //    } else {
-    //        edificios.remove(edificio);
-    //    }
-    //}
 
 
 

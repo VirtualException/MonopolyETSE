@@ -105,6 +105,12 @@ public class Menu {
         else if (comandos_args[0].equals("comprar") && num_args == 2){
             if (tiene_deudas) return false;
             comprar(comandos_args[1]);
+        } else if (comandos_args[0].equals("vender") && num_args == 4){
+            
+            String tipoEdificio = comandos_args[1];
+            String nombreCasilla = comandos_args[2];
+            int numEdificios = Integer.parseInt(comandos_args[3]);
+            venderEdificios(jugadores.get(turno), tipoEdificio, nombreCasilla, numEdificios);
         }
         else if (comandos_args[0].equals("edificar") && num_args == 2){
             if (tiene_deudas) return false;
@@ -443,6 +449,12 @@ public class Menu {
                 System.out.println(e.stringEdificio());
             }
         }
+    }
+
+
+    // Método para vender edificios
+    private void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasila, int numEdificios){
+        jugador.venderEdificios(jugador, tipoEdificio, nombreCasila, numEdificios);
     }
 
 
