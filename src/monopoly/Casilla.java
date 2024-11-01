@@ -17,7 +17,7 @@ public class Casilla {
     private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
     private float hipoteca; //Valor otorgado por hipotecar una casilla
     private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
-    private boolean hipotecada;
+    private boolean hipotecada; //Indica si una casilla está hipotecada o no.
 
     private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
     private ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.

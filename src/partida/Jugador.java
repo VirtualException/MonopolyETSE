@@ -140,7 +140,7 @@ public class Jugador {
 
                     // Verificamos que el solar no tenga edificios
                     if (c.getEdificios() != null && c.getEdificios().isEmpty()) {
-                        precioHipoteca = (c.getPrecioOriginal() / c.getGrupo().getMiembros().size()) / 2;
+                        precioHipoteca = (c.getPrecioOriginal() / 2);
                         jugador.sumarFortuna(precioHipoteca);
                         c.setHipotecada(true);
                         System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
@@ -187,7 +187,7 @@ public class Jugador {
             if(c.getHipotecada()){
                 switch (c.getTipo()) {
                     case "Solar":
-                        precioDeshipoteca = (float) (1.1*(c.getPrecioOriginal() / c.getGrupo().getMiembros().size()) / 2);
+                        precioDeshipoteca = (float) 1.1*(c.getPrecioOriginal() / 2);
 
                         if(jugador.getFortuna() >= precioDeshipoteca){
                             jugador.sumarFortuna(precioDeshipoteca);
@@ -255,6 +255,8 @@ public class Jugador {
         return deudas;
     }
 
+
+
     public float moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
         if (this.getAvatar().getTipo().equals("Pelota")){
@@ -285,6 +287,8 @@ public class Jugador {
         }
         return deudas;
     }
+
+
 
     public void teleportJugador(Tablero tablero, Casilla casilla) {
 
@@ -347,6 +351,8 @@ public class Jugador {
         }
     }
 
+
+
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
         for(Casilla c : jugador.propiedades){
             nuevoPropietario.anhadirPropiedad(c);
@@ -355,6 +361,7 @@ public class Jugador {
         }
          
     }
+
 
     //Método para eliminar a un jugador de la partida
     private void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
@@ -432,13 +439,18 @@ public class Jugador {
         return vecesEnLaCarcel;
     }
 
+
     public ArrayList<Casilla> getPropiedades() {
-        return propiedades;
+        ArrayList<Casilla> propiedadesNoHipotecadas  = new ArrayList<>();
+
+        for(Casilla c : this.propiedades){
+            if(!c.getHipotecada()){
+                propiedadesNoHipotecadas.add(c);
+            }
+        }
+        return propiedadesNoHipotecadas;
     }
 
-    //public ArrayList<Hipoteca> getHipotecas() {
-    //    return hipotecas;
-    //}
 
     public ArrayList<Edificio> getEdificios() {
         ArrayList<Edificio> edificios = new ArrayList<>();
@@ -452,6 +464,18 @@ public class Jugador {
         }
 
         return edificios;
+    }
+
+
+    public ArrayList<Casilla> getHipotecas(){
+        ArrayList<Casilla> propiedadesHipotecadas = new ArrayList<>();
+
+        for(Casilla c : this.propiedades){
+            if(c.getHipotecada()){
+                propiedadesHipotecadas.add(c);
+            }
+        }
+        return propiedadesHipotecadas;
     }
 
  

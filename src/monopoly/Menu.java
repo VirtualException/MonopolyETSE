@@ -10,7 +10,6 @@ public class Menu {
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
-    //private ArrayList<Edificio> edificios;  //Edificios en la partida.
     private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
@@ -191,21 +190,29 @@ public class Menu {
      */
     private void descJugador(String nombre) {
 
-        for (Jugador i : jugadores) {
-            if (Objects.equals(i.getNombre(), nombre)) {
+        for (Jugador j : jugadores) {
+            if (Objects.equals(j.getNombre(), nombre)) {
                 System.out.print("{\n");
-                System.out.print("\tnombre: " + i.getNombre()  + "," + "\n");
-                System.out.print("\tavatar: " + i.getAvatar().getId() + "," + "\n");
-                System.out.print("\tfortuna: " + i.getFortuna() + "," + "\n");
+                System.out.print("\tnombre: " + j.getNombre()  + "," + "\n");
+                System.out.print("\tavatar: " + j.getAvatar().getId() + "," + "\n");
+                System.out.print("\tfortuna: " + j.getFortuna() + "," + "\n");
                 System.out.print("\tpropiedades: [");
-                for (Casilla p : i.getPropiedades()) {
+                for (Casilla p : j.getPropiedades()) {
                     System.out.print(p.getNombre() + ", ");
                 }
                 System.out.println("]");
-                System.out.print("\thipotecas: [");
+
+                if(j.getHipotecas().isEmpty()){
+                    System.out.println("\thipotecas: -");
+                } else {
+                    System.out.print("\thipotecas: [");
+                    for (Casilla c : j.getHipotecas()) {
+                        System.out.println(c.getNombre() + ", ");
+                    }
+                }
                 System.out.println("]");
                 System.out.print("\tedificios: [");
-                for (Edificio e : i.getEdificios()) {
+                for (Edificio e : j.getEdificios()) {
                     System.out.print(e.getId() + ", ");
                 }
                 System.out.print("]\n},\n");
