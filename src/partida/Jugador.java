@@ -256,14 +256,14 @@ public class Jugador {
             return;
         }
 
-        float precioEdificio = 0.0f;
+        float precioEdificio;
 
         switch(tipoEdificio){
             case "casas":
+                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_CASA) / 2);
                 if(propiedad.getCasasN() >= numEdificios) {
-                    precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_CASA) / 2);
                     jugador.sumarFortuna(precioEdificio);
-                    for(int i = 0; i < numEdificios; i++){
+                    for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("casa");
                     }
                     System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " casa(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getCasasN() + " casa(s).");
@@ -273,10 +273,10 @@ public class Jugador {
                 break;
 
             case "hoteles":
+                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_HOTEL) / 2);
                 if(propiedad.getHotelesN() >= numEdificios){
-                    precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_HOTEL) / 2);
                     jugador.sumarFortuna(precioEdificio);
-                    for(int i = 0; i < numEdificios; i++){
+                    for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("hotel");
                     }
                     System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " hotel(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getHotelesN() + " hotel(s).");
@@ -286,10 +286,10 @@ public class Jugador {
                 break;
 
             case "piscinas":
+                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISCINA) / 2);
                 if(propiedad.getPiscinasN() >= numEdificios){
-                    precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISCINA) / 2);
                     jugador.sumarFortuna(precioEdificio);
-                    for(int i = 0; i < numEdificios; i++){
+                    for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("piscina");
                     }
                     System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " piscina(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPiscinasN() + " piscina(s).");
@@ -299,10 +299,10 @@ public class Jugador {
                 break;
 
             case "pistas":
+                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISTA_DE_DEPORTE) / 2);
                 if(propiedad.getPistasN() >= numEdificios){
-                    precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISTA_DE_DEPORTE) / 2);
                     jugador.sumarFortuna(precioEdificio);
-                    for(int i = 0; i < numEdificios; i++){
+                    for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("pista");
                     }
                     System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " pista(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPistasN() + " pista(s).");
