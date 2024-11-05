@@ -24,6 +24,7 @@ public class Jugador {
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     private int indice; /* Index dentro del array de jugadores */
+    private float deuda;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -51,8 +52,6 @@ public class Jugador {
         this.premiosInversionesOBote = 0.0f;
         this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
-        //this.hipotecas = new ArrayList<>();
-        //this.edificios = new ArrayList<>();
         this.indice = index;
     }
 
@@ -261,8 +260,8 @@ public class Jugador {
             return;
         }
 
-        int n_edificios_actuales = 0;
-        float multiplicador = 0;
+        int n_edificios_actuales;
+        float multiplicador;
 
         switch(tipoEdificio) {
             case "casa":
@@ -382,10 +381,12 @@ public class Jugador {
 
 
     //Método para declararse en bancarrota
-    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean solvente){
+    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca) {
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
+
+        boolean solvente = this.fortuna >= 0.f;
 
         //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
@@ -399,7 +400,7 @@ public class Jugador {
                 jugador.setFortuna(0);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
             }
-            solvente = true;  
+            //solvente = true;
             eliminarJugador(jugadores, jugador);   
         } else {
             traspasarPropiedadesJugador(banca, jugador);

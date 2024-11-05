@@ -127,6 +127,13 @@ public class Casilla {
                         pago_alquiler *= 2;
                     }
 
+                    /* Si no puede pagarlo */
+                    if (jugador.getFortuna() < pago_alquiler) {
+                        System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        jugador.setFortuna(jugador.getFortuna() - pago_alquiler);
+                        break;
+                    }
+
                     /* El jugador paga al propietario */
                     jugador.sumarGastos(pago_alquiler);
                     jugador.setPagoDeAlquileres(jugador.getPagoDeAlquileres() + pago_alquiler);
@@ -137,10 +144,6 @@ public class Casilla {
 
                     System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
 
-                    /* Si no puede pagarlo */
-                    if (jugador.getFortuna() < 0.f) {
-                        System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
-                    }
                 }
                 break;
 
@@ -150,15 +153,18 @@ public class Casilla {
                     break;
                 }
 
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    break;
+                }
+
                 System.out.println("El jugador " + jugador.getNombre() + " paga el transporte por " + valor + "€.");
                 jugador.sumarGastos(valor);
                 jugador.sumarFortuna(-valor);
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
 
-                if (jugador.getFortuna() < 0.f) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
                 break;
 
             case "Comunidad":
@@ -207,17 +213,26 @@ public class Casilla {
                     break;
                 }
 
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    break;
+                }
+
                 System.out.println("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
                 jugador.sumarGastos(valor);
                 jugador.sumarFortuna(-valor);
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
 
-                if (jugador.getFortuna() < 0.f) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
                 break;
             case "Impuesto":
+
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    break;
+                }
 
                 System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");
                 jugador.sumarGastos(valor);
@@ -227,12 +242,8 @@ public class Casilla {
                 /* Bote del parking */
                 Casilla parking = tab.encontrar_casilla("Parking");
                 parking.sumarValor(valor);
-
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
-
                 break;
+
             default:
                 System.out.println("Evaluando tipo especial");
                 /* Cae en IrCárcel */

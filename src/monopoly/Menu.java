@@ -10,15 +10,13 @@ public class Menu {
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
-    private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
+    private int turno; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
     private Jugador banca; //El jugador banca.
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
-    private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
-
 
     public Menu() {
         iniciarPartida();
@@ -33,17 +31,26 @@ public class Menu {
         jugadores = new ArrayList<>();
         banca = new Jugador("Banca", "Banca", null, null, -1); /* No tiene casilla ni avatar asociado */
         tablero = new Tablero(banca);
+        turno = 0;
 
         dado1 = new Dado();
         dado2 = new Dado();
 
         tirado = false;
-        solvente = false;
 
         System.out.println(this.tablero);
 
         Scanner scan = new Scanner(System.in);
         boolean sair = false;
+
+        crearJugador("Pepe", "Coche");
+        crearJugador("Ana", "Pelota");
+
+        lanzarDados(1, 1);
+        acabarTurno();
+
+        lanzarDados(5, 1);
+        acabarTurno();
 
         while (!sair) {
             System.out.print("$> ");
@@ -70,17 +77,7 @@ public class Menu {
 
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
-
-            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
-            avatares.add(jugadores.getLast().getAvatar());
-
-            tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
-
-            System.out.println("{");
-            System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
-            System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
-            System.out.println("}");
-
+            crearJugador(comandos_args[2], comandos_args[3]);
         }
         /* Comandos de listar */
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
@@ -212,6 +209,18 @@ public class Menu {
         return false;
     }
 
+    private void crearJugador(String nombre, String tipo) {
+        jugadores.add(new Jugador(nombre, tipo, tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
+        avatares.add(jugadores.getLast().getAvatar());
+
+        tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
+
+        System.out.println("{");
+        System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
+        System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
+        System.out.println("}");
+    }
+
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
@@ -316,7 +325,11 @@ public class Menu {
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
         /* El jugador no puede tirar de nuevo */
         this.tirado = true;
-        /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
+
+
+
+
+        /* Comprobar si las tiradas son iguales */
         if (dado1.equals(dado2)) {
 
             System.out.println("Doble!");
@@ -324,10 +337,6 @@ public class Menu {
             /* Sale de la cárcel */
             if(j.isEnCarcel()){
                 j.setTiradasCarcel(j.getTiradasCarcel() + 1);
-                if (j.getTiradasCarcel() >= 3) {
-                    System.out.println("El jugador debe pagar para salír de la cárcel.");
-                    return;
-                }
                 System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
                 j.setEnCarcel(false);
                 this.tirado = false;
@@ -348,6 +357,27 @@ public class Menu {
             /* Puede tirar de nuevo */
             this.tirado = false;
 
+        } else {
+            if (j.isEnCarcel()) {
+                if (j.getTiradasCarcel() >= 3) {
+                    System.out.println("El jugador debe pagar para salír de la cárcel.");
+
+                    float pago = (float) Valor.SUMA_VUELTA * 0.25f;
+
+                    if (pago > j.getFortuna()) {
+                        System.out.println("Dinero insuficiente para salir de la cárcel. El jugador ahora tiene una deuda y debe solucionarla.");
+                        j.setFortuna(j.getFortuna() - pago);
+                        return;
+                    }
+
+                    j.setGastos(pago);
+                    j.setPagoTasasEImpuestos(j.getPagoTasasEImpuestos() + pago);
+                    j.sumarFortuna(-pago);
+
+                    return;
+                }
+                j.setTiradasDobles(0);
+            }
         }
 
         if(!j.isEnCarcel()){
@@ -501,22 +531,20 @@ public class Menu {
 
 
     // Método para declararse en bancarrota
-    private void bancarrota(){
+    private void bancarrota() {
         Jugador jugadorActual = jugadores.get(turno);
-    /* ? */
-        //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
-        jugadorActual.bancarrota(jugadores, banca, solvente);
+        jugadorActual.bancarrota(jugadores, banca);
     }
 
 
     // Método para hipotecar una propiedad
-    private void hipotecarPropiedad(Jugador jugador, Casilla c){
+    private void hipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.hipotecarPropiedad(c);
     }
 
 
     // Método para deshipotecar una propiedad
-    private void deshipotecarPropiedad(Jugador jugador, Casilla c){
+    private void deshipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.deshipotecarPropiedad(c);
     }
 
