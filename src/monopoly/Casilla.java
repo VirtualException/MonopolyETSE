@@ -53,6 +53,7 @@ public class Casilla {
         this.duenho = duenho;// La banca es dueño de la casilla de impuestos
         this.impuesto = impuesto;
         this.hipotecada = false;
+        this.edificios = new ArrayList<>();
     }
 
     /*Constructor utilizado para crear las otras casillas (Suerte, Caja de comunidad y Especiales):
@@ -65,6 +66,7 @@ public class Casilla {
         this.posicion = posicion;
         this.duenho = duenho;
         this.hipotecada = false;
+        this.edificios = new ArrayList<>();
     }
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
@@ -128,7 +130,7 @@ public class Casilla {
 
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago_alquiler) {
-                        System.out.println("Dinero insuficiente. El jugador debe declararse en bancarrota.");
+                        System.out.println("Dinero insuficiente. El jugador debe solucionar sus deudas.");
                         deuda = pago_alquiler - jugador.getFortuna();
                         break;
                     }

@@ -119,128 +119,134 @@ public class Jugador {
 
 
     // Método para hipotecar una propiedad
-    public void hipotecarPropiedad(Jugador jugador, Casilla c) {
+    public void hipotecarPropiedad(Casilla c) {
 
-    // Verificamos que el jugador tenga deudas
-    if (jugador.deudas == 0.f) {
-        System.out.println("No tienes deudas, no puedes hipotecar.");
-        return;
-    }
+        // Verificamos que el jugador tenga deudas
+        if (deudas == 0.f) {
+            System.out.println("No tienes deudas, no puedes hipotecar.");
+            return;
+        }
 
-    float precioHipoteca;
+        float precioHipoteca;
 
-    // Verificamos que el jugador posee la propiedad
-    if (jugador.propiedades.contains(c)) {
-        
+        // Verificamos que el jugador posee la propiedad
+        if (!propiedades.contains(c)) {
+            System.out.println(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+            return;
+        }
+
         // Verificamos que la propiedad no esté hipotecada
-        if (!c.getHipotecada()) {
+        if (c.getHipotecada()) {
+            System.out.println(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". Ya está hipotecada.");
+            return;
+        }
 
-            switch (c.getTipo()) {
+        switch (c.getTipo()) {
                 case "Solar":
 
                     // Verificamos que el solar no tenga edificios
                     if (c.getEdificios() != null && c.getEdificios().isEmpty()) {
                         precioHipoteca = (c.getPrecioOriginal() / 2);
-                        jugador.sumarFortuna(precioHipoteca);
+                        this.sumarFortuna(precioHipoteca);
                         c.setHipotecada(true);
-                        System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                        System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
                     } else {
                         System.out.println("No puedes hipotecar " + c.getNombre() + " porque tiene edificios. Debes vender todos los edificios.");
                     }
                     break;
-                
+
                 case "Transporte":
                     precioHipoteca = (float) Valor.SUMA_VUELTA / 2;
-                    jugador.sumarFortuna(precioHipoteca);
+                    this.sumarFortuna(precioHipoteca);
                     c.setHipotecada(true);
-                    System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
                     break;
-                
-                case "Servicios":
+
+                case "Servicio":
                     precioHipoteca = (float) (0.75f * Valor.SUMA_VUELTA) / 2;
-                    jugador.sumarFortuna(precioHipoteca);
+                    this.sumarFortuna(precioHipoteca);
                     c.setHipotecada(true);
-                    System.out.println(jugador.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
                     break;
-                
+
                 default:
                     System.out.println("Tipo de casilla no válido para hipotecar.");
                     break;
             }
-        } else {
-            System.out.println(jugador.getNombre() + " no puede hipotecar " + c.getNombre() + ". Ya está hipotecada.");
-        }
-    } else {
-        System.out.println(jugador.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+
+
     }
-}
 
 
 
     // Método para deshipotecar una propiedad
-    public void deshipotecarPropiedad(Jugador jugador, Casilla c){
+    public void deshipotecarPropiedad(Casilla c){
         
         float precioDeshipoteca;
 
         // Verificamos que el jugador posee la propiedad
-        if(jugador.propiedades.contains(c)){
-            if(c.getHipotecada()){
-                switch (c.getTipo()) {
-                    case "Solar":
-                        precioDeshipoteca = (float) 1.1*(c.getPrecioOriginal() / 2);
-
-                        if(jugador.getFortuna() >= precioDeshipoteca){
-                            jugador.sumarFortuna(precioDeshipoteca);
-                            jugador.sumarGastos(precioDeshipoteca);
-                            c.setHipotecada(false);
-                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
-                        } else {
-                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
-                        }
-                        break;
-                
-                    case "Transporte":
-                        precioDeshipoteca = (float) (1.1*(Valor.SUMA_VUELTA / 2));
-
-                        if(jugador.fortuna >= precioDeshipoteca){
-                            jugador.sumarFortuna(-precioDeshipoteca);
-                            jugador.sumarGastos(precioDeshipoteca);
-                            c.setHipotecada(false);
-                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
-                        } else {
-                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
-                        }
-                        break;
-                
-                    case "Servicios":
-                        precioDeshipoteca = (float) (1.1*((0.75f * Valor.SUMA_VUELTA) / 2));
-
-                        if(jugador.fortuna >= precioDeshipoteca){
-                            jugador.sumarFortuna(-precioDeshipoteca);
-                            jugador.sumarGastos(precioDeshipoteca);
-                            c.setHipotecada(false);
-                            System.out.println(jugador.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
-                        } else {
-                            System.out.println(jugador.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
-                        }
-                        break;
-                
-                    default:
-                        System.out.println("Tipo de casilla no válido para deshipotecar.");
-                        break;
-                }
-            } else {
-                System.out.println(jugador.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No está hipotecada.");
-            } 
-        } else {
-            System.out.println(jugador.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+        if (!this.propiedades.contains(c)) {
+            System.out.println(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+            return;
         }
+        if (!c.getHipotecada()) {
+            System.out.println(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No está hipotecada.");
+            return;
+        }
+
+        /* Proceder a deshipotecar. */
+        switch (c.getTipo()) {
+            case "Solar":
+                precioDeshipoteca = (float) 1.1 * (c.getPrecioOriginal() / 2);
+
+                if (this.getFortuna() >= precioDeshipoteca) {
+                    this.sumarFortuna(precioDeshipoteca);
+                    this.sumarGastos(precioDeshipoteca);
+                    c.setHipotecada(false);
+                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                } else {
+                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                }
+                break;
+
+            case "Transporte":
+                precioDeshipoteca = (float) (1.1 * (Valor.SUMA_VUELTA / 2));
+
+                if (this.fortuna >= precioDeshipoteca) {
+                    this.sumarFortuna(-precioDeshipoteca);
+                    this.sumarGastos(precioDeshipoteca);
+                    c.setHipotecada(false);
+                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                } else {
+                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                }
+                break;
+
+            case "Servicio":
+                precioDeshipoteca = (float) (1.1 * ((0.75f * Valor.SUMA_VUELTA) / 2));
+
+                if (this.fortuna >= precioDeshipoteca) {
+                    this.sumarFortuna(-precioDeshipoteca);
+                    this.sumarGastos(precioDeshipoteca);
+                    c.setHipotecada(false);
+                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                } else {
+                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                }
+                break;
+
+            default:
+                System.out.println("Tipo de casilla no válido para deshipotecar.");
+                break;
+        }
+
+
     }
 
 
 
     // Método para vender edificios
-    public void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasilla, int numEdificios){
+    public void venderEdificios(String tipoEdificio, String nombreCasilla, int numEdificios) {
 
         Casilla propiedad = null;
 
@@ -252,7 +258,7 @@ public class Jugador {
         }
 
         if(propiedad == null){
-            System.out.println("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ". Esta propiedad no pertenece a " + jugador.getNombre());
+            System.out.println("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ". Esta propiedad no pertenece a " + nombre);
             return;
         }
 
@@ -262,11 +268,11 @@ public class Jugador {
             case "casas":
                 precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_CASA) / 2);
                 if(propiedad.getCasasN() >= numEdificios) {
-                    jugador.sumarFortuna(precioEdificio);
+                    this.sumarFortuna(precioEdificio);
                     for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("casa");
                     }
-                    System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " casa(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getCasasN() + " casa(s).");
+                    System.out.println(nombre + " ha vendido " + numEdificios + " casa(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getCasasN() + " casa(s).");
                 } else {
                     System.out.println("Solamente se puede vender " + propiedad.getCasasN() + " casa(s), recibiendo " + precioEdificio + "€."); 
                 }
@@ -275,11 +281,11 @@ public class Jugador {
             case "hoteles":
                 precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_HOTEL) / 2);
                 if(propiedad.getHotelesN() >= numEdificios){
-                    jugador.sumarFortuna(precioEdificio);
+                    this.sumarFortuna(precioEdificio);
                     for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("hotel");
                     }
-                    System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " hotel(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getHotelesN() + " hotel(s).");
+                    System.out.println(nombre + " ha vendido " + numEdificios + " hotel(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getHotelesN() + " hotel(s).");
                 } else {
                     System.out.println("Solamente se puede vender " + propiedad.getHotelesN() + " hotele(s), recibiendo " + precioEdificio + "€."); 
                 }
@@ -288,11 +294,11 @@ public class Jugador {
             case "piscinas":
                 precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISCINA) / 2);
                 if(propiedad.getPiscinasN() >= numEdificios){
-                    jugador.sumarFortuna(precioEdificio);
+                    this.sumarFortuna(precioEdificio);
                     for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("piscina");
                     }
-                    System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " piscina(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPiscinasN() + " piscina(s).");
+                    System.out.println(nombre + " ha vendido " + numEdificios + " piscina(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPiscinasN() + " piscina(s).");
                 } else {
                     System.out.println("Solamente se puede vender " + propiedad.getPiscinasN() + " piscina(s), recibiendo " + precioEdificio + "€."); 
                 }
@@ -301,11 +307,11 @@ public class Jugador {
             case "pistas":
                 precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISTA_DE_DEPORTE) / 2);
                 if(propiedad.getPistasN() >= numEdificios){
-                    jugador.sumarFortuna(precioEdificio);
+                    this.sumarFortuna(precioEdificio);
                     for (int i = 0; i < numEdificios; i++){
                         propiedad.eliminarEdificio("pista");
                     }
-                    System.out.println(jugador.getNombre() + " ha vendido " + numEdificios + " pista(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPistasN() + " pista(s).");
+                    System.out.println(nombre + " ha vendido " + numEdificios + " pista(s) de deporte en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPistasN() + " pista(s).");
                 } else {
                     System.out.println("Solamente se puede vender " + propiedad.getPistasN() + " pista(s), recibiendo " + precioEdificio + "€."); 
                 }
@@ -315,8 +321,6 @@ public class Jugador {
                 System.out.println("Tipo de edificio no válido para vender.");
         }
     }
-
-    
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
@@ -338,7 +342,7 @@ public class Jugador {
 
     public float moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
-        if (this.getAvatar().getTipo().equals("Pelota")){
+        if (this.getAvatar().getTipo().equals("Pelota")) {
             if (tirada > 4){
                 ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 

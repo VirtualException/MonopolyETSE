@@ -63,7 +63,8 @@ public class Menu {
         int num_args = split.length;
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
-        boolean tiene_deudas = jugadores.get(turno).getDeudas() > 0;
+        boolean tiene_deudas = false;
+        if (!jugadores.isEmpty()) tiene_deudas = jugadores.get(turno).getDeudas() > 0;
         if (tiene_deudas)
             System.out.println("Atención! Debes solucionar tus deudas! Vende/Hipoteca propiedades.");
 
@@ -91,7 +92,7 @@ public class Menu {
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("enventa") && num_args == 2) {
             listarVenta();
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
-        listarEdificios();
+            listarEdificios();
         }
         /* Ver tablero */
         else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
@@ -106,11 +107,18 @@ public class Menu {
             if (tiene_deudas) return false;
             comprar(comandos_args[1]);
         } else if (comandos_args[0].equals("vender") && num_args == 4){
-            
             String tipoEdificio = comandos_args[1];
             String nombreCasilla = comandos_args[2];
             int numEdificios = Integer.parseInt(comandos_args[3]);
             venderEdificios(jugadores.get(turno), tipoEdificio, nombreCasilla, numEdificios);
+            /* Actualizar estado de deudas. */
+            if (tiene_deudas) {
+                float deudas = jugadores.get(turno).getDeudas();
+                if (deudas > 0) {
+                    tiene_deudas = false;
+                    System.out.println("El jugador ya no tiene deudas.");
+                }
+            }
         }
         else if (comandos_args[0].equals("edificar") && num_args == 2){
             if (tiene_deudas) return false;
@@ -121,6 +129,7 @@ public class Menu {
             lanzarDados(-1, -1); // Modo aleatorio
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
+            tirado = false; /* Puede tirar de nuevo, es modo manual. */
             lanzarDados(Integer.parseInt(comandos_args[2]), Integer.parseInt(comandos_args[3])); // Modo manual
             incrementarSolares();
         }
@@ -161,10 +170,27 @@ public class Menu {
         } else if (comandos_args[0].equals("hipotecar") && num_args == 2) {
             String nombreCasilla = comandos_args[1];
             hipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
+            /* Actualizar estado de deudas. */
+            if (tiene_deudas) {
+                float deudas = jugadores.get(turno).getDeudas();
+                if (deudas > 0) {
+                    tiene_deudas = false;
+                    System.out.println("El jugador ya no tiene deudas.");
+                }
+            }
         } else if (comandos_args[0].equals("deshipotecar") && num_args == 2){
             String nombreCasilla = comandos_args[1];
             deshipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
+            /* Actualizar estado de deudas. */
+            if (tiene_deudas) {
+                float deudas = jugadores.get(turno).getDeudas();
+                if (deudas > 0) {
+                    tiene_deudas = false;
+                    System.out.println("El jugador ya no tiene deudas.");
+                }
+            }
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
+            /* No funciona como debería. */
             bancarrota();
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
             String nombreJugador = comandos_args[1];
@@ -175,6 +201,9 @@ public class Menu {
         else if (comandos_args[0].equals("exit") && num_args == 1) {
             return true;
         }
+        else if (comandos_args[0].equals("cero")) {
+            jugadores.get(turno).setFortuna(0);
+        }
 
         else {
             System.out.println("Comando no reconocido.");
@@ -182,14 +211,6 @@ public class Menu {
 
         return false;
     }
-
-
-    //private void crearEdificio() {
-    //    // Edificio = new Edificio ( ...)
-    //    // casilla.addEdificio(edificio)
-    //    // this.edificios.add(edificio)
-    //    //
-    //}
 
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
@@ -454,7 +475,7 @@ public class Menu {
 
     // Método para vender edificios
     private void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasila, int numEdificios){
-        jugador.venderEdificios(jugador, tipoEdificio, nombreCasila, numEdificios);
+        jugador.venderEdificios(tipoEdificio, nombreCasila, numEdificios);
     }
 
 
@@ -489,13 +510,13 @@ public class Menu {
 
     // Método para hipotecar una propiedad
     private void hipotecarPropiedad(Jugador jugador, Casilla c){
-        jugador.hipotecarPropiedad(jugador, c);
+        jugador.hipotecarPropiedad(c);
     }
 
 
     // Método para deshipotecar una propiedad
     private void deshipotecarPropiedad(Jugador jugador, Casilla c){
-        jugador.deshipotecarPropiedad(jugador, c);
+        jugador.deshipotecarPropiedad(c);
     }
 
 
