@@ -93,9 +93,8 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public float evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
+    public void evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
 
-        float deuda = 0;
         String tipoCasilla = this.getTipo();
 
         /* Depende de donde caímos, hacer algo */
@@ -128,12 +127,6 @@ public class Casilla {
                         pago_alquiler *= 2;
                     }
 
-                    /* Si no puede pagarlo */
-                    if (jugador.getFortuna() < pago_alquiler) {
-                        System.out.println("Dinero insuficiente. El jugador debe solucionar sus deudas.");
-                        deuda = pago_alquiler - jugador.getFortuna();
-                        break;
-                    }
                     /* El jugador paga al propietario */
                     jugador.sumarGastos(pago_alquiler);
                     jugador.setPagoDeAlquileres(jugador.getPagoDeAlquileres() + pago_alquiler);
@@ -144,16 +137,16 @@ public class Casilla {
 
                     System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
 
+                    /* Si no puede pagarlo */
+                    if (jugador.getFortuna() < 0.f) {
+                        System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                    }
                 }
                 break;
+
             case "Transporte":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
-                    break;
-                }
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte.");
-                    deuda = valor - jugador.getFortuna();
                     break;
                 }
 
@@ -163,7 +156,11 @@ public class Casilla {
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
 
+                if (jugador.getFortuna() < 0.f) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
+                }
                 break;
+
             case "Comunidad":
                 Cartas carta1 = new Cartas(); //Creamos carta
                 Scanner scanner1 = new Scanner(System.in);
@@ -209,24 +206,18 @@ public class Casilla {
                 if (duenho == banca || duenho == jugador) {
                     break;
                 }
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio.");
-                    deuda = valor - jugador.getFortuna();
-                    break;
-                }
 
                 System.out.println("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
                 jugador.sumarGastos(valor);
                 jugador.sumarFortuna(-valor);
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
+
+                if (jugador.getFortuna() < 0.f) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
+                }
                 break;
             case "Impuesto":
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto.");
-                    deuda = valor - jugador.getFortuna();
-                    break;
-                }
 
                 System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");
                 jugador.sumarGastos(valor);
@@ -236,6 +227,10 @@ public class Casilla {
                 /* Bote del parking */
                 Casilla parking = tab.encontrar_casilla("Parking");
                 parking.sumarValor(valor);
+
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
+                }
 
                 break;
             default:
@@ -252,7 +247,6 @@ public class Casilla {
                 }
                 break;
         }
-        return deuda;
     }
 
     /*Método usado para comprar una casilla determinada. Parámetros:

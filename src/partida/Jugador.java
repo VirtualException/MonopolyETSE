@@ -15,7 +15,6 @@ public class Jugador {
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private int tiradasDobles; // Cuenta las tiradas dobles.
-    private float deudas;
     private float dineroInvertido;
     private float pagoTasasEImpuestos;
     private float pagoDeAlquileres;
@@ -122,7 +121,7 @@ public class Jugador {
     public void hipotecarPropiedad(Casilla c) {
 
         // Verificamos que el jugador tenga deudas
-        if (deudas == 0.f) {
+        if (this.getFortuna() >= 0.f) {
             System.out.println("No tienes deudas, no puedes hipotecar.");
             return;
         }
@@ -303,7 +302,7 @@ public class Jugador {
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public float moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+    public void moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
         Casilla c = this.getAvatar().getLugar();
@@ -313,13 +312,12 @@ public class Jugador {
         c = this.getAvatar().getLugar();
         System.out.println(" hasta " + c.getNombre() + ".");
 
-        this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-        return deudas;
+        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
     }
 
 
 
-    public float moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+    public void moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
         if (this.getAvatar().getTipo().equals("Pelota")) {
             if (tirada > 4){
@@ -332,8 +330,7 @@ public class Jugador {
                 c = this.getAvatar().getLugar();
                 System.out.println(" hasta " + c.getNombre() + ".");
 
-                this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                return deudas;
+                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
             } else {
                 ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
                 Casilla c = this.getAvatar().getLugar();
@@ -343,11 +340,9 @@ public class Jugador {
                 c = this.getAvatar().getLugar();
                 System.out.println(" hasta " + c.getNombre() + ".");
 
-                this.deudas = c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                return deudas;
+                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
             }
         }
-        return deudas;
     }
 
 
@@ -610,8 +605,6 @@ public class Jugador {
     public int getIndice() {
         return indice;
     }
-
-    public float getDeudas() {return deudas; }
 
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
     //    this.hipotecas = hipotecas;

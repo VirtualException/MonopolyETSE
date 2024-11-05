@@ -64,9 +64,9 @@ public class Menu {
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
         boolean tiene_deudas = false;
-        if (!jugadores.isEmpty()) tiene_deudas = jugadores.get(turno).getDeudas() > 0;
+        if (!jugadores.isEmpty()) tiene_deudas = jugadores.get(turno).getFortuna() < 0.f;
         if (tiene_deudas)
-            System.out.println("Atención! Debes solucionar tus deudas! Vende/Hipoteca propiedades.");
+            System.out.println("Atención! Debes solucionar tu deuda de " + (-jugadores.get(turno).getFortuna()) + "! Vende o hipoteca propiedades.");
 
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
@@ -113,8 +113,8 @@ public class Menu {
             venderEdificios(jugadores.get(turno), tipoEdificio, nombreCasilla, numEdificios);
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float deudas = jugadores.get(turno).getDeudas();
-                if (deudas > 0) {
+                float fortuna = jugadores.get(turno).getFortuna();
+                if (fortuna >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
@@ -172,8 +172,8 @@ public class Menu {
             hipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float deudas = jugadores.get(turno).getDeudas();
-                if (deudas > 0) {
+                float fortuna = jugadores.get(turno).getFortuna();
+                if (fortuna >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
@@ -183,8 +183,8 @@ public class Menu {
             deshipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float deudas = jugadores.get(turno).getDeudas();
-                if (deudas > 0) {
+                float fortuna = jugadores.get(turno).getFortuna();
+                if (fortuna >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
@@ -353,7 +353,8 @@ public class Menu {
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
             System.out.println("Moviendo jugador...");
-            float deuda = j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
+            j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
+            /* En caso de que no sea solvente, su fortuna será negativa (x < 0.f ). */
         }
         else {
             System.out.println("El jugador sigue en la cárcel.");
