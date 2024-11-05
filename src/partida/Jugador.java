@@ -262,64 +262,43 @@ public class Jugador {
             return;
         }
 
-        float precioEdificio;
+        int n_edificios_actuales = 0;
+        float multiplicador = 0;
 
-        switch(tipoEdificio){
-            case "casas":
-                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_CASA) / 2);
-                if(propiedad.getCasasN() >= numEdificios) {
-                    this.sumarFortuna(precioEdificio);
-                    for (int i = 0; i < numEdificios; i++){
-                        propiedad.eliminarEdificio("casa");
-                    }
-                    System.out.println(nombre + " ha vendido " + numEdificios + " casa(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getCasasN() + " casa(s).");
-                } else {
-                    System.out.println("Solamente se puede vender " + propiedad.getCasasN() + " casa(s), recibiendo " + precioEdificio + "€."); 
-                }
+        switch(tipoEdificio) {
+            case "casa":
+                n_edificios_actuales = propiedad.getCasasN();
+                multiplicador = Valor.MULTIPLICADOR_CASA;
                 break;
-
-            case "hoteles":
-                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_HOTEL) / 2);
-                if(propiedad.getHotelesN() >= numEdificios){
-                    this.sumarFortuna(precioEdificio);
-                    for (int i = 0; i < numEdificios; i++){
-                        propiedad.eliminarEdificio("hotel");
-                    }
-                    System.out.println(nombre + " ha vendido " + numEdificios + " hotel(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getHotelesN() + " hotel(s).");
-                } else {
-                    System.out.println("Solamente se puede vender " + propiedad.getHotelesN() + " hotele(s), recibiendo " + precioEdificio + "€."); 
-                }
+            case "hotel":
+                n_edificios_actuales = propiedad.getHotelesN();
+                multiplicador = Valor.MULTIPLICADOR_HOTEL;
                 break;
-
-            case "piscinas":
-                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISCINA) / 2);
-                if(propiedad.getPiscinasN() >= numEdificios){
-                    this.sumarFortuna(precioEdificio);
-                    for (int i = 0; i < numEdificios; i++){
-                        propiedad.eliminarEdificio("piscina");
-                    }
-                    System.out.println(nombre + " ha vendido " + numEdificios + " piscina(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPiscinasN() + " piscina(s).");
-                } else {
-                    System.out.println("Solamente se puede vender " + propiedad.getPiscinasN() + " piscina(s), recibiendo " + precioEdificio + "€."); 
-                }
+            case "piscina":
+                n_edificios_actuales = propiedad.getPiscinasN();
+                multiplicador = Valor.MULTIPLICADOR_PISCINA;
                 break;
-
-            case "pistas":
-                precioEdificio = numEdificios * ((propiedad.getValor()*Valor.MULTIPLICADOR_PISTA_DE_DEPORTE) / 2);
-                if(propiedad.getPistasN() >= numEdificios){
-                    this.sumarFortuna(precioEdificio);
-                    for (int i = 0; i < numEdificios; i++){
-                        propiedad.eliminarEdificio("pista");
-                    }
-                    System.out.println(nombre + " ha vendido " + numEdificios + " pista(s) de deporte en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + propiedad.getPistasN() + " pista(s).");
-                } else {
-                    System.out.println("Solamente se puede vender " + propiedad.getPistasN() + " pista(s), recibiendo " + precioEdificio + "€."); 
-                }
-                break; 
-            
+            case "pista":
+                n_edificios_actuales = propiedad.getPistasN();
+                multiplicador = Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
+                break;
             default:
-                System.out.println("Tipo de edificio no válido para vender.");
+                System.out.println("Tipo de edificio no reconocido. Debe ser: 'casa', 'hotel', 'piscina' o 'pista'.");
+                return;
         }
+
+        float precioEdificio = numEdificios * ((propiedad.getValor() * multiplicador) / 2);
+
+        if(n_edificios_actuales < numEdificios) {
+            System.out.println("No hay "+ numEdificios + " " + tipoEdificio + "(s). Solamente se podrían vender " + n_edificios_actuales + ".");
+            return;
+        }
+
+        this.sumarFortuna(precioEdificio);
+        for (int i = 0; i < numEdificios; i++)
+            propiedad.eliminarEdificio(tipoEdificio);
+        System.out.println(nombre + " ha vendido " + numEdificios +  " " + tipoEdificio + "(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + (n_edificios_actuales - numEdificios) + " " + tipoEdificio + "(s).");
+
     }
 
     
