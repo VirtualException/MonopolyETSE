@@ -43,6 +43,7 @@ public class Menu {
         Scanner scan = new Scanner(System.in);
         boolean sair = false;
 
+        /*
         crearJugador("Pepe", "Coche");
         crearJugador("Ana", "Pelota");
 
@@ -51,6 +52,7 @@ public class Menu {
 
         lanzarDados(5, 1);
         acabarTurno();
+        */
 
         while (!sair) {
             System.out.print("$> ");
