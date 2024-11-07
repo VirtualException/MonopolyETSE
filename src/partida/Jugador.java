@@ -24,6 +24,10 @@ public class Jugador {
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     private int indice; /* Index dentro del array de jugadores */
+    private float deuda;
+    private int tiradas;
+    private boolean modo;
+    private boolean pagarBanca;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -52,6 +56,7 @@ public class Jugador {
         this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
         this.indice = index;
+        this.pagarBanca = false;
     }
 
 
@@ -78,7 +83,20 @@ public class Jugador {
     //Método para añadir fortuna a un jugador
     //Como parámetro se pide el valor a añadir. Si hay que restar fortuna, se pasaría un valor negativo.
     public void sumarFortuna(float valor) {
-        this.fortuna += valor;
+
+        /* Si hay deuda. */
+        if (deuda > 0.f) {
+            if (valor >= deuda) {
+                this.fortuna += valor-deuda;
+                deuda = 0.f;
+            }
+            else {
+                this.deuda = this.deuda - valor;
+            }
+        }
+        else {
+            this.fortuna += valor;
+        }
     }
 
 
@@ -259,8 +277,8 @@ public class Jugador {
             return;
         }
 
-        int n_edificios_actuales = 0;
-        float multiplicador = 0;
+        int n_edificios_actuales;
+        float multiplicador;
 
         switch(tipoEdificio) {
             case "casa":
@@ -301,16 +319,58 @@ public class Jugador {
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
     public void moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
         Casilla c = this.getAvatar().getLugar();
 
-        System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-        this.getAvatar().moverAvatar(pos, tirada);
-        c = this.getAvatar().getLugar();
-        System.out.println(" hasta " + c.getNombre() + ".");
+        if (!this.isModo()) {
 
-        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+            System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+            this.getAvatar().moverAvatar(pos, tirada);
+            c = this.getAvatar().getLugar();
+            System.out.println(" hasta " + c.getNombre() + ".");
+            c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+        } else if (!this.isModo()){
+            if (this.getAvatar().getTipo().equals("Pelota")) {
+                if (tirada > 4){
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatar(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                } else {
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatarAtras(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                }
+            } else if (this.getAvatar().getTipo().equals("Coche")) {
+                if (tirada > 4){
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatar(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                } else {
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatarAtras(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                }
+            }
+        }
     }
 
 
@@ -377,16 +437,17 @@ public class Jugador {
     }
 
     
-
-
-    //Método para declararse en bancarrota
-    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean solvente, boolean pagarBancaTodo){
+     //Método para declararse en bancarrota
+     public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca) {
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
 
+        boolean solvente = this.fortuna >= 0.f;
+
+        //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
-            if(propietario.equals(banca) && pagarBancaTodo == false){
+            if(propietario.equals(banca) &&  == false){
                 traspasarPropiedadesJugador(banca, jugador);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
        
@@ -396,21 +457,20 @@ public class Jugador {
                 jugador.setFortuna(0.0f);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
 
-            } else if (propietario.equals(banca) && pagarBancaTodo == true){
+            } else if (propietario.equals(banca) &&  == true){
                 traspasarPropiedadesJugador(banca, jugador);
                 banca.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0.0f);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan a la banca");
             }
-            solvente = true;
-            eliminarJugador(jugadores,jugador);
-        }  else {
+            //solvente = true;
+            eliminarJugador(jugadores, jugador);   
+        } else {
             traspasarPropiedadesJugador(banca, jugador);
             System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
             eliminarJugador(jugadores, jugador); 
         }
     }
-
 
 
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
@@ -611,6 +671,22 @@ public class Jugador {
         return indice;
     }
 
+    public int getTiradas() {
+        return tiradas;
+    }
+
+    public void setTiradas(int tiradas) {
+        this.tiradas = tiradas;
+    }
+
+    public float getDeuda() {
+        return deuda;
+    }
+
+    public void setDeuda(float deuda) {
+        this.deuda = deuda;
+    }
+
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
     //    this.hipotecas = hipotecas;
     //}
@@ -618,4 +694,20 @@ public class Jugador {
     //public void setEdificios(ArrayList<Edificio> edificios) {
     //    this.edificios = edificios;
     //}
+
+    public boolean isModo() {
+        return modo;
+    }
+
+    public void setModo(boolean modo) {
+        this.modo = modo;
+    }
+
+    public boolean isPagarBanca() {
+        return pagarBanca;
+    }
+
+    public void setPagarBanca(boolean pagarBanca) {
+        this.pagarBanca = pagarBanca;
+    }
 }

@@ -71,7 +71,7 @@ public class Casilla {
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
     public void anhadirAvatar(Avatar av) {
-        if(avatares.contains(av)){
+        if(avatares.contains(av)) {
             System.out.println("Este avatar ya existe, elige otro distinto.");
         } else {
             avatares.add(av);
@@ -80,7 +80,7 @@ public class Casilla {
 
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
-        if(avatares.isEmpty() || !avatares.contains(av)){
+        if(avatares.isEmpty() || !avatares.contains(av)) {
             System.out.println("No hay ningún avatar.");
         } else {
             avatares.remove(av);
@@ -97,12 +97,13 @@ public class Casilla {
 
         String tipoCasilla = this.getTipo();
 
+        /* El jugador cayó una vez más en esta casilla */
+        this.contarCaer[jugador.getIndice()]++;
+
         /* Depende de donde caímos, hacer algo */
         switch (tipoCasilla) {
             case "Solar":
 
-                /* El jugador cayó una vez más en esta casilla */
-                this.contarCaer[jugador.getIndice()]++;
                 /* Si hay dueño */
                 if (duenho != banca && duenho != jugador) {
 
@@ -127,6 +128,13 @@ public class Casilla {
                         pago_alquiler *= 2;
                     }
 
+                    /* Si no puede pagarlo */
+                    if (jugador.getFortuna() < pago_alquiler) {
+                        System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        jugador.setDeuda(valor);
+                        break;
+                    }
+
                     /* El jugador paga al propietario */
                     jugador.sumarGastos(pago_alquiler);
                     jugador.setPagoDeAlquileres(jugador.getPagoDeAlquileres() + pago_alquiler);
@@ -137,10 +145,6 @@ public class Casilla {
 
                     System.out.println("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
 
-                    /* Si no puede pagarlo */
-                    if (jugador.getFortuna() < 0.f) {
-                        System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
-                    }
                 }
                 break;
 
@@ -150,28 +154,31 @@ public class Casilla {
                     break;
                 }
 
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setDeuda(valor);
+                    break;
+                }
+
                 System.out.println("El jugador " + jugador.getNombre() + " paga el transporte por " + valor + "€.");
                 jugador.sumarGastos(valor);
                 jugador.sumarFortuna(-valor);
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
 
-                if (jugador.getFortuna() < 0.f) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
                 break;
 
             case "Comunidad":
-                Cartas carta1 = new Cartas(); //Creamos carta
                 Scanner scanner1 = new Scanner(System.in);
-                int opcion1;
+                int opcion1 = 0;
                 System.out.println("Has caído en una casilla de Comunidad, por favor, escoge una carta");
-                while (true) {
+                boolean numeroIncorrecto1 = true;
+                while (numeroIncorrecto1) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
                         opcion1 = Integer.parseInt(scanner1.nextLine()); //hacemos un parse int
                         if (opcion1 >= 1 && opcion1 <= 6) {
-                            break; // Si el número está en el rango, sale del bucle
+                            numeroIncorrecto1 = false; // Si el número está en el rango, sale del bucle
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
@@ -179,19 +186,19 @@ public class Casilla {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-                carta1.accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
+                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
                 break;
             case "Suerte":
-                Cartas carta2 = new Cartas(); //Creamos carta
                 Scanner scanner2 = new Scanner(System.in);
-                int opcion2;
+                int opcion2 = 0;
+                boolean numeroIncorrecto2 = true;
                 System.out.println("Has caído en una casilla de Suerte, por favor, escoge una carta");
-                while (true) {
+                while (numeroIncorrecto2) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
                         opcion2 = Integer.parseInt(scanner2.nextLine()); //hacemos un parse int
                         if (opcion2 >= 1 && opcion2 <= 6) {
-                            break; // Si el número está en el rango, sale del bucle
+                            numeroIncorrecto2 = false; // Si el número está en el rango, sale del bucle
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
@@ -199,11 +206,17 @@ public class Casilla {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-                carta2.accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funciona de las cartas
+                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funcion de las cartas
                 break;
             case "Servicio":
                 /* Si no hay dueño */
                 if (duenho == banca || duenho == jugador) {
+                    break;
+                }
+
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setDeuda(valor);
                     break;
                 }
 
@@ -213,11 +226,14 @@ public class Casilla {
                 jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
                 duenho.sumarFortuna(valor);
 
-                if (jugador.getFortuna() < 0.f) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
                 break;
             case "Impuesto":
+
+                if (jugador.getFortuna() < valor) {
+                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
+                    jugador.setDeuda(valor);
+                    break;
+                }
 
                 System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");
                 jugador.sumarGastos(valor);
@@ -227,12 +243,8 @@ public class Casilla {
                 /* Bote del parking */
                 Casilla parking = tab.encontrar_casilla("Parking");
                 parking.sumarValor(valor);
-
-                if (jugador.getFortuna() < valor) {
-                    System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
-                }
-
                 break;
+
             default:
                 System.out.println("Evaluando tipo especial");
                 /* Cae en IrCárcel */
@@ -454,6 +466,10 @@ public class Casilla {
     public boolean haCaidoDosVeces(Jugador j) {
         int veces = contarCaer[j.getIndice()];
         return veces >= 2;
+    }
+
+    public int getContarCaer(Jugador j) {
+        return contarCaer[j.getIndice()];
     }
 
 

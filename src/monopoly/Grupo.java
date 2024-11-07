@@ -131,6 +131,14 @@ public class Grupo {
     //Getters y Setters
 
 
+    public float getValorTotal() {
+        float sum = 0;
+        for (Casilla c : miembros) {
+            sum += c.getValor();
+        }
+        return sum;
+    }
+
     public ArrayList<Casilla> getMiembros() {
         return miembros;
     }

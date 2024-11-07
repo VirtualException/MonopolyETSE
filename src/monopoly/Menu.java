@@ -10,15 +10,13 @@ public class Menu {
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
     private ArrayList<Avatar> avatares; //Avatares en la partida.
-    private int turno = 0; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
+    private int turno; //Índice correspondiente a la posición en el arrayList del jugador (y el avatar) que tienen el turno
     //private int lanzamientos; //Variable para contar el número de lanzamientos de un jugador en un turno.
     private Tablero tablero; //Tablero en el que se juega.
     private Dado dado1; //Dos dados para lanzar y avanzar casillas.
     private Dado dado2;
     private Jugador banca; //El jugador banca.
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
-    private boolean solvente; //Booleano para comprobar si el jugador que tiene el turno es solvente, es decir, si ha pagado sus deudas.
-
 
     public Menu() {
         iniciarPartida();
@@ -33,17 +31,28 @@ public class Menu {
         jugadores = new ArrayList<>();
         banca = new Jugador("Banca", "Banca", null, null, -1); /* No tiene casilla ni avatar asociado */
         tablero = new Tablero(banca);
+        turno = 0;
 
         dado1 = new Dado();
         dado2 = new Dado();
 
         tirado = false;
-        solvente = false;
 
         System.out.println(this.tablero);
 
         Scanner scan = new Scanner(System.in);
         boolean sair = false;
+
+
+        crearJugador("Pepe", "Coche");
+        crearJugador("Ana", "Pelota");
+
+        lanzarDados(1, 1);
+        acabarTurno();
+
+        lanzarDados(5, 1);
+        acabarTurno();
+
 
         while (!sair) {
             System.out.print("$> ");
@@ -64,23 +73,23 @@ public class Menu {
         System.arraycopy(split, 0, comandos_args, 0, num_args);
 
         boolean tiene_deudas = false;
-        if (!jugadores.isEmpty()) tiene_deudas = jugadores.get(turno).getFortuna() < 0.f;
+        if (!jugadores.isEmpty()) {
+            Jugador j = jugadores.get(turno);
+            tiene_deudas = j.getDeuda() > 0.f;
+            if (tiene_deudas) {
+                if (j.getDeuda() <= j.getFortuna()) {
+                    j.sumarFortuna(-j.getDeuda());
+                    j.setDeuda(0);
+                    tiene_deudas = false;
+                }
+            }
+        }
         if (tiene_deudas)
-            System.out.println("Atención! Debes solucionar tu deuda de " + (-jugadores.get(turno).getFortuna()) + "! Vende o hipoteca propiedades.");
+            System.out.println("Atención! Debes solucionar tu deuda de " + (jugadores.get(turno).getDeuda()) + "! Vende o hipoteca propiedades.");
 
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
-
-            jugadores.add(new Jugador(comandos_args[2], comandos_args[3], tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
-            avatares.add(jugadores.getLast().getAvatar());
-
-            tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
-
-            System.out.println("{");
-            System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
-            System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
-            System.out.println("}");
-
+            crearJugador(comandos_args[2], comandos_args[3]);
         }
         /* Comandos de listar */
         else if (comandos_args[0].equals("listar") && comandos_args[1].equals("jugadores") && num_args == 2) {
@@ -113,8 +122,8 @@ public class Menu {
             venderEdificios(jugadores.get(turno), tipoEdificio, nombreCasilla, numEdificios);
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float fortuna = jugadores.get(turno).getFortuna();
-                if (fortuna >= 0.f) {
+                float deuda = jugadores.get(turno).getDeuda();
+                if (deuda >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
@@ -172,8 +181,8 @@ public class Menu {
             hipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float fortuna = jugadores.get(turno).getFortuna();
-                if (fortuna >= 0.f) {
+                float deuda = jugadores.get(turno).getDeuda();
+                if (deuda >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
@@ -183,20 +192,20 @@ public class Menu {
             deshipotecarPropiedad(jugadores.get(turno), tablero.encontrar_casilla(nombreCasilla));
             /* Actualizar estado de deudas. */
             if (tiene_deudas) {
-                float fortuna = jugadores.get(turno).getFortuna();
-                if (fortuna >= 0.f) {
+                float deuda = jugadores.get(turno).getDeuda();
+                if (deuda >= 0.f) {
                     tiene_deudas = false;
                     System.out.println("El jugador ya no tiene deudas.");
                 }
             }
-        } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
+        } else if (comandos_args[0].equals("bancarrota") && num_args == 1) {
             /* No funciona como debería. */
-            bancarrota();
-        } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
+            bancarrota(jugadores.get(turno).isPagarBanca());
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 2) {
             String nombreJugador = comandos_args[1];
             estadisticasJugador(nombreJugador);
-        } else if (comandos_args[0].equals("estadisticas") && num_args == 1){
-            estadisticasJuego();
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 1) {
+            estadisticas();
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -205,12 +214,32 @@ public class Menu {
         else if (comandos_args[0].equals("cero")) {
             jugadores.get(turno).setFortuna(0);
         }
+        else if (comandos_args[0].equals("modo") && comandos_args[1].equals("avanzado") && num_args == 2) {
+            System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Avanzado");
+            jugadores.get(turno).setModo(true);
+        }
+        else if (comandos_args[0].equals("modo") && comandos_args[1].equals("simple") && num_args == 2) {
+            System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Simple");
+            jugadores.get(turno).setModo(false);
+        }
 
         else {
             System.out.println("Comando no reconocido.");
         }
 
         return false;
+    }
+
+    private void crearJugador(String nombre, String tipo) {
+        jugadores.add(new Jugador(nombre, tipo, tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
+        avatares.add(jugadores.getLast().getAvatar());
+
+        tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
+
+        System.out.println("{");
+        System.out.println("\tnombre: " + jugadores.getLast().getNombre() + ",");
+        System.out.println("\tavatar: " + jugadores.getLast().getAvatar().getId());
+        System.out.println("}");
     }
 
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
@@ -304,6 +333,7 @@ public class Menu {
             return;
         }
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
+        j.setTiradas(j.getTiradas() + 1);
 
         if (a == -1)
             dado1.hacerTirada();
@@ -317,7 +347,11 @@ public class Menu {
         System.out.println("La tirada es: " + dado1.getValor() + ", " + dado2.getValor() + ".");
         /* El jugador no puede tirar de nuevo */
         this.tirado = true;
-        /* Comprobar si las tiradas son iguales. Se usa Override en la clase Dado */
+
+
+
+
+        /* Comprobar si las tiradas son iguales */
         if (dado1.equals(dado2)) {
 
             System.out.println("Doble!");
@@ -325,10 +359,6 @@ public class Menu {
             /* Sale de la cárcel */
             if(j.isEnCarcel()){
                 j.setTiradasCarcel(j.getTiradasCarcel() + 1);
-                if (j.getTiradasCarcel() >= 3) {
-                    System.out.println("El jugador debe pagar para salír de la cárcel.");
-                    return;
-                }
                 System.out.println("El jugador sale de la cárcel, puede tirar de nuevo");
                 j.setEnCarcel(false);
                 this.tirado = false;
@@ -349,6 +379,27 @@ public class Menu {
             /* Puede tirar de nuevo */
             this.tirado = false;
 
+        } else {
+            if (j.isEnCarcel()) {
+                if (j.getTiradasCarcel() >= 3) {
+                    System.out.println("El jugador debe pagar para salír de la cárcel.");
+
+                    float pago = (float) Valor.SUMA_VUELTA * 0.25f;
+
+                    if (pago > j.getFortuna()) {
+                        System.out.println("Dinero insuficiente para salir de la cárcel. El jugador ahora tiene una deuda y debe solucionarla.");
+                        j.setDeuda(pago);
+                        return;
+                    }
+
+                    j.setGastos(pago);
+                    j.setPagoTasasEImpuestos(j.getPagoTasasEImpuestos() + pago);
+                    j.sumarFortuna(-pago);
+
+                    return;
+                }
+                j.setTiradasDobles(0);
+            }
         }
 
         if(!j.isEnCarcel()){
@@ -499,47 +550,94 @@ public class Menu {
         }
     }
 
+    private void estadisticas() {
 
+        /* Casilla más rentable. */
+        float max = 0;
+        Casilla casillaMasRentable = null;
+        for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
+            for (Casilla c : lado) {
+                if (c.getValor() > max)
+                    casillaMasRentable = c;
+            }
+        }
 
-    // Método para imprimir las estadísticas del juego
-    private void estadisticasJuego(){
+        /* Grupo más rentable. */
+        max = 0;
+        Grupo grupoMasRentable = null;
+        for (Grupo g : tablero.getGrupos().values()) {
+            if (g.getValorTotal() > max)
+                grupoMasRentable = g;
+        }
+
+        /* Casilla más frecuentada. */
+        max = 0;
+        Casilla casillaMasFrecuentada = null;
+        for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
+            for (Casilla c : lado) {
+                for (Jugador j : jugadores)
+                    if (c.getContarCaer(j) > max)
+                        casillaMasFrecuentada = c;
+            }
+        }
+
+        /* Jugador más vueltas. */
+        max = 0;
+        Jugador jugadorMasVueltas = null;
+        for (Jugador j : jugadores) {
+            if (j.getVueltas() > max)
+                jugadorMasVueltas = j;
+        }
+
+        /* Jugador más veces dados. */
+        max = 0;
+        Jugador jugadorMasVecesDados = null;
+        for (Jugador j : jugadores) {
+            if (j.getTiradas() > max)
+                jugadorMasVecesDados = j;
+        }
+
+        /* Jugador en cabeza. */
+        max = 0;
+        Jugador jugadorEnCabeza = null;
+        for (Jugador j : jugadores) {
+            if (j.getFortuna() > max)
+                jugadorEnCabeza = j;
+        }
+
+        if (casillaMasRentable == null || grupoMasRentable == null || casillaMasFrecuentada == null ||
+            jugadorMasVueltas == null || jugadorMasVecesDados == null || jugadorEnCabeza == null) {
+            return;
+        }
+
+        System.out.println( "casillaMasRentable: " + casillaMasRentable.getNombre() +
+                            "grupoMasRentable: " + grupoMasRentable.getColorGrupo() +
+                            "casillaMasFrecuentada: " + casillaMasFrecuentada.getNombre() +
+                            "jugadorMasVueltas: " + jugadorMasVueltas.getNombre() +
+                            "jugadorMasVecesDados: " + jugadorMasVecesDados.getNombre() +
+                            "jugadorEnCabeza: " + jugadorEnCabeza.getNombre()
+        );
 
     }
 
-
-    // Método que devuelve la cadena con las estadísticas del juego
-    private String cadenaEstadisticasJuego(){
-        String cadena;
-
-        cadena = ("{\n");
-        cadena += ("\tcasillaMasRentable: ");
-        cadena += ("\tgrupoMasRentable: ");
-        cadena += ("\tcasillaMasFrecuentada: ");
-        cadena += ("\tjugadorMasVueltas: ");
-        cadena += ("\t");
-
-    }
 
 
 
     // Método para declararse en bancarrota
-    private void bancarrota(boolean pagarBancaTodo){
-
+    private void bancarrota(boolean pagarBanca) {
         Jugador jugadorActual = jugadores.get(turno);
-    /* ? */
-        //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
-        jugadorActual.bancarrota(jugadores, banca, solvente, pagarBancaTodo);
+        jugadorActual.bancarrota(jugadores, banca, pagarBanca);
     }
 
 
     // Método para hipotecar una propiedad
-    private void hipotecarPropiedad(Jugador jugador, Casilla c){
+    private void hipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.hipotecarPropiedad(c);
     }
 
 
     // Método para deshipotecar una propiedad
-    private void deshipotecarPropiedad(Jugador jugador, Casilla c){
+    private void deshipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.deshipotecarPropiedad(c);
     }
 

@@ -11,6 +11,7 @@ public class Tablero {
     private ArrayList<ArrayList<Casilla>> posiciones; //Posiciones del tablero: se define como un arraylist de arraylists de casillas (uno por cada lado del tablero).
     private HashMap<String, Grupo> grupos; //Grupos del tablero, almacenados como un HashMap con clave String (será el color del grupo).
     private Jugador banca; //Un jugador que será la banca.
+    private Cartas cartas;
 
 
     //Constructor: únicamente le pasamos el jugador banca (que se creará desde el menú).
@@ -18,6 +19,7 @@ public class Tablero {
         this.posiciones = new ArrayList<>();
         this.grupos = new HashMap<>();
         this.banca = banca;
+        this.cartas = new Cartas();
 
         generarCasillas();
     }
@@ -324,5 +326,13 @@ public class Tablero {
 
     public void setBanca(Jugador banca) {
         this.banca = banca;
+    }
+
+    public Cartas getCartas() {
+        return cartas;
+    }
+
+    public void setCartas(Cartas cartas) {
+        this.cartas = cartas;
     }
 }
