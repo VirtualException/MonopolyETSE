@@ -168,16 +168,16 @@ public class Casilla {
                 break;
 
             case "Comunidad":
-                Cartas carta1 = new Cartas(); //Creamos carta
                 Scanner scanner1 = new Scanner(System.in);
-                int opcion1;
+                int opcion1 = 0;
                 System.out.println("Has caído en una casilla de Comunidad, por favor, escoge una carta");
-                while (true) {
+                boolean numeroIncorrecto1 = true;
+                while (numeroIncorrecto1) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
                         opcion1 = Integer.parseInt(scanner1.nextLine()); //hacemos un parse int
                         if (opcion1 >= 1 && opcion1 <= 6) {
-                            break; // Si el número está en el rango, sale del bucle
+                            numeroIncorrecto1 = false; // Si el número está en el rango, sale del bucle
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
@@ -185,19 +185,19 @@ public class Casilla {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-                carta1.accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
+                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
                 break;
             case "Suerte":
-                Cartas carta2 = new Cartas(); //Creamos carta
                 Scanner scanner2 = new Scanner(System.in);
-                int opcion2;
+                int opcion2 = 0;
+                boolean numeroIncorrecto2 = true;
                 System.out.println("Has caído en una casilla de Suerte, por favor, escoge una carta");
-                while (true) {
+                while (numeroIncorrecto2) {
                     System.out.print("Escoge un valor del 1 al 6: ");
                     try {
                         opcion2 = Integer.parseInt(scanner2.nextLine()); //hacemos un parse int
                         if (opcion2 >= 1 && opcion2 <= 6) {
-                            break; // Si el número está en el rango, sale del bucle
+                            numeroIncorrecto2 = false; // Si el número está en el rango, sale del bucle
                         } else {
                             System.out.println("Valor erróneo. Debe ser un número entre 1 y 6.");
                         }
@@ -205,7 +205,7 @@ public class Casilla {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-                carta2.accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funciona de las cartas
+                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funciona de las cartas
                 break;
             case "Servicio":
                 /* Si no hay dueño */

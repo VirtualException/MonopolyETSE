@@ -54,7 +54,7 @@ public class Cartas {
         cartasComunidad.add(cartaComunidad6);
     }
 
-    public void hacerRandom(String tipo) {
+    public void hacerRandom(String tipo) { //NO SE IMPLEMENTA PARA EL EXAMEN
         // Barajar las cartas de Suerte
         if (cartasSuerte != null && !cartasSuerte.isEmpty() && tipo.equals("Suerte")) {
             Collections.shuffle(cartasSuerte); // Baraja aleatoriamente el ArrayList de cartas de Suerte
@@ -68,7 +68,7 @@ public class Cartas {
 
     public void accion(Casilla c, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores, Tablero tablero, int opcion) {
 
-        hacerRandom(c.getTipo());
+        //hacerRandom(c.getTipo()); //NO SE IMPLEMENTA PARA EL EXAMEN
 
         if (c.getTipo().equals("Suerte")) {
 
@@ -110,9 +110,6 @@ public class Cartas {
 
             System.out.println("Sacando carta de comunidad...");
 
-            //for (Cartas carta2 : this.cartasComunidad) {
-            //        hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
-
             switch (opcion) {
                 case 1:
                     System.out.println(cartasComunidad.get(0).getMensaje());
@@ -152,7 +149,6 @@ public class Cartas {
                     // No hace nada, el bucle se repite si no es uno de los casos válidos.
                     break;
             }
-            //}
         }
     }
 
