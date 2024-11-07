@@ -131,7 +131,7 @@ public class Casilla {
                     /* Si no puede pagarlo */
                     if (jugador.getFortuna() < pago_alquiler) {
                         System.out.println("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
-                        jugador.setFortuna(jugador.getFortuna() - pago_alquiler);
+                        jugador.setDeuda(valor);
                         break;
                     }
 
@@ -156,7 +156,7 @@ public class Casilla {
 
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    jugador.setDeuda(valor);
                     break;
                 }
 
@@ -216,7 +216,7 @@ public class Casilla {
 
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    jugador.setDeuda(valor);
                     break;
                 }
 
@@ -231,7 +231,7 @@ public class Casilla {
 
                 if (jugador.getFortuna() < valor) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setFortuna(jugador.getFortuna() - valor);
+                    jugador.setDeuda(valor);
                     break;
                 }
 

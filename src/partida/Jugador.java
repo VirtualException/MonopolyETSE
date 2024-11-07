@@ -80,7 +80,20 @@ public class Jugador {
     //Método para añadir fortuna a un jugador
     //Como parámetro se pide el valor a añadir. Si hay que restar fortuna, se pasaría un valor negativo.
     public void sumarFortuna(float valor) {
-        this.fortuna += valor;
+
+        /* Si hay deuda. */
+        if (deuda > 0.f) {
+            if (valor >= deuda) {
+                this.fortuna += valor-deuda;
+                deuda = 0.f;
+            }
+            else {
+                this.deuda = this.deuda - valor;
+            }
+        }
+        else {
+            this.fortuna += valor;
+        }
     }
 
 
@@ -614,6 +627,14 @@ public class Jugador {
 
     public void setTiradas(int tiradas) {
         this.tiradas = tiradas;
+    }
+
+    public float getDeuda() {
+        return deuda;
+    }
+
+    public void setDeuda(float deuda) {
+        this.deuda = deuda;
     }
 
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
