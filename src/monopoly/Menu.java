@@ -43,7 +43,7 @@ public class Menu {
         Scanner scan = new Scanner(System.in);
         boolean sair = false;
 
-        
+
         crearJugador("Pepe", "Coche");
         crearJugador("Ana", "Pelota");
 
@@ -188,13 +188,14 @@ public class Menu {
                     System.out.println("El jugador ya no tiene deudas.");
                 }
             }
-        } else if (comandos_args[0].equals("bancarrota") && num_args == 1){
+        } else if (comandos_args[0].equals("bancarrota") && num_args == 1) {
             /* No funciona como debería. */
             bancarrota();
-        } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 2) {
             String nombreJugador = comandos_args[1];
             estadisticasJugador(nombreJugador);
-
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 1) {
+            estadisticas();
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -314,6 +315,7 @@ public class Menu {
             return;
         }
         System.out.print("El jugador " + j.getNombre() + " tira los dados. ");
+        j.setTiradas(j.getTiradas() + 1);
 
         if (a == -1)
             dado1.hacerTirada();
@@ -528,6 +530,76 @@ public class Menu {
         if(!encontrado){
             System.out.println("ERROR. El jugador " + nombreJugador + " no existe.");
         }
+    }
+
+    private void estadisticas() {
+
+        /* Casilla más rentable. */
+        float max = 0;
+        Casilla casillaMasRentable = null;
+        for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
+            for (Casilla c : lado) {
+                if (c.getValor() > max)
+                    casillaMasRentable = c;
+            }
+        }
+
+        /* Grupo más rentable. */
+        max = 0;
+        Grupo grupoMasRentable = null;
+        for (Grupo g : tablero.getGrupos().values()) {
+            if (g.getValorTotal() > max)
+                grupoMasRentable = g;
+        }
+
+        /* Casilla más frecuentada. */
+        max = 0;
+        Casilla casillaMasFrecuentada = null;
+        for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
+            for (Casilla c : lado) {
+                for (Jugador j : jugadores)
+                    if (c.getContarCaer(j) > max)
+                        casillaMasFrecuentada = c;
+            }
+        }
+
+        /* Jugador más vueltas. */
+        max = 0;
+        Jugador jugadorMasVueltas = null;
+        for (Jugador j : jugadores) {
+            if (j.getVueltas() > max)
+                jugadorMasVueltas = j;
+        }
+
+        /* Jugador más veces dados. */
+        max = 0;
+        Jugador jugadorMasVecesDados = null;
+        for (Jugador j : jugadores) {
+            if (j.getTiradas() > max)
+                jugadorMasVecesDados = j;
+        }
+
+        /* Jugador en cabeza. */
+        max = 0;
+        Jugador jugadorEnCabeza = null;
+        for (Jugador j : jugadores) {
+            if (j.getFortuna() > max)
+                jugadorEnCabeza = j;
+        }
+
+        if (casillaMasRentable == null || grupoMasRentable == null || casillaMasFrecuentada == null ||
+            jugadorMasVueltas == null || jugadorMasVecesDados == null || jugadorEnCabeza == null) {
+            return;
+        }
+
+        System.out.println( "casillaMasRentable: " + casillaMasRentable.getNombre() +
+                            "grupoMasRentable: " + grupoMasRentable.getColorGrupo() +
+                            "casillaMasFrecuentada: " + casillaMasFrecuentada.getNombre() +
+                            "jugadorMasVueltas: " + jugadorMasVueltas.getNombre() +
+                            "jugadorMasVecesDados: " + jugadorMasVecesDados.getNombre() +
+                            "jugadorEnCabeza: " + jugadorEnCabeza.getNombre()
+        );
+
     }
 
 

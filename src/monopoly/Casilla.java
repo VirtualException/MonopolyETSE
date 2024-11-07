@@ -97,12 +97,13 @@ public class Casilla {
 
         String tipoCasilla = this.getTipo();
 
+        /* El jugador cayó una vez más en esta casilla */
+        this.contarCaer[jugador.getIndice()]++;
+
         /* Depende de donde caímos, hacer algo */
         switch (tipoCasilla) {
             case "Solar":
 
-                /* El jugador cayó una vez más en esta casilla */
-                this.contarCaer[jugador.getIndice()]++;
                 /* Si hay dueño */
                 if (duenho != banca && duenho != jugador) {
 
@@ -465,6 +466,10 @@ public class Casilla {
     public boolean haCaidoDosVeces(Jugador j) {
         int veces = contarCaer[j.getIndice()];
         return veces >= 2;
+    }
+
+    public int getContarCaer(Jugador j) {
+        return contarCaer[j.getIndice()];
     }
 
 

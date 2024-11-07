@@ -25,6 +25,7 @@ public class Jugador {
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
     private int indice; /* Index dentro del array de jugadores */
     private float deuda;
+    private int tiradas;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -605,6 +606,14 @@ public class Jugador {
 
     public int getIndice() {
         return indice;
+    }
+
+    public int getTiradas() {
+        return tiradas;
+    }
+
+    public void setTiradas(int tiradas) {
+        this.tiradas = tiradas;
     }
 
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {
