@@ -68,91 +68,91 @@ public class Cartas {
 
     public void accion(Casilla c, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores, Tablero tablero, int opcion) {
 
+        hacerRandom(c.getTipo());
+
         if (c.getTipo().equals("Suerte")) {
 
-            hacerRandom(c.getTipo());
-            for (Cartas carta1 : this.cartasSuerte) {
+            System.out.println("Sacando carta de suerte...");
 
-                    hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
-                    switch (opcion) {
-                        case 1:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion(), jugadores);
-                            break;
-                        case 2:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
-                            break;
-                        case 3:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.sumarFortuna(300000.0f);
-                            break;
-                        case 4:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion(), jugadores);
-                            break;
-                        case 5:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.encarcelar(tablero.getPosiciones());
-                            break;
-                        case 6:
-                            System.out.println(cartasSuerte.get(0).getMensaje());
-                            jugador.sumarFortuna(1000000.0f);
-                            break;
-                        default:
-                            // Si no es un caso válido, el bucle continúa
-                            break;
-                    }
+            switch (opcion) {
+                case 1:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion(), jugadores);
+                    break;
+                case 2:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
+                    break;
+                case 3:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.sumarFortuna(300000.0f);
+                    break;
+                case 4:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion(), jugadores);
+                    break;
+                case 5:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.encarcelar(tablero.getPosiciones());
+                    break;
+                case 6:
+                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    jugador.sumarFortuna(1000000.0f);
+                    break;
+                default:
+                    // Si no es un caso válido, el bucle continúa
+                    break;
             }
+
         }
 
         if (c.getTipo().equals("Comunidad")) {
 
-            hacerRandom(c.getTipo());
+            System.out.println("Sacando carta de comunidad...");
 
-            for (Cartas carta2 : this.cartasComunidad) {
-                    hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
+            //for (Cartas carta2 : this.cartasComunidad) {
+            //        hacerRandom(c.getTipo()); // Baraja las cartas en cada intento
 
-                    switch (opcion) {
-                        case 1:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.sumarFortuna(-500000.0f);
-                            jugador.sumarGastos(500000.0f);
-                            banca.sumarFortuna(500000.0f);
-                            break;
-                        case 2:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.encarcelar(tablero.getPosiciones());
-                            break;
-                        case 3:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion(), jugadores);
-                            break;
-                        case 4:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.sumarFortuna(2000000.0f);
-                            break;
-                        case 5:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            jugador.sumarFortuna(-1000000.0f);
-                            jugador.sumarGastos(1000000.0f);
-                            banca.sumarFortuna(1000000.0f);
-                            break;
-                        case 6:
-                            System.out.println(cartasComunidad.get(0).getMensaje());
-                            for (Jugador j : jugadores) {
-                                if (!j.equals(jugador)) {
-                                    jugador.sumarFortuna(-200000.0f);
-                                    jugador.sumarGastos(200000.0f);
-                                    j.sumarFortuna(200000.0f);
-                                }
-                            }
-                            break;
-                        default:
-                            // No hace nada, el bucle se repite si no es uno de los casos válidos.
-                            break;
+            switch (opcion) {
+                case 1:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    jugador.sumarFortuna(-500000.0f);
+                    jugador.sumarGastos(500000.0f);
+                    banca.sumarFortuna(500000.0f);
+                    break;
+                case 2:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    jugador.encarcelar(tablero.getPosiciones());
+                    break;
+                case 3:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion(), jugadores);
+                    break;
+                case 4:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    jugador.sumarFortuna(2000000.0f);
+                    break;
+                case 5:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    jugador.sumarFortuna(-1000000.0f);
+                    jugador.sumarGastos(1000000.0f);
+                    banca.sumarFortuna(1000000.0f);
+                    break;
+                case 6:
+                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    for (Jugador j : jugadores) {
+                        if (!j.equals(jugador)) {
+                            jugador.sumarFortuna(-200000.0f);
+                            jugador.sumarGastos(200000.0f);
+                            j.sumarFortuna(200000.0f);
+                        }
                     }
+                    break;
+                default:
+                    // No hace nada, el bucle se repite si no es uno de los casos válidos.
+                    break;
             }
+            //}
         }
     }
 

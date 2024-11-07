@@ -71,7 +71,7 @@ public class Casilla {
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
     public void anhadirAvatar(Avatar av) {
-        if(avatares.contains(av)){
+        if(avatares.contains(av)) {
             System.out.println("Este avatar ya existe, elige otro distinto.");
         } else {
             avatares.add(av);
@@ -80,7 +80,7 @@ public class Casilla {
 
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
     public void eliminarAvatar(Avatar av) {
-        if(avatares.isEmpty() || !avatares.contains(av)){
+        if(avatares.isEmpty() || !avatares.contains(av)) {
             System.out.println("No hay ningún avatar.");
         } else {
             avatares.remove(av);
