@@ -200,7 +200,7 @@ public class Menu {
             }
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1) {
             /* No funciona como debería. */
-            bancarrota();
+            bancarrota(jugadores.get(turno).isPagarBanca());
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2) {
             String nombreJugador = comandos_args[1];
             estadisticasJugador(nombreJugador);
@@ -623,9 +623,9 @@ public class Menu {
 
 
     // Método para declararse en bancarrota
-    private void bancarrota() {
+    private void bancarrota(boolean pagarBanca) {
         Jugador jugadorActual = jugadores.get(turno);
-        jugadorActual.bancarrota(jugadores, banca);
+        jugadorActual.bancarrota(jugadores, banca, pagarBanca);
     }
 
 

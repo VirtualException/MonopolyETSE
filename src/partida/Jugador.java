@@ -440,12 +440,12 @@ public class Jugador {
 
 
     //Método para declararse en bancarrota
-    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca) {
+    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean pagarBanca) {
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
 
-        boolean solvente = this.fortuna >= 0.f;
+        boolean solvente = this.deuda == 0.f;
 
         //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
