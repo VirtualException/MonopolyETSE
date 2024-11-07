@@ -206,7 +206,7 @@ public class Casilla {
                         System.out.println("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
                     }
                 }
-                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funciona de las cartas
+                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funcion de las cartas
                 break;
             case "Servicio":
                 /* Si no hay dueño */

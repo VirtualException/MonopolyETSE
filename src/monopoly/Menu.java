@@ -214,6 +214,14 @@ public class Menu {
         else if (comandos_args[0].equals("cero")) {
             jugadores.get(turno).setFortuna(0);
         }
+        else if (comandos_args[0].equals("modo") && comandos_args[1].equals("avanzado") && num_args == 2) {
+            System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Avanzado");
+            jugadores.get(turno).setModo(true);
+        }
+        else if (comandos_args[0].equals("modo") && comandos_args[1].equals("simple") && num_args == 2) {
+            System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Simple");
+            jugadores.get(turno).setModo(false);
+        }
 
         else {
             System.out.println("Comando no reconocido.");

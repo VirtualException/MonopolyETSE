@@ -113,9 +113,14 @@ public class Cartas {
             switch (opcion) {
                 case 1:
                     System.out.println(cartasComunidad.get(0).getMensaje());
-                    jugador.sumarFortuna(-500000.0f);
-                    jugador.sumarGastos(500000.0f);
-                    banca.sumarFortuna(500000.0f);
+                    if (jugador.getFortuna() < 500000.0f){
+                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        jugador.setDeuda (500000.0f);
+                        break;
+                    }
+                        jugador.sumarFortuna(-500000.0f);
+                        jugador.sumarGastos(500000.0f);
+                        banca.sumarFortuna(500000.0f);
                     break;
                 case 2:
                     System.out.println(cartasComunidad.get(0).getMensaje());
@@ -131,12 +136,23 @@ public class Cartas {
                     break;
                 case 5:
                     System.out.println(cartasComunidad.get(0).getMensaje());
+                    if (jugador.getFortuna() < 1000000.0f){
+                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        jugador.setDeuda (1000000.0f);
+                        break;
+                    }
                     jugador.sumarFortuna(-1000000.0f);
                     jugador.sumarGastos(1000000.0f);
                     banca.sumarFortuna(1000000.0f);
                     break;
                 case 6:
                     System.out.println(cartasComunidad.get(0).getMensaje());
+                    if (jugador.getFortuna() < 200000.0f * jugadores.size()){
+                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        jugador.setDeuda (200000.0f * jugadores.size());
+                        jugador.setPagarBanca(true);
+                        break;
+                    }
                     for (Jugador j : jugadores) {
                         if (!j.equals(jugador)) {
                             jugador.sumarFortuna(-200000.0f);

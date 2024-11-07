@@ -26,6 +26,8 @@ public class Jugador {
     private int indice; /* Index dentro del array de jugadores */
     private float deuda;
     private int tiradas;
+    private boolean modo;
+    private boolean pagarBanca;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -54,6 +56,7 @@ public class Jugador {
         this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
         this.indice = index;
+        this.pagarBanca = false;
     }
 
 
@@ -316,16 +319,58 @@ public class Jugador {
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
     public void moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
         Casilla c = this.getAvatar().getLugar();
 
-        System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-        this.getAvatar().moverAvatar(pos, tirada);
-        c = this.getAvatar().getLugar();
-        System.out.println(" hasta " + c.getNombre() + ".");
+        if (!this.isModo()) {
 
-        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+            System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+            this.getAvatar().moverAvatar(pos, tirada);
+            c = this.getAvatar().getLugar();
+            System.out.println(" hasta " + c.getNombre() + ".");
+            c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+        } else if (!this.isModo()){
+            if (this.getAvatar().getTipo().equals("Pelota")) {
+                if (tirada > 4){
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatar(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                } else {
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatarAtras(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                }
+            } else if (this.getAvatar().getTipo().equals("Coche")) {
+                if (tirada > 4){
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatar(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                } else {
+
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    this.getAvatar().moverAvatarAtras(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    System.out.println(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                }
+            }
+        }
     }
 
 
@@ -644,4 +689,20 @@ public class Jugador {
     //public void setEdificios(ArrayList<Edificio> edificios) {
     //    this.edificios = edificios;
     //}
+
+    public boolean isModo() {
+        return modo;
+    }
+
+    public void setModo(boolean modo) {
+        this.modo = modo;
+    }
+
+    public boolean isPagarBanca() {
+        return pagarBanca;
+    }
+
+    public void setPagarBanca(boolean pagarBanca) {
+        this.pagarBanca = pagarBanca;
+    }
 }
