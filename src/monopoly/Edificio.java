@@ -26,7 +26,7 @@ public class Edificio {
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
     static public boolean construir(Edificio edificio, Tablero tablero) {
 
-        /* Evaluar normas de edificación para el juagdor que quiere contruir */
+        /* Evaluar normas de edificación para el jugador que quiere construir */
 
         /* Tipo inválido */
         if (!"casa hotel piscina pista".contains(edificio.tipo)) {

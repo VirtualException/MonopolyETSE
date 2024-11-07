@@ -15,7 +15,7 @@ public class Jugador {
     private int tiradasCarcel; //Cuando está en la carcel, contará las tiradas sin éxito que ha hecho allí para intentar salir (se usa para limitar el numero de intentos).
     private int vueltas; //Cuenta las vueltas dadas al tablero.
     private int tiradasDobles; // Cuenta las tiradas dobles.
-    private float dineroInvertido;
+    private float dineroInvertido; 
     private float pagoTasasEImpuestos;
     private float pagoDeAlquileres;
     private float cobroDeAlquileres;

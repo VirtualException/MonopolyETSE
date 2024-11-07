@@ -123,6 +123,16 @@ public class Grupo {
             cadena.append("},\n");
         }
         return cadena.toString();
+
+
+        //mensaje final
+    }
+
+
+
+    // Método que imprime el mensaje final de StringEdificiosGrupo
+    private void mensajeFinal(){
+        
     }
 
 
