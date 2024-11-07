@@ -438,16 +438,15 @@ public class Jugador {
 
     
      //Método para declararse en bancarrota
-     public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca) {
+     public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean pagarBanca) {
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
 
-        boolean solvente = this.fortuna >= 0.f;
+        boolean solvente = this.deuda == 0.f;
 
-        //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
-            if(propietario.equals(banca) &&  == false){
+            if(propietario.equals(banca) && !pagarBanca){
                 traspasarPropiedadesJugador(banca, jugador);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
        
@@ -457,13 +456,12 @@ public class Jugador {
                 jugador.setFortuna(0.0f);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
 
-            } else if (propietario.equals(banca) &&  == true){
+            } else if (propietario.equals(banca) && pagarBanca){
                 traspasarPropiedadesJugador(banca, jugador);
                 banca.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0.0f);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan a la banca");
             }
-            //solvente = true;
             eliminarJugador(jugadores, jugador);   
         } else {
             traspasarPropiedadesJugador(banca, jugador);

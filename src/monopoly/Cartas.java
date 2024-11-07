@@ -137,7 +137,7 @@ public class Cartas {
                 case 5:
                     System.out.println(cartasComunidad.get(0).getMensaje());
                     if (jugador.getFortuna() < 1000000.0f){
-                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (1000000.0f);
                         break;
                     }
@@ -147,8 +147,8 @@ public class Cartas {
                     break;
                 case 6:
                     System.out.println(cartasComunidad.get(0).getMensaje());
-                    if (jugador.getFortuna() < 200000.0f * jugadores.size()){
-                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                    if (jugador.getFortuna() < 200000.0f * (jugadores.size()-1)){
+                        System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (200000.0f * jugadores.size());
                         jugador.setPagarBanca(true);
                         break;
