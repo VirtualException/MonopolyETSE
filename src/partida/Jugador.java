@@ -332,7 +332,7 @@ public class Jugador {
             System.out.println(" hasta " + c.getNombre() + ".");
             c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
-        } else if (!this.isModo()){
+        } else {
             if (this.getAvatar().getTipo().equals("Pelota")) {
                 if (tirada > 4){
 
@@ -352,12 +352,14 @@ public class Jugador {
 
                 }
             } else if (this.getAvatar().getTipo().equals("Coche")) {
-                if (tirada > 4){
-
+                int tiradas = 0;
+                if (tirada > 4 && tiradas <=3){
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tirada);
                     c = this.getAvatar().getLugar();
                     System.out.println(" hasta " + c.getNombre() + ".");
+                    System.out.println("Puedes seguir tirando.");
+
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
                 } else {
@@ -369,36 +371,6 @@ public class Jugador {
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
                 }
-            }
-        }
-    }
-
-
-
-    public void moverJugadorAvanzado(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
-
-        if (this.getAvatar().getTipo().equals("Pelota")) {
-            if (tirada > 4){
-                ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
-
-                Casilla c = this.getAvatar().getLugar();
-
-                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                this.getAvatar().moverAvatar(pos, tirada);
-                c = this.getAvatar().getLugar();
-                System.out.println(" hasta " + c.getNombre() + ".");
-
-                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-            } else {
-                ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
-                Casilla c = this.getAvatar().getLugar();
-
-                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                this.getAvatar().moverAvatarAtras(pos, tirada);
-                c = this.getAvatar().getLugar();
-                System.out.println(" hasta " + c.getNombre() + ".");
-
-                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
             }
         }
     }
