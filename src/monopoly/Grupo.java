@@ -1,4 +1,4 @@
-package monopoly;
+package monopoly; 
 
 import java.util.ArrayList;
 import partida.*;
@@ -50,7 +50,7 @@ public class Grupo {
      */
     public boolean esDuenhoGrupo(Jugador jugador) {
         for(Casilla casilla : miembros){
-            if(!jugador.getPropiedades().contains(casilla)){   //Comprueba que el jugador no tenga en su propiedad alguna de las casillas del grupo
+            if(!jugador.getPropiedades().contains(casilla) || jugador.getHipotecas().contains(casilla)){   //Comprueba que el jugador no tenga en su propiedad alguna de las casillas del grupo
                 return false;
             }
         }

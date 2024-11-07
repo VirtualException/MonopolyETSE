@@ -51,8 +51,6 @@ public class Jugador {
         this.premiosInversionesOBote = 0.0f;
         this.vecesEnLaCarcel = 0;
         this.propiedades = new ArrayList<>();
-        //this.hipotecas = new ArrayList<>();
-        //this.edificios = new ArrayList<>();
         this.indice = index;
     }
 
@@ -382,26 +380,31 @@ public class Jugador {
 
 
     //Método para declararse en bancarrota
-    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean solvente){
+    public void bancarrota(ArrayList<Jugador> jugadores, Jugador banca, boolean solvente, boolean pagarBancaTodo){
 
         Jugador jugador = this;
         Jugador propietario = avatar.getLugar().getDuenho();
 
-        //COMPROBAR SI HAI QUE RESETEAR PRECIOS PROPIEDADES
         if(!solvente){
-            if(propietario.equals(banca)){
+            if(propietario.equals(banca) && pagarBancaTodo == false){
                 traspasarPropiedadesJugador(banca, jugador);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
        
-            } else {
+            } else if (!propietario.equals(banca)){
                 traspasarPropiedadesJugador(propietario, jugador);
                 propietario.sumarFortuna(jugador.fortuna);
-                jugador.setFortuna(0);
+                jugador.setFortuna(0.0f);
                 System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
+
+            } else if (propietario.equals(banca) && pagarBancaTodo == true){
+                traspasarPropiedadesJugador(banca, jugador);
+                banca.sumarFortuna(jugador.fortuna);
+                jugador.setFortuna(0.0f);
+                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan a la banca");
             }
-            solvente = true;  
-            eliminarJugador(jugadores, jugador);   
-        } else {
+            solvente = true;
+            eliminarJugador(jugadores,jugador);
+        }  else {
             traspasarPropiedadesJugador(banca, jugador);
             System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
             eliminarJugador(jugadores, jugador); 
@@ -412,11 +415,11 @@ public class Jugador {
 
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
         for(Casilla c : jugador.propiedades){
+            c.setValor(c.getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
             nuevoPropietario.anhadirPropiedad(c);
             c.setDuenho(nuevoPropietario);
             jugador.eliminarPropiedad(c);
         }
-         
     }
 
 
@@ -497,6 +500,8 @@ public class Jugador {
     }
 
 
+
+    //revisar si en propiedades no se incluyen las hipotecas
     public ArrayList<Casilla> getPropiedades() {
         ArrayList<Casilla> propiedadesNoHipotecadas  = new ArrayList<>();
 

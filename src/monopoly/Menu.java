@@ -195,7 +195,8 @@ public class Menu {
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2){
             String nombreJugador = comandos_args[1];
             estadisticasJugador(nombreJugador);
-
+        } else if (comandos_args[0].equals("estadisticas") && num_args == 1){
+            estadisticasJuego();
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -500,12 +501,34 @@ public class Menu {
 
 
 
+    // Método para imprimir las estadísticas del juego
+    private void estadisticasJuego(){
+
+    }
+
+
+    // Método que devuelve la cadena con las estadísticas del juego
+    private String cadenaEstadisticasJuego(){
+        String cadena;
+
+        cadena = ("{\n");
+        cadena += ("\tcasillaMasRentable: ");
+        cadena += ("\tgrupoMasRentable: ");
+        cadena += ("\tcasillaMasFrecuentada: ");
+        cadena += ("\tjugadorMasVueltas: ");
+        cadena += ("\t");
+
+    }
+
+
+
     // Método para declararse en bancarrota
-    private void bancarrota(){
+    private void bancarrota(boolean pagarBancaTodo){
+
         Jugador jugadorActual = jugadores.get(turno);
     /* ? */
         //solvente = jugadorActual.getAvatar().getLugar().evaluarCasilla(tablero, jugadorActual ,banca, jugadores);
-        jugadorActual.bancarrota(jugadores, banca, solvente);
+        jugadorActual.bancarrota(jugadores, banca, solvente, pagarBancaTodo);
     }
 
 

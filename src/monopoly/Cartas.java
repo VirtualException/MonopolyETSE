@@ -140,7 +140,7 @@ public class Cartas {
                             break;
                         case 6:
                             System.out.println(cartasComunidad.get(0).getMensaje());
-                            for (Jugador j : jugadores) {
+                            for (Jugador j : jugadores) {  
                                 if (!j.equals(jugador)) {
                                     jugador.sumarFortuna(-200000.0f);
                                     jugador.sumarGastos(200000.0f);
