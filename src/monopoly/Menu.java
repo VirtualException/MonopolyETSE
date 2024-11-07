@@ -380,7 +380,7 @@ public class Menu {
 
                     if (pago > j.getFortuna()) {
                         System.out.println("Dinero insuficiente para salir de la cárcel. El jugador ahora tiene una deuda y debe solucionarla.");
-                        j.setFortuna(j.getFortuna() - pago);
+                        j.setDeuda(pago);
                         return;
                     }
 
