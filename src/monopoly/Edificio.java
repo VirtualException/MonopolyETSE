@@ -25,74 +25,77 @@ public class Edificio {
 
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
     static public boolean construir(Edificio edificio, Tablero tablero) {
+        Grupo grupo = edificio.getGrupo();
+        Casilla casilla = edificio.getCasilla();
+        Jugador duenho = edificio.getDuenho();
+        String tipo = edificio.getTipo();
+        float coste = edificio.getCoste();
 
         /* Evaluar normas de edificación para el jugador que quiere construir */
 
         /* Tipo inválido */
-        if (!"casa hotel piscina pista".contains(edificio.tipo)) {
+        if (!"casa hotel piscina pista".contains(tipo)) {
             System.out.println("El edificio no es de un tipo válido.");
             return true;
         }
 
         /* Comprobar si alguna regla no se cumple */
-        if (!edificio.casilla.getTipo().equals("Solar")) {
+        if (!casilla.getTipo().equals("Solar")) {
             System.out.println("La casilla no es un solar, no se puede contruir.");
             return true;
         }
-        if (!edificio.grupo.esDuenhoGrupo(edificio.duenho)) {
+        if (!grupo.esDuenhoGrupo(duenho)) {
             System.out.println("El jugador no es el dueño del grupo.");
             return true;
         }
-        if (!edificio.casilla.haCaidoDosVeces(edificio.duenho)) {
+        if (!casilla.haCaidoDosVeces(duenho)) {
             System.out.println("El jugador no ha caído dos veces aquí.");
             return true;
         }
 
-        int grupo_size = edificio.casilla.getGrupo().getMiembros().size();
-        if (edificio.casilla.getCasasN() == grupo_size &&
-            edificio.casilla.getHotelesN() == grupo_size &&
-            edificio.casilla.getPiscinasN() == grupo_size &&
-            edificio.casilla.getPistasN() == grupo_size) {
+        int numPistasEdificables = grupo.numEdificiosEdificablesGrupo("pista");
+        int numPiscinasEdificables = grupo.numEdificiosEdificablesGrupo("piscina");
+        int numHotelesEdificables = grupo.numEdificiosEdificablesGrupo("hotel");
+        int numCasasEdificables = grupo.numEdificiosEdificablesGrupo("casa");
+
+        if (numCasasEdificables == 0 &&
+            numHotelesEdificables == 0 &&
+            numPiscinasEdificables == 0 &&
+            numPistasEdificables == 0) {
             System.out.println("Máximo de edificios alcanzados!");
             return true;
         }
 
-        System.out.println("Contruyendo " + edificio.tipo + ".");
+        System.out.println("Contruyendo " + tipo + ".");
 
         /* Contruye el edificio del tipo correspondiente si hay 4 del anterior tipo. */
 
         /* Coste original */
-        float precio_original = edificio.casilla.getPrecioOriginal();
+        float precio_original = casilla.getPrecioOriginal();
 
-        float mult;
-        switch (edificio.tipo) {
+        //float mult;
+        switch (tipo) {
             /* SI EL EDIFICIO ES CASA */
             case "casa":
                 /* Comprobar máximo de edificios. */
-                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2 && edificio.casilla.getHotelesN() == 2 && edificio.casilla.getCasasN() == 2) {
+                if (numCasasEdificables == 0 || casilla.getCasasN() == 4) {
                     System.out.println("Máximo de edificio alcanzado.");
                 }
-                edificio.coste = precio_original * Valor.MULTIPLICADOR_CASA;
-                if (edificio.casilla.getCasasN() == 4) {
-                    System.out.println("Ya hay 4 contrucciones del mismo tipo.");
-                    return true;
-                }
+                edificio.setCoste(precio_original * Valor.MULTIPLICADOR_CASA);
                 break;
 
             /* SI EL EDIFICIO ES HOTEL */
             case "hotel":
-                edificio.coste = precio_original * Valor.MULTIPLICADOR_HOTEL;
                 /* Comprobar máximo de edificios. */
-                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2 && edificio.casilla.getHotelesN() == 2) {
+                if (numHotelesEdificables == 0) {
                     System.out.println("Máximo de edificio alcanzado.");
                 }
-                if (edificio.casilla.getHotelesN() == 4) {
-                    System.out.println("Ya hay 4 contrucciones del tipo hotel.");
-                    return true;
-                }
-                if (edificio.casilla.getCasasN() == 4) {
+                if (casilla.getCasasN() == 4) {
                     /* Eliminar casas */
-                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("casa"));
+                    for(int i=0; i<4; i++){
+                        casilla.eliminarEdificio("casa");
+                    }
+                    edificio.setCoste(precio_original * Valor.MULTIPLICADOR_HOTEL);
                 }
                 else {
                     System.out.println("No hay suficientes casas para un hotel.");
@@ -102,18 +105,17 @@ public class Edificio {
 
             /* SI EL EDIFICIO ES PISCINA */
             case "piscina":
-                edificio.coste = precio_original * Valor.MULTIPLICADOR_PISCINA;
                 /* Comprobar máximo de edificios. */
-                if (edificio.casilla.getPistasN() == 2 && edificio.casilla.getPiscinasN() == 2) {
+                if (numPiscinasEdificables == 0) {
                     System.out.println("Máximo de edificio alcanzado.");
                 }
-                if (edificio.casilla.getPiscinasN() == 4) {
-                    System.out.println("Ya hay 4 contrucciones del tipo piscina.");
-                    return true;
-                }
-                if (edificio.casilla.getHotelesN() == 4) {
+                if (casilla.getHotelesN() >= 1 && casilla.getCasasN() >= 2) {
                     /* Eliminar hoteles */
-                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("hotel"));
+                    casilla.eliminarEdificio("hotel");
+                    for(int i = 0; i < 2; i++){
+                        casilla.eliminarEdificio("casa");
+                    }
+                    edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISCINA);
                 }
                 else {
                     System.out.println("No hay suficientes hoteles para una piscina.");
@@ -123,17 +125,19 @@ public class Edificio {
 
             /* SI EL EDIFICIO ES PISTA DE DEPORTE */
             case "pista":
-                edificio.coste = precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
-                if (edificio.casilla.getPistasN() == 2) {
+                if (numPistasEdificables == 0) {
                     System.out.println("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
                     return true;
                 }
-                if (edificio.casilla.getPiscinasN() == 4) {
-                    /* Eliminar piscinas */
-                    edificio.casilla.getEdificios().removeIf(e -> e.tipo.equals("piscina"));
+                if (casilla.getHotelesN() >= 2) {
+                    /* Eliminar hoteles */
+                    for(int i = 0; i < 2; i++) {
+                        casilla.getEdificios().removeIf(e -> e.tipo.equals("hotel"));
+                }
+                    edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE);
                 }
                 else {
-                    System.out.println("No hay suficientes piscinas para una pista de deporte.");
+                    System.out.println("No hay suficientes hoteles para una pista de deporte.");
                     return true;
                 }
                 break;
@@ -144,20 +148,20 @@ public class Edificio {
                 return true; /* Salir de la función con código de error */
         }
 
-        edificio.id = edificio.generarID(edificio.tipo, tablero);
+        edificio.setId(edificio.generarID(edificio.tipo, tablero));
 
         /* El jugador gasta dinero */
 
-        if (edificio.coste > edificio.duenho.getFortuna()) {
+        if (coste > duenho.getFortuna()) {
             System.out.println("Fortuna insuficiente para edificar.");
             return true;
         }
 
         System.out.println(edificio.id + " contruído.");
 
-        edificio.duenho.setGastos(edificio.coste);
-        edificio.duenho.sumarFortuna(-edificio.coste);
-        edificio.duenho.setDineroInvertido(edificio.duenho.getDineroInvertido() + edificio.coste);
+        duenho.setGastos(coste);
+        duenho.sumarFortuna(-coste);
+        duenho.setDineroInvertido(duenho.getDineroInvertido() + coste);
 
         /* Todo correcto */
         return false;

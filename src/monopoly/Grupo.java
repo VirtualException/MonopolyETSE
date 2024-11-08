@@ -61,7 +61,7 @@ public class Grupo {
 
 
 // Método que devuelve una cadena con información de los edificios de un grupo
-    public String StringEdificosGrupo(){
+    public void stringEdificosGrupo(){
         StringBuilder cadena = new StringBuilder();
         
         for(Casilla c : miembros){
@@ -122,21 +122,100 @@ public class Grupo {
             cadena.append("\talquiler: ").append(c.getValor()*0.10f).append("\n");
             cadena.append("},\n");
         }
-        return cadena.toString();
-
-
-        //mensaje final
+        System.out.println(cadena.toString());
+        mensajeFinal();
     }
 
 
 
     // Método que imprime el mensaje final de StringEdificiosGrupo
-    private void mensajeFinal(){
-        
+    public void mensajeFinal(){
+        int numPistasEdificables = numEdificiosEdificablesGrupo("pista");
+        int numPiscinasEdificables = numEdificiosEdificablesGrupo("piscina");
+        int numHotelesEdificables = numEdificiosEdificablesGrupo("hotel");
+        int numCasasEdificables = numEdificiosEdificablesGrupo("casa");
+
+        String edificiosAConstruir = "Aún se pueden edificar ";
+        String edificiosNoEdificables = "Ya no se pueden construir ";
+        if(numPistasEdificables > 0){
+            edificiosAConstruir += numPistasEdificables + " pista(s),";
+        }
+        else {
+            edificiosNoEdificables += " pistas,";
+        }
+       
+        if(numPiscinasEdificables > 0){
+            edificiosAConstruir += numPiscinasEdificables + " piscina(s),";
+        }
+        else {
+            edificiosNoEdificables += " piscinas,";
+        }
+
+        if(numHotelesEdificables > 0){
+            edificiosAConstruir += numHotelesEdificables + " hotel(es),";
+        }
+        else {
+            edificiosNoEdificables += " hoteles,";
+        }
+                
+        if(numCasasEdificables > 0){
+            edificiosAConstruir += numCasasEdificables + " casa(s)";
+        }
+        else {
+            edificiosNoEdificables += " casas";
+        }
+
+        String mensajeFinal = "";
+        if(numPistasEdificables > 0 || numPiscinasEdificables > 0 || numHotelesEdificables > 0 || numCasasEdificables > 0){
+            mensajeFinal += edificiosAConstruir + ".";
+        }
+        else {
+            System.out.println("No se puden construír ningún edificio.");
+        }
+
+        if(numPistasEdificables == 0 || numPiscinasEdificables == 0 || numHotelesEdificables == 0 || numCasasEdificables == 0){
+            mensajeFinal += edificiosNoEdificables + ".";
+        }
+        System.out.println(mensajeFinal);
     }
 
 
 
+    public int numEdificiosEdificablesGrupo(String tipo){
+        int maxEdificios = this.numCasillas;
+
+        int numEdificios = 0;
+        int numHoteles = 0;
+
+        for (Casilla casilla : this.miembros){
+            switch(tipo){
+                case "casa":
+                    numEdificios += casilla.getCasasN();
+                    numHoteles += casilla.getHotelesN();
+                break;
+                case "hotel":
+                    numEdificios += casilla.getHotelesN();
+                break;
+
+                case "piscina":
+                    numEdificios += casilla.getPiscinasN();
+                break;
+
+                case "pista":
+                    numEdificios += casilla.getPistasN();
+                break;
+                
+                default: 
+                    break;
+            }
+        }
+
+        if(tipo.equals("casa") && numHoteles < maxEdificios){
+            maxEdificios *= 4;
+        }
+
+        return maxEdificios - numEdificios;
+    }
 
     //Getters y Setters
 

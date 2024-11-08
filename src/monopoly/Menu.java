@@ -102,6 +102,12 @@ public class Menu {
             listarVenta();
         } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 2){
             listarEdificios();
+        } else if (comandos_args[0].equals("listar") && comandos_args[1].equals("edificios") && num_args == 3){
+            String colorGrupo = comandos_args[2];
+            Grupo grupo = tablero.getGrupos().get(colorGrupo);
+            if(grupo != null){
+                grupo.stringEdificosGrupo();
+            }
         }
         /* Ver tablero */
         else if (comandos_args[0].equals("ver") && comandos_args[1].equals("tablero") && num_args == 2) {
