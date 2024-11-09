@@ -130,6 +130,7 @@ public class Grupo {
 
     // Método que imprime el mensaje final de StringEdificiosGrupo
     public void mensajeFinal(){
+
         int numPistasEdificables = numEdificiosEdificablesGrupo("pista");
         int numPiscinasEdificables = numEdificiosEdificablesGrupo("piscina");
         int numHotelesEdificables = numEdificiosEdificablesGrupo("hotel");
@@ -137,28 +138,29 @@ public class Grupo {
 
         String edificiosAConstruir = "Aún se pueden edificar ";
         String edificiosNoEdificables = "Ya no se pueden construir ";
-        if(numPistasEdificables > 0){
+
+        if (numPistasEdificables > 0){
             edificiosAConstruir += numPistasEdificables + " pista(s),";
         }
         else {
             edificiosNoEdificables += " pistas,";
         }
        
-        if(numPiscinasEdificables > 0){
+        if (numPiscinasEdificables > 0){
             edificiosAConstruir += numPiscinasEdificables + " piscina(s),";
         }
         else {
             edificiosNoEdificables += " piscinas,";
         }
 
-        if(numHotelesEdificables > 0){
+        if (numHotelesEdificables > 0){
             edificiosAConstruir += numHotelesEdificables + " hotel(es),";
         }
         else {
             edificiosNoEdificables += " hoteles,";
         }
                 
-        if(numCasasEdificables > 0){
+        if (numCasasEdificables > 0){
             edificiosAConstruir += numCasasEdificables + " casa(s)";
         }
         else {
@@ -166,21 +168,23 @@ public class Grupo {
         }
 
         String mensajeFinal = "";
-        if(numPistasEdificables > 0 || numPiscinasEdificables > 0 || numHotelesEdificables > 0 || numCasasEdificables > 0){
-            mensajeFinal += edificiosAConstruir + ".";
-        }
-        else {
-            System.out.println("No se puden construír ningún edificio.");
+
+        if (numPistasEdificables > 0 || numPiscinasEdificables > 0 || numHotelesEdificables > 0 || numCasasEdificables > 0){
+            mensajeFinal += edificiosAConstruir + ". ";
+        } else {
+            mensajeFinal = "No se puede construír ningún edificio.";
         }
 
-        if(numPistasEdificables == 0 || numPiscinasEdificables == 0 || numHotelesEdificables == 0 || numCasasEdificables == 0){
+        if (numPistasEdificables == 0 || numPiscinasEdificables == 0 || numHotelesEdificables == 0 || numCasasEdificables == 0){
             mensajeFinal += edificiosNoEdificables + ".";
         }
+
         System.out.println(mensajeFinal);
     }
 
 
 
+    // Método para calcular el número de edificios de un tipo que aún se pueden construír
     public int numEdificiosEdificablesGrupo(String tipo){
         int maxEdificios = this.numCasillas;
 
@@ -210,7 +214,7 @@ public class Grupo {
             }
         }
 
-        if(tipo.equals("casa") && numHoteles < maxEdificios){
+        if (tipo.equals("casa") && numHoteles < maxEdificios){
             maxEdificios *= 4;
         }
 
