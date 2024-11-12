@@ -369,8 +369,7 @@ public class Jugador {
                         }
 
                     }
-                } else {
-
+                } else { //si es menor que cuatro la tirada, se va ahcia atrás
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatarAtras(pos, tirada);
                     c = this.getAvatar().getLugar();
