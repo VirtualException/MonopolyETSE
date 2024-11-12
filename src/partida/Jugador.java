@@ -350,6 +350,10 @@ public class Jugador {
                                 c = this.getAvatar().getLugar();
                                 System.out.println(" hasta " + c.getNombre() + ".");
                                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                                if (c.getNombre().equals("Carcel")) { // Verificar si cae en la Cárcel
+                                    System.out.println("El avatar " + this.getAvatar().getId() + " ha caído en la Cárcel. No puede continuar.");
+                                    return; // Detener el proceso de movimiento
+                                }
                                 avance = 2; //y luego se avanzará de dos en dos por las impares
                             }
                         } else{ //si es par
@@ -359,6 +363,10 @@ public class Jugador {
                                 c = this.getAvatar().getLugar();
                                 System.out.println(" hasta " + c.getNombre() + ".");
                                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                                if (c.getNombre().equals("Carcel")) { // Verificar si cae en la Cárcel
+                                    System.out.println("El avatar " + this.getAvatar().getId() + " ha caído en la Cárcel. No puede continuar.");
+                                    return; // Detener el proceso de movimiento
+                                }
                                 avance = 2; //luego se avanza de dos en dos
                             }
                             System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + 1 + " posiciones, desde " + c.getNombre());
@@ -369,7 +377,7 @@ public class Jugador {
                         }
 
                     }
-                } else { //si es menor que cuatro la tirada, se va ahcia atrás
+                } else { //si es menor que cuatro la tirada, se va hacia atrás
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatarAtras(pos, tirada);
                     c = this.getAvatar().getLugar();
@@ -388,8 +396,7 @@ public class Jugador {
 
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
-                } else {
-
+                } else { //si la tirada es menor que cuatro, se va hacia atras
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatarAtras(pos, tirada);
                     c = this.getAvatar().getLugar();
