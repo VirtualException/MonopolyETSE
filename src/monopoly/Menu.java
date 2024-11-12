@@ -47,12 +47,12 @@ public class Menu {
         crearJugador("Pepe", "Coche");
         crearJugador("Ana", "Pelota");
 
-        lanzarDados(1, 1);
+
+        lanzarDados(1, 2);
         acabarTurno();
 
         lanzarDados(5, 1);
         acabarTurno();
-
 
         while (!sair) {
             System.out.print("$> ");
@@ -411,6 +411,7 @@ public class Menu {
         if(!j.isEnCarcel()){
             /* mover jugador, etc.. */
             System.out.println("Moviendo jugador...");
+            j.sumarTirada_Turno(); /* Tiró otra vez */
             tirado = j.moverJugador(tablero, dado1.getValor() + dado2.getValor(), jugadores);
 
         }

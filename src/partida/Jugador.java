@@ -397,8 +397,6 @@ public class Jugador {
                 /* Movimiento Coche */
                 System.out.println("Moviendo como Coche");
 
-                tiradas_turno++;
-
                 if (tiradas_turno <= -3) {
                     System.out.println("El jugador que tira en modo Coche no puede los siguientes " + (-tiradas_turno) + " turnos.");
                     return true;
@@ -718,6 +716,10 @@ public class Jugador {
 
     public void setDeuda(float deuda) {
         this.deuda = deuda;
+    }
+
+    public void sumarTirada_Turno() {
+        tiradas_turno++;
     }
 
     //public void setHipotecas(ArrayList<Hipoteca> hipotecas) {

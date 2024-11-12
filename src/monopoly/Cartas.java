@@ -70,6 +70,9 @@ public class Cartas {
 
         //hacerRandom(c.getTipo()); //NO SE IMPLEMENTA PARA EL EXAMEN
 
+        boolean modo = jugador.isModo();
+        jugador.setModo(!modo);
+
         if (c.getTipo().equals("Suerte")) {
 
             System.out.println("Sacando carta de suerte...");
@@ -166,6 +169,8 @@ public class Cartas {
                     break;
             }
         }
+
+        jugador.setModo(modo);
     }
 
 
