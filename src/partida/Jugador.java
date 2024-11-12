@@ -334,14 +334,41 @@ public class Jugador {
 
         } else {
             if (this.getAvatar().getTipo().equals("Pelota")) {
-                if (tirada > 4){
+                if (tirada > 4){ //si la tirada es mayor que cuatro
+                    if (tirada == 5){ //si es cinco, simplemente movemos esas posiciones
+                        System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                        this.getAvatar().moverAvatar(pos, tirada);
+                        c = this.getAvatar().getLugar();
+                        System.out.println(" hasta " + c.getNombre() + ".");
+                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    } else { //si es mayor
+                        int avance = 5; //declaramos el primer avance
+                        if (tirada % 2 != 0){ //comprobamos si es impar
+                            for (int i = avance; i <= tirada; i = i+2){ //primero se avanzará 5 poisiciones
+                                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + avance + " posiciones, desde " + c.getNombre());
+                                this.getAvatar().moverAvatar(pos, avance);
+                                c = this.getAvatar().getLugar();
+                                System.out.println(" hasta " + c.getNombre() + ".");
+                                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                                avance = 2; //y luego se avanzará de dos en dos por las impares
+                            }
+                        } else{ //si es par
+                            for (int i = avance; i <= tirada--; i = i+2){ //se avanza cinco posiciones
+                                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + avance + " posiciones, desde " + c.getNombre());
+                                this.getAvatar().moverAvatar(pos, avance);
+                                c = this.getAvatar().getLugar();
+                                System.out.println(" hasta " + c.getNombre() + ".");
+                                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                                avance = 2; //luego se avanza de dos en dos
+                            }
+                            System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + 1 + " posiciones, desde " + c.getNombre());
+                            this.getAvatar().moverAvatar(pos, 1); //y al salir del bucle se avanzará hasta la ultima casilla;
+                            c = this.getAvatar().getLugar();
+                            System.out.println(" hasta " + c.getNombre() + ".");
+                            c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                        }
 
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                    this.getAvatar().moverAvatar(pos, tirada);
-                    c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-
+                    }
                 } else {
 
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
