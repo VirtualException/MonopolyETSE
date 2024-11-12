@@ -54,6 +54,7 @@ public class Casilla {
         this.impuesto = impuesto;
         this.hipotecada = false;
         this.edificios = new ArrayList<>();
+        this.contarCaer = new int [10];
     }
 
     /*Constructor utilizado para crear las otras casillas (Suerte, Caja de comunidad y Especiales):
@@ -67,6 +68,7 @@ public class Casilla {
         this.duenho = duenho;
         this.hipotecada = false;
         this.edificios = new ArrayList<>();
+        this.contarCaer = new int [10];
     }
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.

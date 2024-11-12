@@ -556,76 +556,96 @@ public class Menu {
         }
     }
 
+    
     private void estadisticas() {
 
-        /* Casilla más rentable. */
-        float max = 0;
+        /* Casilla más rentable */
+        float max = -1;
         Casilla casillaMasRentable = null;
         for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
             for (Casilla c : lado) {
-                if (c.getValor() > max)
+                if (c.getValor() > max) {
+                    max = c.getValor();
                     casillaMasRentable = c;
+                }
             }
         }
-
-        /* Grupo más rentable. */
-        max = 0;
+    
+        /* Grupo más rentable */
+        max = -1;
         Grupo grupoMasRentable = null;
         for (Grupo g : tablero.getGrupos().values()) {
-            if (g.getValorTotal() > max)
+            if (g.getValorTotal() > max) {
+                max = g.getValorTotal();
                 grupoMasRentable = g;
+            }
         }
-
-        /* Casilla más frecuentada. */
-        max = 0;
+    
+        /* Casilla más frecuentada */
+        max = -1;
         Casilla casillaMasFrecuentada = null;
         for (ArrayList<Casilla> lado : tablero.getPosiciones()) {
             for (Casilla c : lado) {
-                for (Jugador j : jugadores)
-                    if (c.getContarCaer(j) > max)
-                        casillaMasFrecuentada = c;
+                float frecuencia = 0;
+                for (Jugador j : jugadores) {
+                    frecuencia += c.getContarCaer(j);
+                }
+                if (frecuencia > max) {
+                    max = frecuencia;
+                    casillaMasFrecuentada = c;
+                }
             }
         }
-
-        /* Jugador más vueltas. */
-        max = 0;
+    
+        /* Jugador con más vueltas */
+        max = -1;
         Jugador jugadorMasVueltas = null;
         for (Jugador j : jugadores) {
-            if (j.getVueltas() > max)
+            if (j.getVueltas() > max) {
+                max = j.getVueltas();
                 jugadorMasVueltas = j;
+            }
         }
-
-        /* Jugador más veces dados. */
-        max = 0;
+    
+        /* Jugador con más lanzamientos de dados */
+        max = -1;
         Jugador jugadorMasVecesDados = null;
         for (Jugador j : jugadores) {
-            if (j.getTiradas() > max)
+            if (j.getTiradas() > max) {
+                max = j.getTiradas();
                 jugadorMasVecesDados = j;
+            }
         }
-
-        /* Jugador en cabeza. */
-        max = 0;
+    
+        /* Jugador en cabeza por fortuna */
+        max = -1;
         Jugador jugadorEnCabeza = null;
         for (Jugador j : jugadores) {
-            if (j.getFortuna() > max)
+            if (j.getFortuna() > max) {
+                max = j.getFortuna();
                 jugadorEnCabeza = j;
+            }
         }
-
-        if (casillaMasRentable == null || grupoMasRentable == null || casillaMasFrecuentada == null ||
-            jugadorMasVueltas == null || jugadorMasVecesDados == null || jugadorEnCabeza == null) {
-            return;
+    
+        /* Comprobar si se encontraron resultados y mostrarlos */
+        if (casillaMasRentable != null && grupoMasRentable != null && casillaMasFrecuentada != null &&
+            jugadorMasVueltas != null && jugadorMasVecesDados != null && jugadorEnCabeza != null) {
+            
+            String cadena = "{\n";
+            cadena += "\tcasillaMasRentable: " + casillaMasRentable.getNombre() + ",\n";
+            cadena += "\tgrupoMasRentable: " + grupoMasRentable.getColorGrupo() + ",\n";
+            cadena += "\tcasillaMasFrecuentada: " + casillaMasFrecuentada.getNombre() + ",\n";
+            cadena += "\tjugadorMasVueltas: " + jugadorMasVueltas.getNombre() + ",\n";
+            cadena += "\tjugadorMasVecesDados: " + jugadorMasVecesDados.getNombre() + ",\n";
+            cadena += "\tjugadorEnCabeza: " + jugadorEnCabeza.getNombre() + "\n";
+            cadena += "}";
+    
+            System.out.println(cadena);
+        } else {
+            System.out.println("No se pudieron calcular todas las estadísticas, verifica los datos.");
         }
-
-        System.out.println( "casillaMasRentable: " + casillaMasRentable.getNombre() +
-                            "grupoMasRentable: " + grupoMasRentable.getColorGrupo() +
-                            "casillaMasFrecuentada: " + casillaMasFrecuentada.getNombre() +
-                            "jugadorMasVueltas: " + jugadorMasVueltas.getNombre() +
-                            "jugadorMasVecesDados: " + jugadorMasVecesDados.getNombre() +
-                            "jugadorEnCabeza: " + jugadorEnCabeza.getNombre()
-        );
-
     }
-
+    
 
 
 
