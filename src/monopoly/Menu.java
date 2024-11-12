@@ -522,14 +522,20 @@ public class Menu {
 
 
 
-    // Método para listar los edificios construídos.
-    private void listarEdificios(){
+    // Método para listar los edificios construidos por cada jugador
+    private void listarEdificios() {
         for (Jugador j : jugadores) {
-            for (Edificio e : j.getEdificios()) {
-                System.out.println(e.stringEdificio());
+            if (j.getEdificios().isEmpty()) {
+                System.out.println("El jugador " + j.getNombre() + " no ha construido edificios.");
+            } else {
+                System.out.println("Edificios del jugador " + j.getNombre() + ":");
+                for (Edificio e : j.getEdificios()) {
+                    System.out.println(e.stringEdificio());
+                }
             }
         }
     }
+
 
 
     // Método para vender edificios
