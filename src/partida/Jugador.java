@@ -26,6 +26,7 @@ public class Jugador {
     private int indice; /* Index dentro del array de jugadores */
     private float deuda;
     private int tiradas;
+    private int tiradas_turno;
     private boolean modo;
     private boolean pagarBanca;
 
@@ -47,6 +48,7 @@ public class Jugador {
         this.tiradasCarcel = 0;
         this.vueltas = 0;
         this.tiradasDobles = 0;
+        this.tiradas_turno = 0;
         this.dineroInvertido = 0.0f;
         this.pagoTasasEImpuestos = 0.0f;
         this.pagoDeAlquileres = 0.0f;
@@ -318,7 +320,7 @@ public class Jugador {
 
     
     /* Mover jugador de la casilla actual respecto al valor de la tirada*/
-    public void moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
+    public boolean moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
 
@@ -331,9 +333,14 @@ public class Jugador {
             c = this.getAvatar().getLugar();
             System.out.println(" hasta " + c.getNombre() + ".");
             c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+            return true;
 
         } else {
             if (this.getAvatar().getTipo().equals("Pelota")) {
+
+                /* Movimiento Pelota */
+                System.out.println("Moviendo como Pelota");
+
                 if (tirada > 4){ //si la tirada es mayor que cuatro
                     if (tirada == 5){ //si es cinco, simplemente movemos esas posiciones
                         System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
@@ -352,7 +359,7 @@ public class Jugador {
                                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
                                 if (c.getNombre().equals("Carcel")) { // Verificar si cae en la Cárcel
                                     System.out.println("El avatar " + this.getAvatar().getId() + " ha caído en la Cárcel. No puede continuar.");
-                                    return; // Detener el proceso de movimiento
+                                    return true; // Detener el proceso de movimiento
                                 }
                                 avance = 2; //y luego se avanzará de dos en dos por las impares
                             }
@@ -365,7 +372,7 @@ public class Jugador {
                                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
                                 if (c.getNombre().equals("Carcel")) { // Verificar si cae en la Cárcel
                                     System.out.println("El avatar " + this.getAvatar().getId() + " ha caído en la Cárcel. No puede continuar.");
-                                    return; // Detener el proceso de movimiento
+                                    return true; // Detener el proceso de movimiento
                                 }
                                 avance = 2; //luego se avanza de dos en dos
                             }
@@ -378,7 +385,7 @@ public class Jugador {
 
                     }
                 } else { //si es menor que cuatro la tirada, se va hacia atrás
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
                     this.getAvatar().moverAvatarAtras(pos, tirada);
                     c = this.getAvatar().getLugar();
                     System.out.println(" hasta " + c.getNombre() + ".");
@@ -386,26 +393,49 @@ public class Jugador {
 
                 }
             } else if (this.getAvatar().getTipo().equals("Coche")) {
-                int tiradas = 0;
-                if (tirada > 4 && tiradas <=3){
+
+                /* Movimiento Coche */
+                System.out.println("Moviendo como Coche");
+
+                tiradas_turno++;
+
+                if (tiradas_turno <= -3) {
+                    System.out.println("El jugador que tira en modo Coche no puede los siguientes " + (-tiradas_turno) + " turnos.");
+                    return true;
+                }
+
+                /* Si lleva tirando muchas veces, no se tira*/
+                if (tiradas_turno > 3) {
+                    tiradas_turno = 0;
+                    System.out.println("El jugador que tira en modo Coche ya tiró 3 veces.");
+                    return true;
+                }
+
+                if (tirada > 4) {
                     System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tirada);
                     c = this.getAvatar().getLugar();
                     System.out.println(" hasta " + c.getNombre() + ".");
-                    System.out.println("Puedes seguir tirando.");
-
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-
-                } else { //si la tirada es menor que cuatro, se va hacia atras
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                    this.getAvatar().moverAvatarAtras(pos, tirada);
-                    c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-
+                    return false;
                 }
+
+                // Si la tirada es menor o igual a 4, retroceder y deshabilitar tiradas.
+
+                tiradas_turno = -3;
+
+                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
+                this.getAvatar().moverAvatarAtras(pos, tirada);
+                c = this.getAvatar().getLugar();
+                System.out.println(" hasta " + c.getNombre() + ".");
+                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+
+                return true;
+
+
             }
         }
+        return true;
     }
 
 
