@@ -89,6 +89,7 @@ public class Cartas {
                 case 3:
                     System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(300000.0f);
+                    jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 300000.0f);
                     break;
                 case 4:
                     System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
@@ -101,6 +102,7 @@ public class Cartas {
                 case 6:
                     System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(1000000.0f);
+                    jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 1000000.0f);
                     break;
                 default:
                     // Si no es un caso válido, el bucle continúa
@@ -123,6 +125,7 @@ public class Cartas {
                     }
                         jugador.sumarFortuna(-500000.0f);
                         jugador.sumarGastos(500000.0f);
+                        jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + 500000.0f);
                         banca.sumarFortuna(500000.0f);
                     break;
                 case 2:
@@ -136,6 +139,7 @@ public class Cartas {
                 case 4:
                     System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(2000000.0f);
+                    jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 2000000.0f);
                     break;
                 case 5:
                     System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
@@ -146,6 +150,7 @@ public class Cartas {
                     }
                     jugador.sumarFortuna(-1000000.0f);
                     jugador.sumarGastos(1000000.0f);
+                    jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + 1000000.0f);
                     banca.sumarFortuna(1000000.0f);
                     break;
                 case 6:
@@ -160,6 +165,7 @@ public class Cartas {
                         if (!j.equals(jugador)) {
                             jugador.sumarFortuna(-200000.0f);
                             jugador.sumarGastos(200000.0f);
+                            jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + 200000.0f);
                             j.sumarFortuna(200000.0f);
                         }
                     }

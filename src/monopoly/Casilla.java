@@ -257,6 +257,7 @@ public class Casilla {
                 else if (nombre.equals("Parking")) {
                     float bote = this.getValor();
                     jugador.sumarFortuna(bote);
+                    jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + bote);
                     this.setValor(0);
                 }
                 break;
@@ -285,6 +286,7 @@ public class Casilla {
 
         solicitante.sumarFortuna(-valor);
         solicitante.sumarGastos(valor);
+        solicitante.setDineroInvertido(solicitante.getDineroInvertido() + valor);
 
         this.duenho = solicitante;
         solicitante.anhadirPropiedad(this);

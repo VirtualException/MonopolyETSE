@@ -498,6 +498,7 @@ public class Menu {
         banca.sumarFortuna((float) (Valor.SUMA_VUELTA*0.25f));
         jugadores.get(turno).sumarGastos((float) (Valor.SUMA_VUELTA*0.25f));
         jugadores.get(turno).sumarFortuna((float) (Valor.SUMA_VUELTA*(-0.25f)));
+        jugadores.get(turno).setPagoTasasEImpuestos(jugadores.get(turno).getPagoTasasEImpuestos() + (float) (Valor.SUMA_VUELTA*0.25f));
     }
 
     // Método que realiza las acciones asociadas al comando 'listar enventa'.

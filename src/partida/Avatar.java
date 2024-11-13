@@ -54,6 +54,7 @@ public class Avatar {
             if(!this.lugar.getNombre().equals("IrCarcel")){
                 jugador.setVueltas(jugador.getVueltas() + 1);
                 jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
+                jugador.setPasarPorCasillaDeSalida(jugador.getPasarPorCasillaDeSalida() + (float)Valor.SUMA_VUELTA);
             }
 
         } 
@@ -80,6 +81,7 @@ public class Avatar {
             if (!this.lugar.getNombre().equals("IrCarcel")) {
                 jugador.setVueltas(jugador.getVueltas() - 1);
                 jugador.sumarFortuna((float) Valor.SUMA_VUELTA * (-1));
+                jugador.setPasarPorCasillaDeSalida(jugador.getPasarPorCasillaDeSalida() + (float)Valor.SUMA_VUELTA * (-1));
             }
         }
 
