@@ -252,6 +252,7 @@ public class Casilla {
                 /* Cae en IrCárcel */
                 if (nombre.equals("IrCarcel")) {
                     jugador.encarcelar(tab.getPosiciones());
+                    jugador.setVecesEnLaCarcel(jugador.getVecesEnLaCarcel() + 1);
                 }
                 /* Cae en Parking */
                 else if (nombre.equals("Parking")) {
