@@ -65,7 +65,7 @@ public class Menu {
     /*Método que interpreta el comando introducido y toma la accion correspondiente.
     * Parámetro: cadena de caracteres (el comando).
     */
-    private boolean analizarComando(String comando) {
+    public boolean analizarComando(String comando) {
 
         String[] comandos_args = new String[5];
         String[] split = comando.split(" ");
@@ -227,9 +227,7 @@ public class Menu {
         else if (comandos_args[0].equals("modo") && comandos_args[1].equals("simple") && num_args == 2) {
             System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Simple");
             jugadores.get(turno).setModo(false);
-        }
-
-        else {
+        } else {
             System.out.println("Comando no reconocido.");
         }
 

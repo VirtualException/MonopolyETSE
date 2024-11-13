@@ -1,6 +1,8 @@
 package partida;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import monopoly.*;
 
 
@@ -29,6 +31,7 @@ public class Jugador {
     private int tiradas_turno;
     private boolean modo;
     private boolean pagarBanca;
+    private boolean esperaContinuar;
 
     //Constructor vacío. Se usará para crear la banca.
     public Jugador() {
@@ -59,6 +62,7 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         this.indice = index;
         this.pagarBanca = false;
+        this. esperaContinuar = false;
     }
 
 
@@ -362,6 +366,7 @@ public class Jugador {
                                     return true; // Detener el proceso de movimiento
                                 }
                                 avance = 2; //y luego se avanzará de dos en dos por las impares
+                                //AQUI ES NECESARIO PARAR PARA HACER OTROS COMANDOS
                             }
                         } else{ //si es par
                             for (int i = avance; i <= tirada--; i = i+2){ //se avanza cinco posiciones
@@ -375,6 +380,7 @@ public class Jugador {
                                     return true; // Detener el proceso de movimiento
                                 }
                                 avance = 2; //luego se avanza de dos en dos
+                                //AQUI ES NECESARIO PARAR PARA HACER OTROS COMANDOS
                             }
                             System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + 1 + " posiciones, desde " + c.getNombre());
                             this.getAvatar().moverAvatar(pos, 1); //y al salir del bucle se avanzará hasta la ultima casilla;
@@ -734,6 +740,14 @@ public class Jugador {
         return modo;
     }
 
+    public boolean isEsperaContinuar() {
+        return esperaContinuar;
+    }
+
+    public void setEsperaContinuar(boolean esperaContinuar) {
+        this.esperaContinuar = esperaContinuar;
+    }
+
     public void setModo(boolean modo) {
         this.modo = modo;
     }
@@ -745,4 +759,5 @@ public class Jugador {
     public void setPagarBanca(boolean pagarBanca) {
         this.pagarBanca = pagarBanca;
     }
+
 }
