@@ -44,15 +44,14 @@ public class Menu {
         boolean sair = false;
 
 
-        crearJugador("Pepe", "Coche");
-        crearJugador("Ana", "Pelota");
+        crearJugador("Pepe", "Pelota");
+        //crearJugador("Ana", "Pelota");
 
+        //lanzarDados(1, 2);
+        //acabarTurno();
 
-        lanzarDados(1, 2);
-        acabarTurno();
-
-        lanzarDados(5, 1);
-        acabarTurno();
+        //lanzarDados(5, 1);
+        //acabarTurno();
 
         while (!sair) {
             System.out.print("$> ");
@@ -87,6 +86,8 @@ public class Menu {
         if (tiene_deudas)
             System.out.println("Atención! Debes solucionar tu deuda de " + (jugadores.get(turno).getDeuda()) + "! Vende o hipoteca propiedades.");
 
+        boolean avanzarPelota = jugadores.get(turno).getDebeContinuar() > 0;
+
         /* Crear jugador, junto a su avatar */
         if (comandos_args[0].equals("crear") && comandos_args[1].equals("jugador") && num_args == 4) {
             crearJugador(comandos_args[2], comandos_args[3]);
@@ -115,7 +116,7 @@ public class Menu {
         }
         /* Acciones jugador */
         else if (comandos_args[0].equals("acabar") && comandos_args[1].equals("turno") && num_args == 2) {
-            if (tiene_deudas) return false;
+            if (tiene_deudas || avanzarPelota) return false;
             acabarTurno();
         }
         else if (comandos_args[0].equals("comprar") && num_args == 2){
@@ -140,7 +141,7 @@ public class Menu {
             edificar(comandos_args[1]);
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 2) {
-            if (tiene_deudas) return false;
+            if (tiene_deudas || avanzarPelota) return false;
             lanzarDados(-1, -1); // Modo aleatorio
         }
         else if (comandos_args[0].equals("lanzar") && comandos_args[1].equals("dados") && num_args == 4) {
@@ -205,6 +206,7 @@ public class Menu {
                 }
             }
         } else if (comandos_args[0].equals("bancarrota") && num_args == 1) {
+            if (avanzarPelota) return false;
             /* No funciona como debería. */
             bancarrota(jugadores.get(turno).isPagarBanca());
         } else if (comandos_args[0].equals("estadisticas") && num_args == 2) {
@@ -220,11 +222,18 @@ public class Menu {
         else if (comandos_args[0].equals("cero")) {
             jugadores.get(turno).setFortuna(0);
         }
+        else if(comandos_args[0].equals("pelota")) {
+            /* Seguir con elmovimiento en modo Pelota */
+            if (avanzarPelota)
+                jugadores.get(turno).moverJugador(tablero, 0, jugadores);
+        }
         else if (comandos_args[0].equals("modo") && comandos_args[1].equals("avanzado") && num_args == 2) {
+            if (avanzarPelota) return false;
             System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Avanzado");
             jugadores.get(turno).setModo(true);
         }
         else if (comandos_args[0].equals("modo") && comandos_args[1].equals("simple") && num_args == 2) {
+            if (avanzarPelota) return false;
             System.out.println("A partir de ahora, el jugador " + jugadores.get(turno).getAvatar().getId() + " de tipo " + jugadores.get(turno).getAvatar().getTipo() + ", se moverá en modo Simple");
             jugadores.get(turno).setModo(false);
         } else {
