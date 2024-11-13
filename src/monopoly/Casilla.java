@@ -468,9 +468,9 @@ public class Casilla {
         return sum;
     }
 
-    public boolean haCaidoDosVeces(Jugador j) {
+    public boolean haCaidoMasDosVeces(Jugador j) {
         int veces = contarCaer[j.getIndice()];
-        return veces >= 2;
+        return veces > 2;
     }
 
     public int getContarCaer(Jugador j) {

@@ -44,12 +44,10 @@ public class Edificio {
             System.out.println("La casilla no es un solar, no se puede contruir.");
             return true;
         }
-        if (!grupo.esDuenhoGrupo(duenho)) {
-            System.out.println("El jugador no es el dueño del grupo.");
-            return true;
-        }
-        if (!casilla.haCaidoDosVeces(duenho)) {
-            System.out.println("El jugador no ha caído dos veces aquí.");
+        
+        boolean puedeConstruir = grupo.esDuenhoGrupo(duenho) || casilla.haCaidoMasDosVeces(duenho);
+        if (!puedeConstruir) {
+            System.out.println("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
             return true;
         }
 

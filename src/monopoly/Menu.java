@@ -279,13 +279,19 @@ public class Menu {
                     for (Casilla c : j.getHipotecas()) {
                         System.out.println(c.getNombre() + ", ");
                     }
+                    System.out.println("]");
                 }
-                System.out.println("]");
-                System.out.print("\tedificios: [");
-                for (Edificio e : j.getEdificios()) {
-                    System.out.print(e.getId() + ", ");
+                
+                if(j.getEdificios().isEmpty()){
+                    System.out.println("\tedificos: -");
+                    System.out.println("},");
+                } else {
+                    System.out.print("\tedificios: [");
+                    for (Edificio e : j.getEdificios()) {
+                        System.out.print(e.getId() + ", ");
+                    }
+                    System.out.print("]\n},\n");
                 }
-                System.out.print("]\n},\n");
             }
         }
     }
