@@ -142,12 +142,6 @@ public class Jugador {
     // Método para hipotecar una propiedad
     public void hipotecarPropiedad(Casilla c) {
 
-        // Verificamos que el jugador tenga deudas
-        if (this.getFortuna() >= 0.f) {
-            System.out.println("No tienes deudas, no puedes hipotecar.");
-            return;
-        }
-
         float precioHipoteca;
 
         // Verificamos que el jugador posee la propiedad
@@ -221,7 +215,7 @@ public class Jugador {
                 precioDeshipoteca = (float) 1.1 * (c.getPrecioOriginal() / 2);
 
                 if (this.getFortuna() >= precioDeshipoteca) {
-                    this.sumarFortuna(precioDeshipoteca);
+                    this.sumarFortuna(-precioDeshipoteca);
                     this.sumarGastos(precioDeshipoteca);
                     c.setHipotecada(false);
                     System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
@@ -520,7 +514,8 @@ public class Jugador {
 
 
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
-        for(Casilla c : jugador.propiedades){
+        ArrayList<Casilla> propiedadesACopiar = new ArrayList<>(jugador.propiedades);
+        for(Casilla c : propiedadesACopiar){
             c.setValor(c.getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
             nuevoPropietario.anhadirPropiedad(c);
             c.setDuenho(nuevoPropietario);
@@ -531,10 +526,11 @@ public class Jugador {
 
     //Método para eliminar a un jugador de la partida
     private void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
-        for(Jugador j : jugadores){
-            if(j.equals(jugador)){
-                j.getAvatar().getLugar().eliminarAvatar(j.getAvatar());
-                jugadores.remove(j);
+        for(int i = 0; i < jugadores.size(); i++){
+            if(jugadores.get(i).equals(jugador)){
+                jugadores.get(i).getAvatar().getLugar().eliminarAvatar(jugadores.get(i).getAvatar());
+                jugadores.remove(i);
+                break;
             }
         }
         System.out.println("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");

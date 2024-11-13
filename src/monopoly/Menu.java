@@ -279,7 +279,7 @@ public class Menu {
                     for (Casilla c : j.getHipotecas()) {
                         System.out.println(c.getNombre() + ", ");
                     }
-                    System.out.println("]");
+                    System.out.print("]");
                 }
                 
                 if(j.getEdificios().isEmpty()){
