@@ -97,9 +97,6 @@ public class Casilla {
      * en caso de no cumplirlas.*/
     public void evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
 
-        /* ELIMINAR ESTO */
-        if (true) return;
-
         String tipoCasilla = this.getTipo();
 
         /* El jugador cayó una vez más en esta casilla */
