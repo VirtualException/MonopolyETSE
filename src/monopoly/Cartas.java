@@ -79,27 +79,27 @@ public class Cartas {
 
             switch (opcion) {
                 case 1:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion(), jugadores);
                     break;
                 case 2:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
                     break;
                 case 3:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(300000.0f);
                     break;
                 case 4:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion(), jugadores);
                     break;
                 case 5:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.encarcelar(tablero.getPosiciones());
                     break;
                 case 6:
-                    System.out.println(cartasSuerte.get(0).getMensaje());
+                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(1000000.0f);
                     break;
                 default:
@@ -115,7 +115,7 @@ public class Cartas {
 
             switch (opcion) {
                 case 1:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 500000.0f){
                         System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (500000.0f);
@@ -126,19 +126,19 @@ public class Cartas {
                         banca.sumarFortuna(500000.0f);
                     break;
                 case 2:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.encarcelar(tablero.getPosiciones());
                     break;
                 case 3:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion(), jugadores);
                     break;
                 case 4:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(2000000.0f);
                     break;
                 case 5:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 1000000.0f){
                         System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (1000000.0f);
@@ -149,7 +149,7 @@ public class Cartas {
                     banca.sumarFortuna(1000000.0f);
                     break;
                 case 6:
-                    System.out.println(cartasComunidad.get(0).getMensaje());
+                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 200000.0f * (jugadores.size()-1)){
                         System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (200000.0f * jugadores.size());
