@@ -62,6 +62,10 @@ public class Avatar {
         for(ArrayList<Casilla> arrayList : casillas){
             for(Casilla casilla : arrayList) {
                 if(casilla.getPosicion() == nuevaPosicion) {
+                    if(casilla.getNombre().equals("IrCarcel") || casilla.getNombre().equals("Carcel")){
+                        jugador.encarcelar(casillas);
+                        return;
+                    }
                     this.lugar.eliminarAvatar(this);
                     this.lugar = casilla;
                     casilla.anhadirAvatar(this);

@@ -118,23 +118,20 @@ public class Jugador {
     /*Método para establecer al jugador en la cárcel.
      * Se requiere disponer de las casillas del tablero para ello (por eso se pasan como parámetro).*/
     public void encarcelar(ArrayList<ArrayList<Casilla>> pos) {
+        
+        for(ArrayList<Casilla> arrayList : pos){
+            for(Casilla casilla : arrayList) {
+                if(casilla.getNombre().equals("Carcel")){
 
-        /* O xogador pode ir á carcel sen ter que caer na casilla */
-        //if (this.avatar.getLugar().getNombre().equals("IrCarcel")){
-
-            for(ArrayList<Casilla> arrayList : pos){
-                for(Casilla casilla : arrayList) {
-                    if(casilla.getNombre().equals("Carcel")){
-
-                        this.avatar.getLugar().eliminarAvatar(this.avatar);
-                        this.avatar.setLugar(casilla);
-                        casilla.anhadirAvatar(this.avatar);
-                        this.enCarcel = true;
-                        return;
-                    }
+                    this.avatar.getLugar().eliminarAvatar(this.avatar);
+                    this.avatar.setLugar(casilla);
+                    casilla.anhadirAvatar(this.avatar);
+                    this.enCarcel = true;
+                    this.incrementarVecesEnCarcel();
+                    return;
                 }
             }
-        //}
+        }
     }
 
 
@@ -700,8 +697,10 @@ public class Jugador {
         this.premiosInversionesOBote = premiosInversionesOBote;
     }
 
-    public void setVecesEnLaCarcel(int vecesEnLaCarcel) {
-        this.vecesEnLaCarcel = vecesEnLaCarcel;
+    public void incrementarVecesEnCarcel(){
+        if(this.enCarcel){
+            this.vecesEnLaCarcel++;
+        }
     }
 
     public void setPropiedades(ArrayList<Casilla> propiedades) {
