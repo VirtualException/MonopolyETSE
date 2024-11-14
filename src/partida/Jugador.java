@@ -25,6 +25,7 @@ public class Jugador {
     private float premiosInversionesOBote;
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
+    private ArrayList<Trato> tratos; //Tratos que se le han propuesto al jugador.
     private int indice; /* Index dentro del array de jugadores */
     private float deuda;
     private int tiradas;
@@ -250,8 +251,6 @@ public class Jugador {
                 System.out.println("Tipo de casilla no válido para deshipotecar.");
                 break;
         }
-
-
     }
 
 
@@ -519,17 +518,29 @@ public class Jugador {
         }
     }
 
-
     //Método para eliminar a un jugador de la partida
     private void eliminarJugador(ArrayList<Jugador> jugadores, Jugador jugador){
-        for(int i = 0; i < jugadores.size(); i++){
-            if(jugadores.get(i).equals(jugador)){
+        for (int i = 0; i < jugadores.size(); i++){
+            if (jugadores.get(i).equals(jugador)){
                 jugadores.get(i).getAvatar().getLugar().eliminarAvatar(jugadores.get(i).getAvatar());
                 jugadores.remove(i);
                 break;
             }
         }
         System.out.println("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");
+    }
+
+
+    private void eliminarTrato(Trato trato){
+        if (!this.tratos.contains(trato)) {
+            System.out.println("ERROR. Este trato no ha sido propuesto al jugador " + this.nombre);
+            return;
+
+
+
+
+            
+        } 
     }
 
 
@@ -598,8 +609,6 @@ public class Jugador {
     }
 
 
-
-    //revisar si en propiedades no se incluyen las hipotecas
     public ArrayList<Casilla> getPropiedades() {
         ArrayList<Casilla> propiedadesNoHipotecadas  = new ArrayList<>();
 
@@ -609,6 +618,11 @@ public class Jugador {
             }
         }
         return propiedadesNoHipotecadas;
+    }
+
+
+    public ArrayList<Trato> getTratos(){
+        return this.tratos;
     }
 
 
