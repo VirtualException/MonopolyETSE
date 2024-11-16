@@ -74,6 +74,7 @@ public class Avatar {
         }
     }
 
+    /*REVISAR IrCarcel / carcel */
     public void moverAvatarAtras(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
 
         int nuevaPosicion = this.lugar.getPosicion() - Math.abs(valorTirada); // Resta el valor para moverse hacia atrás

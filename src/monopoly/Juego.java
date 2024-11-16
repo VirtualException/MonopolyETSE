@@ -18,6 +18,7 @@ public class Juego {
     private Jugador banca; //El jugador banca.
     private boolean tirado; //Booleano para comprobar si el jugador que tiene el turno ha tirado o no.
     public static ConsolaNormal CONSOLA = new ConsolaNormal();
+    private ArrayList<Trato> tratos;
 
     public Juego() {
         iniciarPartida();
@@ -33,6 +34,7 @@ public class Juego {
         banca = new Jugador("Banca", "Banca", null, null, -1); /* No tiene casilla ni avatar asociado */
         tablero = new Tablero(banca);
         turno = 0;
+        tratos = new ArrayList<>();
 
         dado1 = new Dado();
         dado2 = new Dado();
@@ -215,6 +217,11 @@ public class Juego {
             estadisticasJugador(nombreJugador);
         } else if (comandos_args[0].equals("estadisticas") && num_args == 1) {
             estadisticas();
+        } else if (comandos_args[0].equals("tratos") && num_args == 1) {
+            listarTratos();
+        } else if (comandos_args[0].equals("eliminar") && num_args == 2) {
+            String nombreTratoAEliminar = comandos_args[1]; 
+            eliminarTrato(nombreTratoAEliminar);
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -704,8 +711,8 @@ public class Juego {
 
         j = jugadores.get(turno);
 
-        System.out.println("El jugador actual es " + j.getNombre() + ".");
-
+        System.out.println("El jugador actual es " + j.getNombre() + ". A " + j.getNombre() + " le han propuesto los siguientes tratos: ");
+        listarTratos();
     }
 
     /* Método para incrementar el precio de los Solares un 5% si todos los jugadores han
@@ -740,6 +747,52 @@ public class Juego {
         /* Reseteamos las vueltas de los jugadores */
         for (Jugador j : jugadores) {
             j.setVueltas(0);
+        }
+    }
+
+    // Función para listar la información de los tratos de un jugador 
+    private void listarTratos(){
+
+        StringBuilder cadena = new StringBuilder();
+        String nombreJugador = this.jugadores.get(turno).getNombre();
+
+        for (Trato trato: this.tratos){
+            if (trato.getJugadorRecibe().getNombre().equals(nombreJugador)){
+                cadena.append("{\n");
+                cadena.append("\tid: " + trato.getId() + "\n");
+                cadena.append("\tjugadorPropone: " + trato.getJugadorPropone() + ",\n");
+                cadena.append("\ttrato: cambiar " + trato.getTrato() + "\n");
+                cadena.append("},\n");
+            }
+        }
+    }
+
+
+
+    private void eliminarTrato(String id){
+        Trato tratoAEliminar = null;
+
+        for (Trato trato : this.tratos) {
+            if (trato.getId().equals(id)){
+                tratoAEliminar = trato;
+            } 
+        }
+        
+        if (tratoAEliminar == null){
+            System.out.println("ERROR. Este trato no existe");
+        }
+        else {
+            String nombreJugadorActual = this.jugadores.get(turno).getNombre();
+            if (tratoAEliminar.getJugadorPropone().getNombre().equals(nombreJugadorActual)){
+                System.out.println("ERROR. El trato no le pertenece al jugador");
+            }
+            else if (tratoAEliminar.getAceptado() == Boolean.TRUE){
+                System.out.println("ERROR. El trato fue aceptado, no se puede eliminar");
+            }
+            else {
+                this.tratos.remove(tratoAEliminar);
+                System.out.println("Se ha eliminado el trato " + id + ".");
+            }
         }
     }
 }

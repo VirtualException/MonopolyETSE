@@ -1,7 +1,6 @@
 package partida;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import monopoly.*;
 
@@ -25,7 +24,6 @@ public class Jugador {
     private float premiosInversionesOBote;
     private int vecesEnLaCarcel;
     private ArrayList<Casilla> propiedades; //Propiedades que posee el jugador.
-    private ArrayList<Trato> tratos; //Tratos que se le han propuesto al jugador.
     private int indice; /* Index dentro del array de jugadores */
     private float deuda;
     private int tiradas;
@@ -530,21 +528,6 @@ public class Jugador {
         System.out.println("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");
     }
 
-
-    private void eliminarTrato(Trato trato){
-        if (!this.tratos.contains(trato)) {
-            System.out.println("ERROR. Este trato no ha sido propuesto al jugador " + this.nombre);
-            return;
-
-
-
-
-            
-        } 
-    }
-
-
-
     //Getters y Setters
 
 
@@ -618,11 +601,6 @@ public class Jugador {
             }
         }
         return propiedadesNoHipotecadas;
-    }
-
-
-    public ArrayList<Trato> getTratos(){
-        return this.tratos;
     }
 
 

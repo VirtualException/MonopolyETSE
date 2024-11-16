@@ -1,22 +1,35 @@
 package partida;
 
 import monopoly.*;
+import java.util.ArrayList;
 
 public class Trato {
 
-    private String nombre; //Id del trato
+    private String id; //Id del trato
+    private int numeroDeTrato;
     private Jugador jugadorPropone;
+    private Jugador jugadorRecibe;
     private String trato;
-    private boolean aceptado;
+    private Casilla propiedad1;
+    private Casilla propiedad2;
+    private float cantidad1;
+    private float cantidad2;
+    private Boolean aceptado;
 
-    public Trato(String nombre, Jugador jugadorPropone, String trato){
-        this.nombre = nombre;
+    public Trato1(ArrayList<Trato> tratos, Jugador jugadorPropone, Jugador jugadorRecibe, String trato, Casilla propiedad1, Casilla propiedad2){
+        this.id = crearId(tratos);
         this.jugadorPropone = jugadorPropone;
+        this.jugadorRecibe = jugadorRecibe;
         this.trato = trato;
-        this.aceptado = false;
+        this.aceptado = null;
     }
-    private String crearId(){
+    private String crearId(ArrayList<Trato> tratos){
+        String id = "";
 
+        id = "trato" + String.valueOf(tratos.get(tratos.size() - 1).getNumeroDeTrato() + 1);
+        this.numeroDeTrato = tratos.get(tratos.size() - 1).getNumeroDeTrato() + 1;
+        
+        return id;
     }
 
     public void proponerTrato(String nombrePropiedad, int cantidadDinero){
@@ -29,33 +42,30 @@ public class Trato {
     }
 
 
-    // Función para listar la información de los tratos de un jugador 
-    public void listarTratos(Jugador jugador){
-        StringBuilder cadena = new StringBuilder();
-
-        for (Trato trato: jugador.getTratos()){
-            cadena.append("{\n");
-            cadena.append("\tid: " + trato.getNombre() + "\n");
-            cadena.append("\tjugadorPropone: " + trato.getJugadorPropone() + ",\n");
-            cadena.append("\ttrato: cambiar " + trato.getTrato() + "\n");
-            cadena.append("},\n");
-        }
-    }
-
-
-
     // GETTERS Y SETTERS
 
-    public String getNombre(){
-        return this.nombre;
+    public String getId(){
+        return this.id;
+    }
+
+    public int getNumeroDeTrato(){
+        return this.numeroDeTrato;
     }
 
     public Jugador getJugadorPropone(){
         return this.jugadorPropone;
     }
 
+    public Jugador getJugadorRecibe(){
+        return this.jugadorRecibe;
+    }
+
     public String getTrato(){
         return this.trato;
+    }
+
+    public Boolean getAceptado(){
+        return this.aceptado;
     }
 }
 
