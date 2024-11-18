@@ -757,11 +757,11 @@ public class Juego {
         String nombreJugador = this.jugadores.get(turno).getNombre();
 
         for (Trato trato: this.tratos){
-            if (trato.getJugadorRecibe().getNombre().equals(nombreJugador)){
+            if (trato.getDestinatario().getNombre().equals(nombreJugador)){
                 cadena.append("{\n");
                 cadena.append("\tid: " + trato.getId() + "\n");
-                cadena.append("\tjugadorPropone: " + trato.getJugadorPropone() + ",\n");
-                cadena.append("\ttrato: cambiar " + trato.getTrato() + "\n");
+                cadena.append("\tjugadorPropone: " + trato.getProponente() + ",\n");
+                cadena.append("\ttrato: " + trato.mostrarTratoPropuesto() + "\n");
                 cadena.append("},\n");
             }
         }
@@ -783,7 +783,7 @@ public class Juego {
         }
         else {
             String nombreJugadorActual = this.jugadores.get(turno).getNombre();
-            if (tratoAEliminar.getJugadorPropone().getNombre().equals(nombreJugadorActual)){
+            if (tratoAEliminar.getProponente().getNombre().equals(nombreJugadorActual)){
                 System.out.println("ERROR. El trato no le pertenece al jugador");
             }
             else if (tratoAEliminar.getAceptado() == Boolean.TRUE){
@@ -794,5 +794,32 @@ public class Juego {
                 System.out.println("Se ha eliminado el trato " + id + ".");
             }
         }
+    }
+
+
+    public void proponerTrato(String jugadorDestinatario, Casilla propiedadOfrecida, Casilla propiedadSolcitada, float cantidad1, float cantidad2) {
+        Jugador jugadorProponente = jugadores.get(turno);
+        Jugador destinatario = null;
+
+        for (Jugador j : this.jugadores) {
+            if (j.getNombre().equals(jugadorDestinatario)) {
+                destinatario = j;
+                break;
+            }
+        }
+
+        if (destinatario == null) {
+            System.out.println("ERROR. El jugador " + jugadorDestinatario + " no existe.");
+            return;
+        }
+
+        Trato trato = new Trato(this.tratos, jugadorProponente, destinatario, propiedadOfrecida, propiedadSolcitada, cantidad1, cantidad2);
+        this.tratos.add(trato);
+
+        if (!trato.verificarTrato()) {
+            return;
+        }
+
+        System.out.println(trato.mostrarTratoPropuesto());
     }
 }
