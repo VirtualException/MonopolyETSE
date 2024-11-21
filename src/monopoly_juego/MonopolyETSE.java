@@ -1,4 +1,4 @@
-package manopoly_juego;
+package monopoly_juego;
 
 public class MonopolyETSE {
 

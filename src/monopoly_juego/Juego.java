@@ -1,4 +1,4 @@
-package manopoly_juego;
+package monopoly_juego;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
 import monopoly_tratos.Trato;
 
-public class Juego {
+public class Juego implements Comandos{
 
     //Atributos
     private ArrayList<Jugador> jugadores; //Jugadores de la partida.
