@@ -1,6 +1,9 @@
-package monopoly;
+package monopoly_cartas;
 
 import java.util.*;
+
+import monopoly_casillas.Casilla;
+import monopoly.Tablero;
 import partida.*;
 
 public class Cartas {

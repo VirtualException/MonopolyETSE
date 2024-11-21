@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import monopoly_avatares.Avatar;
+import monopoly_cartas.Cartas;
+import monopoly_casillas.Casilla;
 import partida.*;
 
 

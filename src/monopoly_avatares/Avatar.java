@@ -3,6 +3,7 @@ package monopoly_avatares;
 import java.util.ArrayList;
 import java.util.Random;
 import monopoly.*;
+import monopoly_casillas.Casilla;
 import partida.Jugador;
 
 

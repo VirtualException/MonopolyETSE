@@ -1,6 +1,7 @@
 package partida;
 
-import monopoly.*;
+import monopoly_casillas.Casilla;
+
 import java.util.ArrayList;
 
 public class Trato {

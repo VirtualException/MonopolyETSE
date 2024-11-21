@@ -2,7 +2,7 @@ package monopoly_edificios;
 
 import java.util.ArrayList;
 
-import monopoly.Casilla;
+import monopoly_casillas.Casilla;
 import monopoly.Grupo;
 import monopoly.Tablero;
 import monopoly.Valor;
