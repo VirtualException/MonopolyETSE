@@ -3,6 +3,7 @@ package monopoly_cartas;
 import java.util.*;
 
 import monopoly_casillas.Casilla;
+import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Tablero;
 
@@ -78,32 +79,32 @@ public class Cartas {
 
         if (c.getTipo().equals("Suerte")) {
 
-            System.out.println("Sacando carta de suerte...");
+            Juego.consola.imprimir("Sacando carta de suerte...");
 
             switch (opcion) {
                 case 1:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Trans1").getPosicion(), jugadores);
                     break;
                 case 2:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.teleportJugador(tablero, tablero.encontrar_casilla("Solar15"));
                     break;
                 case 3:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(300000.0f);
                     jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 300000.0f);
                     break;
                 case 4:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Solar3").getPosicion(), jugadores);
                     break;
                 case 5:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.encarcelar(tablero.getPosiciones());
                     break;
                 case 6:
-                    System.out.println(cartasSuerte.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasSuerte.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(1000000.0f);
                     jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 1000000.0f);
                     break;
@@ -116,13 +117,13 @@ public class Cartas {
 
         if (c.getTipo().equals("Comunidad")) {
 
-            System.out.println("Sacando carta de comunidad...");
+            Juego.consola.imprimir("Sacando carta de comunidad...");
 
             switch (opcion) {
                 case 1:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 500000.0f){
-                        System.out.printf("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        Juego.consola.imprimir_sin_salto("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (500000.0f);
                         break;
                     }
@@ -132,22 +133,22 @@ public class Cartas {
                         banca.sumarFortuna(500000.0f);
                     break;
                 case 2:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.encarcelar(tablero.getPosiciones());
                     break;
                 case 3:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.moverJugador(tablero, (40 - jugador.getAvatar().getLugar().getPosicion()) + tablero.encontrar_casilla("Salida").getPosicion(), jugadores);
                     break;
                 case 4:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     jugador.sumarFortuna(2000000.0f);
                     jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + 2000000.0f);
                     break;
                 case 5:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 1000000.0f){
-                        System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        Juego.consola.imprimir("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (1000000.0f);
                         break;
                     }
@@ -157,9 +158,9 @@ public class Cartas {
                     banca.sumarFortuna(1000000.0f);
                     break;
                 case 6:
-                    System.out.println(cartasComunidad.get(opcion - 1).getMensaje());
+                    Juego.consola.imprimir(cartasComunidad.get(opcion - 1).getMensaje());
                     if (jugador.getFortuna() < 200000.0f * (jugadores.size()-1)){
-                        System.out.println("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
+                        Juego.consola.imprimir("Tu fortuna es insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
                         jugador.setDeuda (200000.0f * jugadores.size());
                         jugador.setPagarBanca(true);
                         break;

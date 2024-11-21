@@ -3,6 +3,7 @@ package monopoly_edificios;
 import java.util.ArrayList;
 
 import monopoly_casillas.Casilla;
+import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Grupo;
 import monopoly_tablero.Tablero;
@@ -40,19 +41,19 @@ public class Edificio {
 
         /* Tipo inválido */
         if (!"casa hotel piscina pista".contains(tipo)) {
-            System.out.println("El edificio no es de un tipo válido.");
+            Juego.consola.imprimir("El edificio no es de un tipo válido.");
             return null;
         }
 
         /* Comprobar si alguna regla no se cumple */
         if (!casilla.getTipo().equals("Solar")) {
-            System.out.println("La casilla no es un solar, no se puede contruir.");
+            Juego.consola.imprimir("La casilla no es un solar, no se puede contruir.");
             return null;
         }
         
         boolean puedeConstruir = grupo.esDuenhoGrupo(j) || casilla.haCaidoMasDosVeces(j);
         if (!puedeConstruir) {
-            System.out.println("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
+            Juego.consola.imprimir("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
             return null;
         }
 
@@ -65,11 +66,11 @@ public class Edificio {
             numHotelesEdificables == 0 &&
             numPiscinasEdificables == 0 &&
             numPistasEdificables == 0) {
-            System.out.println("Máximo de edificios alcanzados!");
+            Juego.consola.imprimir("Máximo de edificios alcanzados!");
             return null;
         }
 
-        System.out.println("Contruyendo " + tipo + ".");
+        Juego.consola.imprimir("Contruyendo " + tipo + ".");
 
         /* Contruye el edificio del tipo correspondiente si hay 4 del anterior tipo. */
 
@@ -82,7 +83,7 @@ public class Edificio {
             case "casa":
                 /* Comprobar máximo de edificios. */
                 if (numCasasEdificables == 0 || casilla.getCasasN() == 4) {
-                    System.out.println("Máximo de edificio alcanzado.");
+                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
                     return null;
                 }
                 edificio = new Casa(j);
@@ -93,7 +94,7 @@ public class Edificio {
             case "hotel":
                 /* Comprobar máximo de edificios. */
                 if (numHotelesEdificables == 0) {
-                    System.out.println("Máximo de edificio alcanzado.");
+                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
                     return null;
                 }
                 if (casilla.getCasasN() == 4) {
@@ -105,7 +106,7 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_HOTEL);
                 }
                 else {
-                    System.out.println("No hay suficientes casas para un hotel.");
+                    Juego.consola.imprimir("No hay suficientes casas para un hotel.");
                     return null;
                 }
                 break;
@@ -114,7 +115,7 @@ public class Edificio {
             case "piscina":
                 /* Comprobar máximo de edificios. */
                 if (numPiscinasEdificables == 0) {
-                    System.out.println("Máximo de edificio alcanzado.");
+                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
                     return null;
                 }
                 if (casilla.getHotelesN() >= 1 && casilla.getCasasN() >= 2) {
@@ -127,7 +128,7 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISCINA);
                 }
                 else {
-                    System.out.println("No hay suficientes hoteles para una piscina.");
+                    Juego.consola.imprimir("No hay suficientes hoteles para una piscina.");
                     return null;
                 }
                 break;
@@ -135,7 +136,7 @@ public class Edificio {
             /* SI EL EDIFICIO ES PISTA DE DEPORTE */
             case "pista":
                 if (numPistasEdificables == 0) {
-                    System.out.println("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
+                    Juego.consola.imprimir("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
                     return null;
                 }
                 if (casilla.getHotelesN() >= 2) {
@@ -147,14 +148,14 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE);
                 }
                 else {
-                    System.out.println("No hay suficientes hoteles para una pista de deporte.");
+                    Juego.consola.imprimir("No hay suficientes hoteles para una pista de deporte.");
                     return null;
                 }
                 break;
 
             /* TIPO INVÁLIDO */
             default:
-                System.out.println("Tipo de contrucción inválido.");
+                Juego.consola.imprimir("Tipo de contrucción inválido.");
                 return null; /* Salir de la función con código de error */
         }
 
@@ -163,11 +164,11 @@ public class Edificio {
         /* El jugador gasta dinero */
 
         if (coste > j.getFortuna()) {
-            System.out.println("Fortuna insuficiente para edificar.");
+            Juego.consola.imprimir("Fortuna insuficiente para edificar.");
             return null;
         }
 
-        System.out.println(edificio.id + " contruído.");
+        Juego.consola.imprimir(edificio.id + " contruído.");
 
         j.setGastos(coste);
         j.sumarFortuna(-coste);

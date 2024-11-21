@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import monopoly_casillas.Casilla;
 import monopoly_edificios.Edificio;
+import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 
 
@@ -125,7 +126,7 @@ public class Grupo {
             cadena.append("\talquiler: ").append(c.getValor()*0.10f).append("\n");
             cadena.append("},\n");
         }
-        System.out.println(cadena.toString());
+        Juego.consola.imprimir(cadena.toString());
         mensajeFinal();
     }
 
@@ -182,7 +183,7 @@ public class Grupo {
             mensajeFinal += edificiosNoEdificables + ".";
         }
 
-        System.out.println(mensajeFinal);
+        Juego.consola.imprimir(mensajeFinal);
     }
 
 

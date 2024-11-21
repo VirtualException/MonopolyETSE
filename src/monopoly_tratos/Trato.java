@@ -1,6 +1,7 @@
 package monopoly_tratos;
 
 import monopoly_casillas.Casilla;
+import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 
 import java.util.ArrayList;
@@ -45,12 +46,12 @@ public class Trato {
     public boolean verificarTrato(){
         
         if (propiedadOfrecida != null && !proponente.getPropiedades().contains(propiedadOfrecida)) {
-            System.out.println("No se puede proponer el trato: " + propiedadOfrecida.getNombre() + " no pertenece a " + proponente.getNombre() + ".");
+            Juego.consola.imprimir("No se puede proponer el trato: " + propiedadOfrecida.getNombre() + " no pertenece a " + proponente.getNombre() + ".");
             return false;
         }
 
         if (propiedadSolicitada != null && !destinatario.getPropiedades().contains(propiedadSolicitada)) {
-            System.out.println("No se puede proponer el trato: " + propiedadSolicitada.getNombre() + " no pertenece a " + destinatario.getNombre() + ".");
+            Juego.consola.imprimir("No se puede proponer el trato: " + propiedadSolicitada.getNombre() + " no pertenece a " + destinatario.getNombre() + ".");
             return false;
         }
         return true;

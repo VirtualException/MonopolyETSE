@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import monopoly_avatares.Avatar;
 import monopoly_casillas.Casilla;
 import monopoly_edificios.Edificio;
+import monopoly_juego.Juego;
 import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
 
@@ -83,7 +84,7 @@ public class Jugador {
         if (propiedades.contains(casilla)) {
             propiedades.remove(casilla);
         } else {
-            System.out.println("El jugador no es poseedor de la propiedad");
+            Juego.consola.imprimir("El jugador no es poseedor de la propiedad");
         }
     }
 
@@ -145,13 +146,13 @@ public class Jugador {
 
         // Verificamos que el jugador posee la propiedad
         if (!propiedades.contains(c)) {
-            System.out.println(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+            Juego.consola.imprimir(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
             return;
         }
 
         // Verificamos que la propiedad no esté hipotecada
         if (c.getHipotecada()) {
-            System.out.println(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". Ya está hipotecada.");
+            Juego.consola.imprimir(this.getNombre() + " no puede hipotecar " + c.getNombre() + ". Ya está hipotecada.");
             return;
         }
 
@@ -163,9 +164,9 @@ public class Jugador {
                         precioHipoteca = (c.getPrecioOriginal() / 2);
                         this.sumarFortuna(precioHipoteca);
                         c.setHipotecada(true);
-                        System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                        Juego.consola.imprimir(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
                     } else {
-                        System.out.println("No puedes hipotecar " + c.getNombre() + " porque tiene edificios. Debes vender todos los edificios.");
+                        Juego.consola.imprimir("No puedes hipotecar " + c.getNombre() + " porque tiene edificios. Debes vender todos los edificios.");
                     }
                     break;
 
@@ -173,18 +174,18 @@ public class Jugador {
                     precioHipoteca = (float) Valor.SUMA_VUELTA / 2;
                     this.sumarFortuna(precioHipoteca);
                     c.setHipotecada(true);
-                    System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
                     break;
 
                 case "Servicio":
                     precioHipoteca = (float) (0.75f * Valor.SUMA_VUELTA) / 2;
                     this.sumarFortuna(precioHipoteca);
                     c.setHipotecada(true);
-                    System.out.println(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres en " + c.getNombre() + ".");
                     break;
 
                 default:
-                    System.out.println("Tipo de casilla no válido para hipotecar.");
+                    Juego.consola.imprimir("Tipo de casilla no válido para hipotecar.");
                     break;
             }
 
@@ -200,11 +201,11 @@ public class Jugador {
 
         // Verificamos que el jugador posee la propiedad
         if (!this.propiedades.contains(c)) {
-            System.out.println(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
+            Juego.consola.imprimir(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No es una propiedad que le pertenece.");
             return;
         }
         if (!c.getHipotecada()) {
-            System.out.println(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No está hipotecada.");
+            Juego.consola.imprimir(this.getNombre() + " no puede deshipotecar " + c.getNombre() + ". No está hipotecada.");
             return;
         }
 
@@ -217,9 +218,9 @@ public class Jugador {
                     this.sumarFortuna(-precioDeshipoteca);
                     this.sumarGastos(precioDeshipoteca);
                     c.setHipotecada(false);
-                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
                 } else {
-                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
                 }
                 break;
 
@@ -230,9 +231,9 @@ public class Jugador {
                     this.sumarFortuna(-precioDeshipoteca);
                     this.sumarGastos(precioDeshipoteca);
                     c.setHipotecada(false);
-                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
                 } else {
-                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
                 }
                 break;
 
@@ -243,14 +244,14 @@ public class Jugador {
                     this.sumarFortuna(-precioDeshipoteca);
                     this.sumarGastos(precioDeshipoteca);
                     c.setHipotecada(false);
-                    System.out.println(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " paga " + precioDeshipoteca + "€ por la hipoteca de " + c.getNombre() + ". Ahora puede recibir alquileres en " + c.getNombre() + ".");
                 } else {
-                    System.out.println(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
                 }
                 break;
 
             default:
-                System.out.println("Tipo de casilla no válido para deshipotecar.");
+                Juego.consola.imprimir("Tipo de casilla no válido para deshipotecar.");
                 break;
         }
     }
@@ -270,7 +271,7 @@ public class Jugador {
         }
 
         if(propiedad == null){
-            System.out.println("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ". Esta propiedad no pertenece a " + nombre);
+            Juego.consola.imprimir("No se pueden vender " + tipoEdificio + " en " + nombreCasilla + ". Esta propiedad no pertenece a " + nombre);
             return;
         }
 
@@ -295,21 +296,21 @@ public class Jugador {
                 multiplicador = Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
                 break;
             default:
-                System.out.println("Tipo de edificio no reconocido. Debe ser: 'casa', 'hotel', 'piscina' o 'pista'.");
+                Juego.consola.imprimir("Tipo de edificio no reconocido. Debe ser: 'casa', 'hotel', 'piscina' o 'pista'.");
                 return;
         }
 
         float precioEdificio = numEdificios * ((propiedad.getValor() * multiplicador) / 2);
 
         if(n_edificios_actuales < numEdificios) {
-            System.out.println("No hay "+ numEdificios + " " + tipoEdificio + "(s). Solamente se podrían vender " + n_edificios_actuales + ".");
+            Juego.consola.imprimir("No hay "+ numEdificios + " " + tipoEdificio + "(s). Solamente se podrían vender " + n_edificios_actuales + ".");
             return;
         }
 
         this.sumarFortuna(precioEdificio);
         for (int i = 0; i < numEdificios; i++)
             propiedad.eliminarEdificio(tipoEdificio);
-        System.out.println(nombre + " ha vendido " + numEdificios +  " " + tipoEdificio + "(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + (n_edificios_actuales - numEdificios) + " " + tipoEdificio + "(s).");
+        Juego.consola.imprimir(nombre + " ha vendido " + numEdificios +  " " + tipoEdificio + "(s) en " + nombreCasilla + ", recibiendo " + precioEdificio + "€." + " En la propiedad queda(n) " + (n_edificios_actuales - numEdificios) + " " + tipoEdificio + "(s).");
 
     }
 
@@ -323,10 +324,10 @@ public class Jugador {
 
         if (!this.isModo()) {
 
-            System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+            Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
             this.getAvatar().moverAvatar(pos, tirada);
             c = this.getAvatar().getLugar();
-            System.out.println(" hasta " + c.getNombre() + ".");
+            Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
             c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
             return true;
 
@@ -334,7 +335,7 @@ public class Jugador {
             if (this.getAvatar().getTipo().equals("Pelota")) {
 
                 /* Movimiento Pelota */
-                System.out.println("Moviendo como Pelota");
+                Juego.consola.imprimir("Moviendo como Pelota");
 
                 /* Está en el proceso de avanzar por cada casilla */
                 if (debeContinuar > 0) {
@@ -348,11 +349,11 @@ public class Jugador {
                     else
                         tirada = 2;
 
-                    System.out.println("Pasando a la siguiente casilla (modo Pelota)");
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    Juego.consola.imprimir("Pasando a la siguiente casilla (modo Pelota)");
+                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tirada);
                     c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
                     return true;
                 }
@@ -366,14 +367,14 @@ public class Jugador {
                     else
                         tiradaPrimera = 4;
 
-                    System.out.println("Primer movimiento (modo Pelota)");
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones, desde " + c.getNombre());
+                    Juego.consola.imprimir("Primer movimiento (modo Pelota)");
+                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tiradaPrimera);
                     c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
-                    System.out.println("El jugador debe seguir avanzando aún");
+                    Juego.consola.imprimir("El jugador debe seguir avanzando aún");
 
                     debeContinuar = tirada - tiradaPrimera;
 
@@ -386,11 +387,11 @@ public class Jugador {
                     else
                         tiradaPrimera = 4;
 
-                    System.out.println("Primer y único movimiento (modo Pelota)");
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones hacia atrás, desde " + c.getNombre());
+                    Juego.consola.imprimir("Primer y único movimiento (modo Pelota)");
+                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones hacia atrás, desde " + c.getNombre());
                     this.getAvatar().moverAvatarAtras(pos, tiradaPrimera);
                     c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
                     debeContinuar = 0;
@@ -401,25 +402,25 @@ public class Jugador {
             } else if (this.getAvatar().getTipo().equals("Coche")) {
 
                 /* Movimiento Coche */
-                System.out.println("Moviendo como Coche");
+                Juego.consola.imprimir("Moviendo como Coche");
 
                 if (tiradas_turno <= -3) {
-                    System.out.println("El jugador que tira en modo Coche no puede los siguientes " + (-tiradas_turno) + " turnos.");
+                    Juego.consola.imprimir("El jugador que tira en modo Coche no puede los siguientes " + (-tiradas_turno) + " turnos.");
                     return true;
                 }
 
                 /* Si lleva tirando muchas veces, no se tira*/
                 if (tiradas_turno > 3) {
                     tiradas_turno = 0;
-                    System.out.println("El jugador que tira en modo Coche ya tiró 3 veces.");
+                    Juego.consola.imprimir("El jugador que tira en modo Coche ya tiró 3 veces.");
                     return true;
                 }
 
                 if (tirada > 4) {
-                    System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tirada);
                     c = this.getAvatar().getLugar();
-                    System.out.println(" hasta " + c.getNombre() + ".");
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
                     return false;
                 }
@@ -428,10 +429,10 @@ public class Jugador {
 
                 tiradas_turno = -3;
 
-                System.out.print("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
+                Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
                 this.getAvatar().moverAvatarAtras(pos, tirada);
                 c = this.getAvatar().getLugar();
-                System.out.println(" hasta " + c.getNombre() + ".");
+                Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
 
                 return true;
@@ -450,10 +451,10 @@ public class Jugador {
 
         Casilla c = this.getAvatar().getLugar();
 
-        System.out.print("El avatar " + this.getAvatar().getId() + " avanza a " + casilla.getNombre() + " , desde " + c.getNombre());
+        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza a " + casilla.getNombre() + " , desde " + c.getNombre());
         this.getAvatar().teleportAvatar(pos, casilla);
         c = this.getAvatar().getLugar();
-        System.out.println(" hasta " + c.getNombre() + ".");
+        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
     }
 
 
@@ -487,24 +488,24 @@ public class Jugador {
         if(!solvente){
             if(propietario.equals(banca) && !pagarBanca){
                 traspasarPropiedadesJugador(banca, jugador);
-                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+                Juego.consola.imprimir("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
        
             } else if (!propietario.equals(banca)){
                 traspasarPropiedadesJugador(propietario, jugador);
                 propietario.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0.0f);
-                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
+                Juego.consola.imprimir("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan al jugador " + propietario.getNombre());
 
             } else if (propietario.equals(banca) && pagarBanca){
                 traspasarPropiedadesJugador(banca, jugador);
                 banca.sumarFortuna(jugador.fortuna);
                 jugador.setFortuna(0.0f);
-                System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan a la banca");
+                Juego.consola.imprimir("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades y fortuna pasan a la banca");
             }
             eliminarJugador(jugadores, jugador);   
         } else {
             traspasarPropiedadesJugador(banca, jugador);
-            System.out.println("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
+            Juego.consola.imprimir("El jugador " + this.nombre + " se ha declarado en bancarrota. Sus propiedades pasan a estar de nuevo en venta al precio al que estaban.");
             eliminarJugador(jugadores, jugador); 
         }
     }
@@ -529,7 +530,7 @@ public class Jugador {
                 break;
             }
         }
-        System.out.println("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");
+        Juego.consola.imprimir("El jugador" + jugador.getNombre() + " ha sido eliminado de la partida.");
     }
 
     //Getters y Setters

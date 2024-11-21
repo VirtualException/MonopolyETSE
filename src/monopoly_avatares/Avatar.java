@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import monopoly_casillas.Casilla;
+import monopoly_juego.Juego;
 import monopoly_tablero.Valor;
 import monopoly_jugador.Jugador;
+import monopoly_consola.*;
 
 
 public class Avatar {
@@ -32,7 +34,7 @@ public class Avatar {
             this.tipo = tipo;
         }
         else {
-            System.out.println("Tipo de avatar no reconocido, se toma Pelota por defecto.");
+            Juego.consola.imprimir("Tipo de avatar no reconocido, se toma Pelota por defecto.");
             this.tipo = "Pelota";
         }
 

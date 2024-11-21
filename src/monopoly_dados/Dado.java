@@ -1,6 +1,8 @@
 package monopoly_dados;
 
 
+import monopoly_juego.Juego;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -28,7 +30,7 @@ public class Dado {
 
     public int hacerTiradaManual() {
         Scanner c = new Scanner(System.in);
-        System.out.print("Valor dado: ");
+        Juego.consola.imprimir_sin_salto("Valor dado: ");
         this.valor = Integer.parseInt(c.nextLine());
         c.close();
         return this.valor;
