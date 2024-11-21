@@ -231,20 +231,20 @@ public class Casilla {
                 break;
             case "Impuesto":
 
-                if (jugador.getFortuna() < valor) {
+                if (jugador.getFortuna() < impuesto) {
                     System.out.println("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setDeuda(valor);
+                    jugador.setDeuda(impuesto);
                     break;
                 }
 
-                System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + valor + ".");
-                jugador.sumarGastos(valor);
-                jugador.sumarFortuna(-valor);
-                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
-                banca.sumarFortuna(valor);
+                System.out.println("El jugador " + jugador.getNombre() + " paga un impuesto de " + impuesto + ".");
+                jugador.sumarGastos(impuesto);
+                jugador.sumarFortuna(-impuesto);
+                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + impuesto);
+                banca.sumarFortuna(impuesto);
                 /* Bote del parking */
                 Casilla parking = tab.encontrar_casilla("Parking");
-                parking.sumarValor(valor);
+                parking.sumarValor(impuesto);
                 break;
 
             default:
@@ -336,7 +336,7 @@ public class Casilla {
             cadena +=("\talquiler cuatro casas: " + alquiler*Valor.ALQUILER_CUATRO_CASA + "," + "\n");
             cadena +=("\talquiler hotel: " + alquiler*Valor.ALQULER_HOTEL + "," + "\n");
             cadena +=("\talquiler piscina: " + alquiler*Valor.ALQUILER_PISCINA + "," + "\n");
-            cadena +=("\talquiler pista de deporte: " + alquiler*Valor.ALQUILER_PISTA_DE_DEPORTE);
+            cadena +=("\talquiler pista de deporte: " + alquiler*Valor.ALQUILER_PISTA_DE_DEPORTE + "," + "\n");
             cadena +=("\tedificios construídos en esta casilla: [");
             if(!edificios.isEmpty()){
                 for (Edificio e : edificios){
