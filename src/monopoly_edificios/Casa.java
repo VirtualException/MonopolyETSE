@@ -1,7 +1,7 @@
 package monopoly_edificios;
 
-import monopoly.Valor;
-import partida.Jugador;
+import monopoly_tablero.Valor;
+import monopoly_jugador.Jugador;
 
 public class Casa extends Edificio {
 

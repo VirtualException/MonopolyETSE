@@ -1,4 +1,4 @@
-package monopoly;
+package monopoly_consola;
 
 public class ConsolaNormal implements Consola{
     @Override

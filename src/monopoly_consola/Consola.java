@@ -1,4 +1,4 @@
-package monopoly;
+package monopoly_consola;
 
 import java.util.Scanner;
 

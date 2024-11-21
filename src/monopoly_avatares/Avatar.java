@@ -2,9 +2,10 @@ package monopoly_avatares;
 
 import java.util.ArrayList;
 import java.util.Random;
-import monopoly.*;
+
 import monopoly_casillas.Casilla;
-import partida.Jugador;
+import monopoly_tablero.Valor;
+import monopoly_jugador.Jugador;
 
 
 public class Avatar {
@@ -55,7 +56,7 @@ public class Avatar {
 
             if(!this.lugar.getNombre().equals("IrCarcel")){
                 jugador.setVueltas(jugador.getVueltas() + 1);
-                jugador.sumarFortuna((float)Valor.SUMA_VUELTA);
+                jugador.sumarFortuna((float) Valor.SUMA_VUELTA);
                 jugador.setPasarPorCasillaDeSalida(jugador.getPasarPorCasillaDeSalida() + (float)Valor.SUMA_VUELTA);
             }
 

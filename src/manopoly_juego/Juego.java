@@ -1,4 +1,4 @@
-package monopoly;
+package manopoly_juego;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -6,8 +6,14 @@ import java.util.Scanner;
 
 import monopoly_avatares.Avatar;
 import monopoly_casillas.Casilla;
+import monopoly_consola.ConsolaNormal;
+import monopoly_dados.Dado;
 import monopoly_edificios.Edificio;
-import partida.*;
+import monopoly_jugador.Jugador;
+import monopoly_tablero.Grupo;
+import monopoly_tablero.Tablero;
+import monopoly_tablero.Valor;
+import monopoly_tratos.Trato;
 
 public class Juego {
 

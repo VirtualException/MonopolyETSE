@@ -3,8 +3,8 @@ package monopoly_cartas;
 import java.util.*;
 
 import monopoly_casillas.Casilla;
-import monopoly.Tablero;
-import partida.*;
+import monopoly_jugador.Jugador;
+import monopoly_tablero.Tablero;
 
 public class Cartas {
     private int id;

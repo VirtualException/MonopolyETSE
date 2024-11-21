@@ -3,10 +3,10 @@ package monopoly_edificios;
 import java.util.ArrayList;
 
 import monopoly_casillas.Casilla;
-import monopoly.Grupo;
-import monopoly.Tablero;
-import monopoly.Valor;
-import partida.*;
+import monopoly_jugador.Jugador;
+import monopoly_tablero.Grupo;
+import monopoly_tablero.Tablero;
+import monopoly_tablero.Valor;
 
 public class Edificio {
 

@@ -1,6 +1,7 @@
-package partida;
+package monopoly_tratos;
 
 import monopoly_casillas.Casilla;
+import monopoly_jugador.Jugador;
 
 import java.util.ArrayList;
 

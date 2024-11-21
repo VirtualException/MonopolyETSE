@@ -3,12 +3,12 @@ package monopoly_casillas;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import monopoly.Grupo;
-import monopoly.Tablero;
-import monopoly.Valor;
+import monopoly_jugador.Jugador;
+import monopoly_tablero.Grupo;
+import monopoly_tablero.Tablero;
+import monopoly_tablero.Valor;
 import monopoly_avatares.Avatar;
 import monopoly_edificios.Edificio;
-import partida.*;
 
 
 public class Casilla {
