@@ -22,9 +22,6 @@ public class Casilla {
     private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
     private ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.
 
-    //Constructores:
-    public Casilla() {
-    }//Parámetros vacíos
 
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
      * Parámetros: nombre casilla, tipo (debe ser solar, serv. o transporte), posición en el tablero, valor y dueño.

@@ -6,4 +6,9 @@ public class ConsolaNormal implements Consola{
         System.out.println(mensaje);
     }
 
+    @Override
+    public String leer(String peticion) {
+        return "nada";
+    }
+
 }

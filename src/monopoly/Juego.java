@@ -484,14 +484,15 @@ public class Juego {
         /* El edificio es el encargado de comprobar las reglas, y en caso de
         éxito, se añade a la lista de edificios. Además se suman los gastos. */
 
-        Edificio e = new Edificio(j, tipo);
+        Edificio e = Edificio.construir(tipo, j, tablero);
 
-        if (!Edificio.construir(e, tablero)) {
+        if (e != null) {
             /* Si todo va bien, el edificio se añade a la lista de edificios  */
             ArrayList<Edificio> edificios = j.getEdificios();
             edificios.add(e);
             System.out.println("Añadiendo edificio a la lista de la casilla...");
             j.getAvatar().getLugar().setEdificios(edificios);
+            System.out.println("Edificio de tipo \"" + e.getTipo() + "\" añadido.");
         }
         else {
             System.out.println("El edificio no se contruyó.");

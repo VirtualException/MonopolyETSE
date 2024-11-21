@@ -24,31 +24,31 @@ public class Edificio {
     }
 
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
-    static public boolean construir(Edificio edificio, Tablero tablero) {
-        Grupo grupo = edificio.getGrupo();
-        Casilla casilla = edificio.getCasilla();
-        Jugador duenho = edificio.getDuenho();
-        String tipo = edificio.getTipo();
-        float coste = edificio.getCoste();
+    static public Edificio construir(String tipo, Jugador j, Tablero tablero) {
+
+        Edificio edificio = null;
+        Casilla casilla = j.getAvatar().getLugar();
+        Grupo grupo = casilla.getGrupo();
+        float coste = casilla.getPrecioOriginal();
 
         /* Evaluar normas de edificación para el jugador que quiere construir */
 
         /* Tipo inválido */
         if (!"casa hotel piscina pista".contains(tipo)) {
             System.out.println("El edificio no es de un tipo válido.");
-            return true;
+            return null;
         }
 
         /* Comprobar si alguna regla no se cumple */
         if (!casilla.getTipo().equals("Solar")) {
             System.out.println("La casilla no es un solar, no se puede contruir.");
-            return true;
+            return null;
         }
         
-        boolean puedeConstruir = grupo.esDuenhoGrupo(duenho) || casilla.haCaidoMasDosVeces(duenho);
+        boolean puedeConstruir = grupo.esDuenhoGrupo(j) || casilla.haCaidoMasDosVeces(j);
         if (!puedeConstruir) {
             System.out.println("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
-            return true;
+            return null;
         }
 
         int numPistasEdificables = grupo.numEdificiosEdificablesGrupo("pista");
@@ -61,7 +61,7 @@ public class Edificio {
             numPiscinasEdificables == 0 &&
             numPistasEdificables == 0) {
             System.out.println("Máximo de edificios alcanzados!");
-            return true;
+            return null;
         }
 
         System.out.println("Contruyendo " + tipo + ".");
@@ -78,7 +78,9 @@ public class Edificio {
                 /* Comprobar máximo de edificios. */
                 if (numCasasEdificables == 0 || casilla.getCasasN() == 4) {
                     System.out.println("Máximo de edificio alcanzado.");
+                    return null;
                 }
+                edificio = new Casa(j);
                 edificio.setCoste(precio_original * Valor.MULTIPLICADOR_CASA);
                 break;
 
@@ -87,17 +89,19 @@ public class Edificio {
                 /* Comprobar máximo de edificios. */
                 if (numHotelesEdificables == 0) {
                     System.out.println("Máximo de edificio alcanzado.");
+                    return null;
                 }
                 if (casilla.getCasasN() == 4) {
                     /* Eliminar casas */
                     for(int i=0; i<4; i++){
                         casilla.eliminarEdificio("casa");
                     }
+                    edificio = new Hotel(j);
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_HOTEL);
                 }
                 else {
                     System.out.println("No hay suficientes casas para un hotel.");
-                    return true;
+                    return null;
                 }
                 break;
 
@@ -106,6 +110,7 @@ public class Edificio {
                 /* Comprobar máximo de edificios. */
                 if (numPiscinasEdificables == 0) {
                     System.out.println("Máximo de edificio alcanzado.");
+                    return null;
                 }
                 if (casilla.getHotelesN() >= 1 && casilla.getCasasN() >= 2) {
                     /* Eliminar hoteles */
@@ -113,11 +118,12 @@ public class Edificio {
                     for(int i = 0; i < 2; i++){
                         casilla.eliminarEdificio("casa");
                     }
+                    edificio = new Piscina(j);
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISCINA);
                 }
                 else {
                     System.out.println("No hay suficientes hoteles para una piscina.");
-                    return true;
+                    return null;
                 }
                 break;
 
@@ -125,44 +131,45 @@ public class Edificio {
             case "pista":
                 if (numPistasEdificables == 0) {
                     System.out.println("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
-                    return true;
+                    return null;
                 }
                 if (casilla.getHotelesN() >= 2) {
                     /* Eliminar hoteles */
                     for(int i = 0; i < 2; i++) {
                         casilla.getEdificios().removeIf(e -> e.tipo.equals("hotel"));
-                }
+                    }
+                    edificio = new PistaDeporte(j);
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE);
                 }
                 else {
                     System.out.println("No hay suficientes hoteles para una pista de deporte.");
-                    return true;
+                    return null;
                 }
                 break;
 
             /* TIPO INVÁLIDO */
             default:
                 System.out.println("Tipo de contrucción inválido.");
-                return true; /* Salir de la función con código de error */
+                return null; /* Salir de la función con código de error */
         }
 
         edificio.setId(edificio.generarID(edificio.tipo, tablero));
 
         /* El jugador gasta dinero */
 
-        if (coste > duenho.getFortuna()) {
+        if (coste > j.getFortuna()) {
             System.out.println("Fortuna insuficiente para edificar.");
-            return true;
+            return null;
         }
 
         System.out.println(edificio.id + " contruído.");
 
-        duenho.setGastos(coste);
-        duenho.sumarFortuna(-coste);
-        duenho.setDineroInvertido(duenho.getDineroInvertido() + coste);
+        j.setGastos(coste);
+        j.sumarFortuna(-coste);
+        j.setDineroInvertido(j.getDineroInvertido() + coste);
 
         /* Todo correcto */
-        return false;
+        return edificio;
     }
 
 
