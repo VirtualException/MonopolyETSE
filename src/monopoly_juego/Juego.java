@@ -48,6 +48,7 @@ public class Juego implements Comandos{
         tablero = new Tablero(banca);
         turno = 0;
         tratos = new ArrayList<>();
+        consola = new ConsolaNormal();
 
         dado1 = new Dado();
         dado2 = new Dado();
