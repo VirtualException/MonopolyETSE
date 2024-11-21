@@ -1,6 +1,8 @@
 package monopoly; 
 
 import java.util.ArrayList;
+
+import monopoly_edificios.Edificio;
 import partida.*;
 
 

@@ -1,5 +1,6 @@
-package monopoly;
+package monopoly_edificios;
 
+import monopoly.Valor;
 import partida.Jugador;
 
 public class Piscina extends Edificio {
