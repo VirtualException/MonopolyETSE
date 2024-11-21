@@ -14,4 +14,5 @@ public class ConsolaNormal implements Consola{
         return scan.nextLine();
     }
 
+
 }
