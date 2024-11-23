@@ -236,6 +236,9 @@ public class Juego implements Comandos{
         } else if (comandos_args[0].equals("eliminar") && num_args == 2) {
             String nombreTratoAEliminar = comandos_args[1]; 
             eliminarTrato(nombreTratoAEliminar);
+        } else if (comandos_args[0].equals("aceptar") && num_args == 2) {
+            String nombreTrato = comandos_args[1];
+            aceptarTrato(nombreTrato);
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -265,7 +268,8 @@ public class Juego implements Comandos{
         return false;
     }
 
-    private void crearJugador(String nombre, String tipo) {
+    @Override
+    public void crearJugador(String nombre, String tipo) {
         jugadores.add(new Jugador(nombre, tipo, tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
         avatares.add(jugadores.getLast().getAvatar());
 
@@ -280,7 +284,8 @@ public class Juego implements Comandos{
     /*Método que realiza las acciones asociadas al comando 'describir jugador'.
     * Parámetro: comando introducido
      */
-    private void descJugador(String nombre) {
+    @Override
+    public void descJugador(String nombre) {
 
         for (Jugador j : jugadores) {
             if (Objects.equals(j.getNombre(), nombre)) {
@@ -321,7 +326,9 @@ public class Juego implements Comandos{
     /*Método que realiza las acciones asociadas al comando 'describir avatar'.
     * Parámetro: id del avatar a describir.
     */
-    private void descAvatar(String ID) {
+
+    @Override
+    public void descAvatar(String ID) {
         for (Avatar i : avatares) {
             if (Objects.equals(i.getId(), ID)) {
                 consola.imprimir_sin_salto("{\n");
@@ -334,7 +341,8 @@ public class Juego implements Comandos{
         }
     }
 
-    private void descTurno() {
+    @Override
+    public void descTurno() {
 
         if (jugadores.isEmpty()) {
             consola.imprimir("No hay jugadores.");
@@ -352,7 +360,7 @@ public class Juego implements Comandos{
     /* Método que realiza las acciones asociadas al comando 'describir nombre_casilla'.
     * Parámetros: nombre de la casilla a describir.
     */
-    private void descCasilla(String nombre) {
+    public void descCasilla(String nombre) {
         Casilla c = tablero.encontrar_casilla(nombre);
         if (c == null) {
             consola.imprimir("Esa casilla no existe.");
@@ -362,7 +370,8 @@ public class Juego implements Comandos{
     }
 
     // Método que ejecuta todas las acciones relacionadas con el comando 'lanzar dados'.
-    private void lanzarDados(int a, int b) {
+    @Override
+    public void lanzarDados(int a, int b) {
 
         if (jugadores.isEmpty()) {
             consola.imprimir("No hay jugadores!");
@@ -464,7 +473,8 @@ public class Juego implements Comandos{
     /*Método que ejecuta todas las acciones realizadas con el comando 'comprar nombre_casilla'.
     * Parámetro: cadena de caracteres con el nombre de la casilla.
      */
-    private void comprar(String nombre) {
+    @Override
+    public void comprar(String nombre) {
 
         Jugador jugadorActual = jugadores.get(turno);
         Avatar av = jugadorActual.getAvatar();
@@ -492,7 +502,8 @@ public class Juego implements Comandos{
     }
 
     /* Contruir edificio */
-    private void edificar(String tipo) {
+    @Override
+    public void edificar(String tipo) {
         Jugador j = jugadores.get(turno);
 
         /* El edificio es el encargado de comprobar las reglas, y en caso de
@@ -514,7 +525,8 @@ public class Juego implements Comandos{
     }
 
     // Método que ejecuta todas las acciones relacionadas con el comando 'salir carcel'.
-    private void salirCarcel() {
+    @Override
+    public void salirCarcel() {
         consola.imprimir(jugadores.get(turno).getNombre() + " paga " + Valor.SUMA_VUELTA*0.25f + " y sale de la cárcel. Puede lanzar los dados.");
         tirado = false;
         jugadores.get(turno).setEnCarcel(false);
@@ -525,7 +537,8 @@ public class Juego implements Comandos{
     }
 
     // Método que realiza las acciones asociadas al comando 'listar enventa'.
-    private void listarVenta() {
+    @Override
+    public void listarVenta() {
         for (ArrayList <Casilla> casillas : tablero.getPosiciones()){
             for (Casilla c : casillas){
                 if (c.getDuenho().getNombre().equals("Banca")){
@@ -536,7 +549,8 @@ public class Juego implements Comandos{
     }
 
     // Método que realiza las acciones asociadas al comando 'listar jugadores'.
-    private void listarJugadores() {
+    @Override
+    public void listarJugadores() {
         if (jugadores.isEmpty()){
             consola.imprimir("No hay jugadores registrados");
         } else {
@@ -547,7 +561,8 @@ public class Juego implements Comandos{
     }
 
     // Método que realiza las acciones asociadas al comando 'listar avatares'.
-    private void listarAvatares() {
+    @Override
+    public void listarAvatares() {
 
         if (jugadores.isEmpty()){
             consola.imprimir("No hay avatares registrados");
@@ -561,7 +576,8 @@ public class Juego implements Comandos{
 
 
     // Método para listar los edificios construidos por cada jugador
-    private void listarEdificios() {
+    @Override 
+    public void listarEdificios() {
         for (Jugador j : jugadores) {
             if (j.getEdificios().isEmpty()) {
                 consola.imprimir("El jugador " + j.getNombre() + " no ha construido edificios.");
@@ -577,14 +593,16 @@ public class Juego implements Comandos{
 
 
     // Método para vender edificios
-    private void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasila, int numEdificios){
+    @Override
+    public void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasila, int numEdificios){
         jugador.venderEdificios(tipoEdificio, nombreCasila, numEdificios);
     }
 
 
     
     // Método para imprimir las estadisticas de un jugador.
-    private void estadisticasJugador(String nombreJugador){
+    @Override
+    public void estadisticasJugador(String nombreJugador){
         boolean encontrado = false;
         
         for(Jugador j : jugadores){
@@ -600,8 +618,8 @@ public class Juego implements Comandos{
         }
     }
 
-    
-    private void estadisticas() {
+    @Override
+    public void estadisticas() {
 
         /* Casilla más rentable */
         float max = -1;
@@ -694,27 +712,32 @@ public class Juego implements Comandos{
 
 
     // Método para declararse en bancarrota
-    private void bancarrota(boolean pagarBanca) {
+    @Override
+    public void bancarrota(boolean pagarBanca) {
         Jugador jugadorActual = jugadores.get(turno);
         jugadorActual.bancarrota(jugadores, banca, pagarBanca);
     }
 
 
     // Método para hipotecar una propiedad
-    private void hipotecarPropiedad(Jugador jugador, Casilla c) {
+    @Override
+    public void hipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.hipotecarPropiedad(c);
     }
 
 
+
     // Método para deshipotecar una propiedad
-    private void deshipotecarPropiedad(Jugador jugador, Casilla c) {
+    @Override
+    public void deshipotecarPropiedad(Jugador jugador, Casilla c) {
         jugador.deshipotecarPropiedad(c);
     }
 
 
 
     // Método que realiza las acciones asociadas al comando 'acabar turno'.
-    private void acabarTurno() {
+    @Override
+    public void acabarTurno() {
 
         Jugador j = jugadores.get(turno);
 
@@ -732,6 +755,7 @@ public class Juego implements Comandos{
 
     /* Método para incrementar el precio de los Solares un 5% si todos los jugadores han
      * completado 4 vueltas y los solares no han sido comprados previamente */
+     @Override
     public void incrementarSolares() {
         boolean vueltasCompletadas = true;
 
@@ -766,7 +790,8 @@ public class Juego implements Comandos{
     }
 
     // Función para listar la información de los tratos de un jugador 
-    private void listarTratos(){
+    @Override
+    public void listarTratos(){
 
         StringBuilder cadena = new StringBuilder();
         String nombreJugador = this.jugadores.get(turno).getNombre();
@@ -783,8 +808,8 @@ public class Juego implements Comandos{
     }
 
 
-
-    private void eliminarTrato(String id){
+    @Override
+    public void eliminarTrato(String id){
         Trato tratoAEliminar = null;
 
         for (Trato trato : this.tratos) {
@@ -812,6 +837,12 @@ public class Juego implements Comandos{
     }
 
 
+    @Override
+    public void aceptarTrato(String id) {
+    }
+
+
+    @Override
     public void proponerTrato(String jugadorDestinatario, Casilla propiedadOfrecida, Casilla propiedadSolcitada, float cantidad1, float cantidad2) {
         Jugador jugadorProponente = jugadores.get(turno);
         Jugador destinatario = null;

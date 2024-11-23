@@ -353,7 +353,7 @@ public class Jugador {
                     Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
                     this.getAvatar().moverAvatar(pos, tirada);
                     c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");  
                     c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
                     return true;
                 }
