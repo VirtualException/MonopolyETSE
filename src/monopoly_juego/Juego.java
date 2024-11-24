@@ -239,7 +239,7 @@ public class Juego implements Comandos{
         } else if (comandos_args[0].equals("aceptar") && num_args == 2) {
             String nombreTrato = comandos_args[1];
             aceptarTrato(nombreTrato);
-        }
+        } //FALTA COMANDO PROPONER TRATO
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
             return true;
@@ -796,14 +796,19 @@ public class Juego implements Comandos{
         StringBuilder cadena = new StringBuilder();
         String nombreJugador = this.jugadores.get(turno).getNombre();
 
-        for (Trato trato: this.tratos){
-            if (trato.getDestinatario().getNombre().equals(nombreJugador)){
-                cadena.append("{\n");
-                cadena.append("\tid: " + trato.getId() + "\n");
-                cadena.append("\tjugadorPropone: " + trato.getProponente() + ",\n");
-                cadena.append("\ttrato: " + trato.mostrarTratoPropuesto() + "\n");
-                cadena.append("},\n");
+        if (!tratos.isEmpty()) {
+            for (Trato trato: this.tratos){
+                if (trato.getDestinatario().getNombre().equals(nombreJugador)){
+                    cadena.append("{\n");
+                    cadena.append("\tid: " + trato.getId() + "\n");
+                    cadena.append("\tjugadorPropone: " + trato.getProponente() + ",\n");
+                    cadena.append("\ttrato: " + trato.mostrarTratoPropuesto() + "\n");
+                    cadena.append("},\n");
+                }
             }
+        } else {
+            Juego.consola.imprimir("No hay tratos propuestos");
+            return;
         }
     }
 
@@ -839,7 +844,55 @@ public class Juego implements Comandos{
 
     @Override
     public void aceptarTrato(String id) {
+        Trato tratoAAceptar = null;
+
+        for (Trato trato : this.tratos) {
+            if (trato.getId().equals(id)){
+                tratoAAceptar = trato;
+            }
+        }
+
+        if (tratoAAceptar == null){
+            consola.imprimir("ERROR. Este trato no existe");
+        }
+
+        // Verificamos si la propiedad ofrecida está hipotecada 
+        boolean propiedadOfrecidaHipotecada = tratoAAceptar.getPropiedadOfrecida().getHipotecada();
+
+        if (propiedadOfrecidaHipotecada){
+            String respuesta = this.respuestaAceptarTrato();
+            if (respuesta.equals("n")) {
+                consola.imprimir("El trato se ha rechazado.");
+                return;
+            }
+        }
+
+        // Realizamos el intercambio
+
+        if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getPropiedadSolicitada() != null){
+            tratoAAceptar.cambiarPropiedadPorPropiedad();
+        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getCantidadSolicitada() > 0){
+            tratoAAceptar.cambiarPropiedadPorDinero();
+        } else if (tratoAAceptar.getCantidadOfrecida() > 0 && tratoAAceptar.getPropiedadSolicitada() != null){
+            tratoAAceptar.cambiarDineroPorPropiedad();
+        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getPropiedadSolicitada() != null && tratoAAceptar.getCantidadSolicitada() > 0){
+            tratoAAceptar.cambiarPropiedadPorPropiedadYDinero();
+        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getCantidadOfrecida() > 0 && tratoAAceptar.getPropiedadSolicitada() != null){
+            tratoAAceptar.cambiarPropiedadYDineroPorPropiedad();
+        }
     }
+
+
+    @Override
+    public String respuestaAceptarTrato() {
+        consola.imprimir("La propiedad a recibir es una hipoteca, quieres aceptar el trato? (s/n): ");
+        Scanner scanner = new Scanner(System.in);
+        String respuesta = scanner.nextLine();
+        return respuesta;
+    }
+
+
+
 
 
     @Override

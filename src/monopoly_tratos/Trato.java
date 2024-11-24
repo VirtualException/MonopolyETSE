@@ -33,12 +33,23 @@ public class Trato {
 
     // Método que crea el id de un trato
     private String crearId(ArrayList<Trato> tratos){
-        String id = "";
-
-        id = "trato" + String.valueOf(tratos.get(tratos.size() - 1).getNumeroDeTrato() + 1);
+        if (tratos.isEmpty()) {
+            this.numeroDeTrato = 1;
+            return "trato1";
+        }
         this.numeroDeTrato = tratos.get(tratos.size() - 1).getNumeroDeTrato() + 1;
-        
-        return id;
+        return id + this.numeroDeTrato;
+    }
+
+
+    // Método para añadir un trato al arraylist de tratos
+    public void anhadirTrato(ArrayList<Trato> tratos, Trato trato) {
+        if (tratos.contains(trato)) {
+            Juego.consola.imprimir("ERROR. El trato ya existe.");
+            return;
+        } else {
+            tratos.add(trato);
+        }
     }
 
 
@@ -89,140 +100,115 @@ public class Trato {
     }
 
 
-    public void cambiarPropiedadPorPropiedad(Casilla propiedadOfrecida, Casilla propiedadSolicitada){
-        this.propiedadOfrecida = propiedadSolicitada;
-        this.propiedadSolicitada = propiedadOfrecida;
-
-        if (!verificarTrato()) {
-            return;
-        }
-
-        this.proponente.getPropiedades().remove(propiedadOfrecida);
-        this.proponente.getPropiedades().add(propiedadSolicitada);
-        this.destinatario.getPropiedades().remove(propiedadSolicitada);
-        this.destinatario.getPropiedades().add(propiedadOfrecida);
-    }
-
-
-    public void cambiarPropiedadPorDinero(Casilla propiedadOfrecida, float cantidadSolicitada) {
+    public void cambiarPropiedadPorPropiedad(){
 
         if (!this.proponente.getPropiedades().contains(propiedadOfrecida)) {
-            Juego.consola.imprimir("ERROR. El jugador proponente " + this.proponente.getNombre() + " no posee la propiedad que ofrece.");
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador proponente " + this.proponente.getNombre() + " no posee " + propiedadOfrecida.getNombre() + ".");
             return;
-        } else if (this.destinatario.getFortuna() < cantidadSolicitada) {
-            Juego.consola.imprimir("ERROR. El jugador destinatario " + this.destinatario.getNombre() + " no tiene el dinero suficiente solicitado. Se conserva el trato.");
-            return;
-        } else {
-            this.proponente.sumarFortuna(cantidadSolicitada);
-            this.proponente.getPropiedades().remove(propiedadOfrecida);
-            this.destinatario.getPropiedades().add(propiedadOfrecida);
-            this.destinatario.sumarFortuna(-cantidadSolicitada);
-            this.destinatario.sumarGastos(cantidadSolicitada);
+        } 
+        if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
         }
+        this.proponente.eliminarPropiedad(propiedadOfrecida);
+        this.proponente.anhadirPropiedad(propiedadSolicitada);
+        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        this.destinatario.anhadirPropiedad(propiedadOfrecida);
+
+        Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + ".");
     }
 
 
-    public void cambiarDineroPorPropiedad(float cantidadOfrecida, Casilla propiedadSolicitada) {
+    public void cambiarPropiedadPorDinero() {
+
+        if (!this.proponente.getPropiedades().contains(propiedadOfrecida)) {
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador proponente " + this.proponente.getNombre() + " no posee " + propiedadOfrecida.getNombre() + ".");
+            return;
+        } 
+        if (this.destinatario.getFortuna() < cantidadSolicitada) {
+            Juego.consola.imprimir("El trato no puede ser aceptado: El jugador destinatario " + this.destinatario.getNombre() + " no tiene " + cantidadSolicitada + "€" + ". Se conserva el trato.");
+            return;
+        }
+        this.proponente.sumarFortuna(cantidadSolicitada);
+        this.proponente.eliminarPropiedad(propiedadOfrecida);
+        this.destinatario.anhadirPropiedad(propiedadOfrecida);
+        this.destinatario.sumarFortuna(-cantidadSolicitada);
+        this.destinatario.sumarGastos(cantidadSolicitada);
+
+        Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + cantidadSolicitada + "€  y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + ".");
+    }
+
+
+    public void cambiarDineroPorPropiedad() {
         
         if (this.proponente.getFortuna() < cantidadOfrecida) {
-            Juego.consola.imprimir("ERROR. El jugador proponente " + this.proponente.getNombre() + " no tiene el dinero suficiente ofrecido.");
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador proponente " + this.proponente.getNombre() + " no tiene " + cantidadOfrecida + "€.");
             return;
-        } else if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
-            Juego.consola.imprimir("ERROR. El jugador destinatario " + this.destinatario.getNombre() + " no posee la propiedad solicitada.");
+        } 
+        if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
-        } else {
-            this.proponente.sumarFortuna(-cantidadOfrecida);
-            this.proponente.sumarGastos(cantidadOfrecida);
-            this.proponente.anhadirPropiedad(propiedadSolicitada);
-            this.destinatario.eliminarPropiedad(propiedadSolicitada);
         }
+        this.proponente.sumarFortuna(-cantidadOfrecida);
+        this.proponente.sumarGastos(cantidadOfrecida);
+        this.proponente.anhadirPropiedad(propiedadSolicitada);
+        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        this.destinatario.sumarFortuna(cantidadOfrecida);
+
+        Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + cantidadOfrecida + "€.");
     }
 
 
-    public void cambiarPropiedadPorPropiedadYDinero(Casilla propiedadOfrecida, Casilla propiedadSolicitada, float cantidadSolicitada) {
+    public void cambiarPropiedadPorPropiedadYDinero() {
         if (!this.proponente.getPropiedades().contains(propiedadOfrecida)) {
-            Juego.consola.imprimir("ERROR. El jugador proponente " + this.proponente.getNombre() + " no posee la propiedad que ofrece.");
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador proponente " + this.proponente.getNombre() + " no posee " + propiedadOfrecida.getNombre() + ".");
             return;
-        } else if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
-            Juego.consola.imprimir("ERROR. El jugador destinatario " + this.destinatario.getNombre() + " no posee la propiedad que ofrece.");
+        } 
+        if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
-        } else if (this.destinatario.getFortuna() < cantidadSolicitada) {
-            Juego.consola.imprimir("ERROR. El jugador destinatario " + this.destinatario.getNombre() + " no tiene el dinero suficiente solicitado. Se conserva el trato.");
-            return;
-        } else {
-            this.proponente.eliminarPropiedad(propiedadOfrecida);
-            this.proponente.anhadirPropiedad(propiedadSolicitada);
-            this.proponente.sumarFortuna(cantidadSolicitada);
-            this.destinatario.eliminarPropiedad(propiedadSolicitada);
-            this.destinatario.sumarFortuna(-cantidadSolicitada);
-            this.destinatario.sumarGastos(cantidadSolicitada);
         }
+        if (this.destinatario.getFortuna() < cantidadSolicitada) {
+            Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no tiene " + cantidadSolicitada + "€. Se conserva el trato.");
+            return;
+        }
+        this.proponente.eliminarPropiedad(propiedadOfrecida);
+        this.proponente.anhadirPropiedad(propiedadSolicitada);
+        this.proponente.sumarFortuna(cantidadSolicitada);
+        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        this.destinatario.anhadirPropiedad(propiedadOfrecida);
+        this.destinatario.sumarFortuna(-cantidadSolicitada);
+        this.destinatario.sumarGastos(cantidadSolicitada);
+
+        Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + cantidadSolicitada +  "€, " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + ".");
     }
 
 
-    public void cambiarPropiedadYDineroPorPropiedad(Casilla propiedadOfrecida, float cantidadOfrecida, Casilla propiedadSolicitada) {
+    public void cambiarPropiedadYDineroPorPropiedad() {
         if (!this.proponente.getPropiedades().contains(propiedadOfrecida)) {
-            Juego.consola.imprimir("ERROR. El jugador proponente " + this.proponente.getNombre() + " no posee la propiedad que ofrece.");
+            Juego.consola.imprimir("El trato no puede ser aceptado: El jugador proponente " + this.proponente.getNombre() + " no posee " + propiedadOfrecida.getNombre() + ".");
             return;
-        } else if (this.proponente.getFortuna() < cantidadOfrecida) {
-            Juego.consola.imprimir("ERROR. El jugador proponente " + this.proponente.getNombre() + " no tiene el dinero suficiente ofrecido.");
-        } else if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
-            Juego.consola.imprimir("ERROR. El jugador destinatario " + this.destinatario.getNombre() + " no posee la propiedad solicitada.");
+        }
+        if (this.proponente.getFortuna() < cantidadOfrecida) {
+            Juego.consola.imprimir("El trato no puede ser aceptado: El jugador proponente " + this.proponente.getNombre() + " no tiene " + cantidadOfrecida + "€.");
             return;
-        } else {
-            this.proponente.eliminarPropiedad(propiedadOfrecida);
-            this.proponente.sumarFortuna(-cantidadOfrecida);
-            this.proponente.sumarGastos(cantidadOfrecida);
-            this.proponente.anhadirPropiedad(propiedadSolicitada);
-            this.destinatario.eliminarPropiedad(propiedadSolicitada);
         }
-    }
-
-
-    // Función para listar la información de los tratos de un jugador 
-    private void listarTratos(ArrayList<Trato> tratos, Jugador jugadorActual){
-
-        StringBuilder cadena = new StringBuilder();    
-        for (Trato trato: tratos){
-            if (trato.getDestinatario().getNombre().equals(jugadorActual.getNombre())){
-                cadena.append("{\n");
-                cadena.append("\tid: " + trato.getId() + "\n");
-                cadena.append("\tjugadorPropone: " + trato.getProponente() + ",\n");
-                cadena.append("\ttrato: " + trato.mostrarTratoPropuesto() + "\n");
-                cadena.append("},\n");
-            }
+        if (!this.destinatario.getPropiedades().contains(propiedadSolicitada)) {
+            Juego.consola.imprimir("El trato no puede ser aceptado: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
+            return;
         }
+        this.proponente.eliminarPropiedad(propiedadOfrecida);
+        this.proponente.sumarFortuna(-cantidadOfrecida);
+        this.proponente.sumarGastos(cantidadOfrecida);
+        this.proponente.anhadirPropiedad(propiedadSolicitada);
+        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        this.destinatario.sumarFortuna(cantidadOfrecida);
+
+        Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + " y " + cantidadOfrecida + "€.");
     }
 
 
 
-    private void eliminarTrato(ArrayList<Trato> tratos, Jugador jugadorActual, String id){
-        Trato tratoAEliminar = null;
-
-        for (Trato trato : tratos) {
-            if (trato.getId().equals(id)){
-                tratoAEliminar = trato;
-            } 
-        }
-        
-        if (tratoAEliminar == null){
-            System.out.println("ERROR. Este trato no existe");
-        }
-        else {
-            String nombreJugadorActual = jugadorActual.getNombre();
-            if (tratoAEliminar.getProponente().getNombre().equals(nombreJugadorActual)){
-                System.out.println("ERROR. El trato no le pertenece al jugador");
-            }
-            else if (tratoAEliminar.getAceptado() == Boolean.TRUE){
-                System.out.println("ERROR. El trato fue aceptado, no se puede eliminar");
-            }
-            else {
-                tratos.remove(tratoAEliminar);
-                System.out.println("Se ha eliminado el trato " + id + ".");
-            }
-        }
-    }
 
 
     // GETTERS Y SETTERS
@@ -251,11 +237,11 @@ public class Trato {
         return this.propiedadSolicitada;
     }
 
-    public float getCantidad1(){
+    public float getCantidadOfrecida(){
         return this.cantidadOfrecida;
     }
 
-    public float getCantidad2(){
+    public float getCantidadSolicitada(){
         return this.cantidadSolicitada;
     }
 
@@ -275,11 +261,11 @@ public class Trato {
         this.propiedadSolicitada = propiedadSolicitada;
     }   
 
-    public void setCantidad1(float cantidadOfrecida){
+    public void setCantidadOfrecida(float cantidadOfrecida){
         this.cantidadOfrecida = cantidadOfrecida;
     }
 
-    public void setCantidad2(float cantidadSolicitada){
+    public void setCantidadSolicitada(float cantidadSolicitada){
         this.cantidadSolicitada = cantidadSolicitada;
     }
 

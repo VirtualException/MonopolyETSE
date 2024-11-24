@@ -28,5 +28,6 @@ public interface Comandos {
     void listarTratos();
     void eliminarTrato(String id);
     void aceptarTrato(String id);
+    String respuestaAceptarTrato();
     void proponerTrato(String jugadorDestinatario, Casilla propiedadOfrecida, Casilla propiedadSolcitada, float cantidad1, float cantidad2);
 } 
