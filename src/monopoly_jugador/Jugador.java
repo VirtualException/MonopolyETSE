@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import monopoly_avatares.Avatar;
 import monopoly_casillas.Casilla;
+import monopoly_casillas.propiedades.Propiedad;
+import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.Edificio;
 import monopoly_juego.Juego;
 import monopoly_tablero.Tablero;
@@ -157,10 +159,10 @@ public class Jugador {
 
                     // Verificamos que el solar no tenga edificios
                     if (c.getEdificios() != null && c.getEdificios().isEmpty()) {
-                        precioHipoteca = (c.getPrecioOriginal() / 2);
+                        precioHipoteca = (((Solar)c).getPrecioOriginal() / 2);
                         this.sumarFortuna(precioHipoteca);
                         c.setHipotecada(true);
-                        Juego.consola.imprimir(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                        Juego.consola.imprimir(this.getNombre() + " recibe " + precioHipoteca + "€ por la hipoteca de " + c.getNombre() + ". No puede recibir alquileres ni edificar en el grupo " + ((Solar)c).getGrupo().getColorGrupo() + ".");
                     } else {
                         Juego.consola.imprimir("No puedes hipotecar " + c.getNombre() + " porque tiene edificios. Debes vender todos los edificios.");
                     }
@@ -208,13 +210,13 @@ public class Jugador {
         /* Proceder a deshipotecar. */
         switch (c.getTipo()) {
             case "Solar":
-                precioDeshipoteca = (float) 1.1 * (c.getPrecioOriginal() / 2);
+                precioDeshipoteca = (float) 1.1 * (((Solar)c).getPrecioOriginal() / 2);
 
                 if (this.getFortuna() >= precioDeshipoteca) {
                     this.sumarFortuna(-precioDeshipoteca);
                     this.sumarGastos(precioDeshipoteca);
                     c.setHipotecada(false);
-                    Juego.consola.imprimir(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + c.getGrupo().getColorGrupo() + ".");
+                    Juego.consola.imprimir(this.getNombre() + " paga " + precioDeshipoteca + "€ por deshipotecar " + c.getNombre() + ". Ahora puede recibir alquileres y edificar en el grupo " + ((Solar)c).getGrupo().getColorGrupo() + ".");
                 } else {
                     Juego.consola.imprimir(this.getNombre() + " no tiene suficiente dinero para deshipotecar " + c.getNombre() + ".");
                 }
@@ -509,8 +511,8 @@ public class Jugador {
 
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
         ArrayList<Casilla> propiedadesACopiar = new ArrayList<>(jugador.propiedades);
-        for(Casilla c : propiedadesACopiar){
-            c.setValor(c.getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
+        for(Casilla c : propiedadesACopiar) {
+            c.setValor(((Solar)c).getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
             nuevoPropietario.anhadirPropiedad(c);
             c.setDuenho(nuevoPropietario);
             jugador.eliminarPropiedad(c);

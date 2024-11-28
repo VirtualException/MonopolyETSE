@@ -3,6 +3,8 @@ package monopoly_casillas;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import monopoly_casillas.propiedades.Solar;
+import monopoly_edificios.Casa;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Grupo;
@@ -12,22 +14,21 @@ import monopoly_avatares.Avatar;
 import monopoly_edificios.Edificio;
 
 
-public class Casilla {
+public abstract class Casilla {
 
     //Atributos:
-    private String nombre; //Nombre de la casilla
-    private String tipo; //Tipo de casilla (Solar, Especial, Transporte, Servicios, Comunidad, Suerte y Impuesto).
-    private float valor; //Valor de esa casilla (en la mayoría será valor de compra, en la casilla parking se usará como el bote).
-    private int posicion; //Posición que ocupa la casilla en el tablero (entero entre 1 y 40).
-    private Jugador duenho; //Dueño de la casilla (por defecto sería la banca).
-    private Grupo grupo; //Grupo al que pertenece la casilla (si es solar).
-    private float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
-    private float hipoteca; //Valor otorgado por hipotecar una casilla
-    private ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
-    private boolean hipotecada; //Indica si una casilla está hipotecada o no.
+    protected String nombre; //Nombre de la casilla
+    protected String tipo; //Tipo de casilla (Solar, Especial, Transporte, Servicios, Comunidad, Suerte y Impuesto).
+    protected float valor; //Valor de esa casilla (en la mayoría será valor de compra, en la casilla parking se usará como el bote).
+    protected int posicion; //Posición que ocupa la casilla en el tablero (entero entre 1 y 40).
+    protected Jugador duenho; //Dueño de la casilla (por defecto sería la banca).
+    protected float impuesto; //Cantidad a pagar por caer en la casilla: el alquiler en solares/servicios/transportes o impuestos.
+    protected float hipoteca; //Valor otorgado por hipotecar una casilla
+    protected ArrayList<Avatar> avatares; //Avatares que están situados en la casilla.
+    protected boolean hipotecada; //Indica si una casilla está hipotecada o no.
 
-    private int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
-    private ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.
+    protected int[] contarCaer; // Cuenta las veces que un jugador cae en esta casilla. Index=Jugador
+    protected ArrayList<Edificio> edificios;  //Edificios contruídos en esta casilla.
 
 
     /*Constructor para casillas tipo Solar, Servicios o Transporte:
@@ -38,6 +39,7 @@ public class Casilla {
         this.nombre = nombre;
         this.tipo = tipo;
         this.valor = valor;
+        this.impuesto = valor;
         this.posicion = posicion;
         this.duenho = duenho;
         this.edificios = new ArrayList<>();
@@ -99,175 +101,7 @@ public class Casilla {
      * - El valor de la tirada: para determinar impuesto a pagar en casillas de servicios.
      * Valor devuelto: true en caso de ser solvente (es decir, de cumplir las deudas), y false
      * en caso de no cumplirlas.*/
-    public void evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
-
-        String tipoCasilla = this.getTipo();
-
-        /* El jugador cayó una vez más en esta casilla */
-        this.contarCaer[jugador.getIndice()]++;
-
-        /* Depende de donde caímos, hacer algo */
-        switch (tipoCasilla) {
-            case "Solar":
-
-                /* Si hay dueño */
-                if (duenho != banca && duenho != jugador) {
-
-                    /* !!!! Calcular cuanto tiene que pagar !!!! */
-
-                    /* Alquiler inicial = 10% */
-                    float pago_alquiler = valor * 10.f;
-
-                    /* Sumar alquiler dependiendo de las edificaciones. */
-                    switch (this.getCasasN()) {
-                        case 1 -> pago_alquiler += pago_alquiler * 5;
-                        case 2 -> pago_alquiler += pago_alquiler * 15;
-                        case 3 -> pago_alquiler += pago_alquiler * 35;
-                        case 4 -> pago_alquiler += pago_alquiler * 50;
-                    }
-                    pago_alquiler += pago_alquiler * 70 * this.getHotelesN();
-                    pago_alquiler += pago_alquiler * 25 * this.getPiscinasN();
-                    pago_alquiler += pago_alquiler * 25 * this.getPistasN();
-
-                    /* Si el dueño del solar tiene el grupo, se dobla el valor. */
-                    if (this.grupo.esDuenhoGrupo(this.duenho)) {
-                        pago_alquiler *= 2;
-                    }
-
-                    /* Si no puede pagarlo */
-                    if (jugador.getFortuna() < pago_alquiler) {
-                        Juego.consola.imprimir("Dinero insuficiente. El jugador ahora tiene una deuda y debe solucionarla.");
-                        jugador.setDeuda(valor);
-                        break;
-                    }
-
-                    /* El jugador paga al propietario */
-                    jugador.sumarGastos(pago_alquiler);
-                    jugador.setPagoDeAlquileres(jugador.getPagoDeAlquileres() + pago_alquiler);
-                    jugador.sumarFortuna(-pago_alquiler);
-                    /* El propietario recibe */
-                    duenho.sumarFortuna(pago_alquiler);
-                    duenho.setCobroDeAlquileres(duenho.getCobroDeAlquileres() + pago_alquiler);
-
-                    Juego.consola.imprimir("El jugador " + jugador.getNombre() + " paga " + pago_alquiler + " € de alquiler.");
-
-                }
-                break;
-
-            case "Transporte":
-                /* Si no hay dueño */
-                if (duenho == banca || duenho == jugador) {
-                    break;
-                }
-
-                if (jugador.getFortuna() < valor) {
-                    Juego.consola.imprimir("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el transporte. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setDeuda(valor);
-                    break;
-                }
-
-                Juego.consola.imprimir("El jugador " + jugador.getNombre() + " paga el transporte por " + valor + "€.");
-                jugador.sumarGastos(valor);
-                jugador.sumarFortuna(-valor);
-                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
-                duenho.sumarFortuna(valor);
-
-                break;
-
-            case "Comunidad":
-                Scanner scanner1 = new Scanner(System.in);
-                int opcion1 = 0;
-                Juego.consola.imprimir("Has caído en una casilla de Comunidad, por favor, escoge una carta");
-                boolean numeroIncorrecto1 = true;
-                while (numeroIncorrecto1) {
-                    Juego.consola.imprimir_sin_salto("Escoge un valor del 1 al 6: ");
-                    try {
-                        opcion1 = Integer.parseInt(scanner1.nextLine()); //hacemos un parse int
-                        if (opcion1 >= 1 && opcion1 <= 6) {
-                            numeroIncorrecto1 = false; // Si el número está en el rango, sale del bucle
-                        } else {
-                            Juego.consola.imprimir("Valor erróneo. Debe ser un número entre 1 y 6.");
-                        }
-                    } catch (NumberFormatException e) {
-                        Juego.consola.imprimir("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
-                    }
-                }
-                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
-                break;
-            case "Suerte":
-                Scanner scanner2 = new Scanner(System.in);
-                int opcion2 = 0;
-                boolean numeroIncorrecto2 = true;
-                Juego.consola.imprimir("Has caído en una casilla de Suerte, por favor, escoge una carta");
-                while (numeroIncorrecto2) {
-                    Juego.consola.imprimir_sin_salto("Escoge un valor del 1 al 6: ");
-                    try {
-                        opcion2 = Integer.parseInt(scanner2.nextLine()); //hacemos un parse int
-                        if (opcion2 >= 1 && opcion2 <= 6) {
-                            numeroIncorrecto2 = false; // Si el número está en el rango, sale del bucle
-                        } else {
-                            Juego.consola.imprimir("Valor erróneo. Debe ser un número entre 1 y 6.");
-                        }
-                    } catch (NumberFormatException e) {
-                        Juego.consola.imprimir("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
-                    }
-                }
-                tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funcion de las cartas
-                break;
-            case "Servicio":
-                /* Si no hay dueño */
-                if (duenho == banca || duenho == jugador) {
-                    break;
-                }
-
-                if (jugador.getFortuna() < valor) {
-                    Juego.consola.imprimir("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el servicio. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setDeuda(valor);
-                    break;
-                }
-
-                Juego.consola.imprimir("El jugador " + jugador.getNombre() + " paga el servicio por " + valor + "€.");
-                jugador.sumarGastos(valor);
-                jugador.sumarFortuna(-valor);
-                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + valor);
-                duenho.sumarFortuna(valor);
-
-                break;
-            case "Impuesto":
-
-                if (jugador.getFortuna() < impuesto) {
-                    Juego.consola.imprimir("El jugador " + jugador.getNombre() + " no tiene suficiente dinero para pagar el impuesto. El jugador ahora tiene una deuda y debe solucionarla.");
-                    jugador.setDeuda(impuesto);
-                    break;
-                }
-
-                Juego.consola.imprimir("El jugador " + jugador.getNombre() + " paga un impuesto de " + impuesto + ".");
-                jugador.sumarGastos(impuesto);
-                jugador.sumarFortuna(-impuesto);
-                jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + impuesto);
-                banca.sumarFortuna(impuesto);
-                /* Bote del parking */
-                Casilla parking = tab.encontrar_casilla("Parking");
-                parking.sumarValor(impuesto);
-                break;
-
-            default:
-                Juego.consola.imprimir("Evaluando tipo especial");
-                /* Cae en IrCárcel */
-                if (nombre.equals("IrCarcel")) {
-                    jugador.encarcelar(tab.getPosiciones());
-                    jugador.incrementarVecesEnCarcel();
-                }
-                /* Cae en Parking */
-                else if (nombre.equals("Parking")) {
-                    float bote = this.getValor();
-                    jugador.sumarFortuna(bote);
-                    jugador.setPremiosInversionesOBote(jugador.getPremiosInversionesOBote() + bote);
-                    this.setValor(0);
-                }
-                break;
-        }
-    }
+    // Se implementa en cada subclase
 
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.
@@ -326,7 +160,7 @@ public class Casilla {
             float alquiler = getValor()*0.1f;
             cadena = ("{\n");
             cadena += ("\ttipo: " + getTipo() + "," + "\n");
-            cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
+            cadena +=("\tgrupo: " + ((Solar) this).getGrupo().getColorGrupo() + "," + "\n");
             cadena +=("\tpropietario: " + getDuenho().getNombre() + "," + "\n");
             cadena +=("\tvalor: " + getValor() + "," + "\n");
             cadena +=("\talquiler: " + alquiler + "," + "\n");
@@ -411,7 +245,7 @@ public class Casilla {
             case "Solar":
                 cadena = ("{\n");
                 cadena += ("\ttipo: " + getTipo() + "," + "\n");
-                cadena +=("\tgrupo: " + getGrupo().getColorGrupo() + "," + "\n");
+                cadena +=("\tgrupo: " + ((Solar) this).getGrupo().getColorGrupo() + "," + "\n");
                 cadena +=("\tvalor: " + getValor());
                 cadena +=("\n},");
                 break;
@@ -438,7 +272,7 @@ public class Casilla {
     public int getCasasN() {
         int sum = 0;
         for (Edificio e : edificios) {
-            if (e.getTipo().equals("casa"))
+            if (e instanceof Casa)
                 sum++;
         }
         return sum;
@@ -495,22 +329,6 @@ public class Casilla {
 
 
 
-    public float getPrecioOriginal() {
-        float precio_original = switch (grupo.getColorGrupo()) {
-            case "negro" -> Valor.VALOR_GRUPO_NEGRO;
-            case "cyan" -> Valor.VALOR_GRUPO_AZUL;
-            case "rosa" -> Valor.VALOR_GRUPO_ROSA;
-            case "amarillo" -> Valor.VALOR_GRUPO_AMARELO;
-            case "vermello" -> Valor.VALOR_GRUPO_VERMELLO;
-            case "marron" -> Valor.VALOR_GRUPO_MARRON;
-            case "verde" -> Valor.VALOR_GRUPO_VERDE;
-            case "azul" -> Valor.VALOR_GRUPO_AZUL_OSCURO;
-            default -> 0.f;
-        };
-        precio_original /= grupo.getMiembros().size();
-        return  precio_original;
-    }
-
 
     //Getters y Setters
 
@@ -555,14 +373,6 @@ public class Casilla {
         this.duenho = duenho;
     }
 
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupo grupo) {
-        this.grupo = grupo;
-    }
-
     public float getImpuesto() {
         return impuesto;
     }
@@ -600,5 +410,8 @@ public class Casilla {
 
     public void setHipotecada(boolean hipotecada){
         this.hipotecada = hipotecada;
+    }
+
+    public void evaluarCasilla(Tablero tablero, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
     }
 }

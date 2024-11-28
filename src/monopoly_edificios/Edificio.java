@@ -3,6 +3,7 @@ package monopoly_edificios;
 import java.util.ArrayList;
 
 import monopoly_casillas.Casilla;
+import monopoly_casillas.propiedades.Solar;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Grupo;
@@ -13,7 +14,7 @@ public class Edificio {
 
     private String id;
     private Jugador duenho;
-    private Casilla casilla;
+    private Solar solar;
     private Grupo grupo;
     private float coste;
     private String tipo;
@@ -24,8 +25,8 @@ public class Edificio {
 
         /* Solo inicializamos lo básico, el resto solo es necesario si el edificio se puede contruir */
         this.duenho = j;
-        this.casilla = j.getAvatar().getLugar();
-        this.grupo = casilla.getGrupo();
+        this.solar = (Solar) j.getAvatar().getLugar();
+        this.grupo = solar.getGrupo();
         this.tipo = tipo;
     }
 
@@ -33,7 +34,7 @@ public class Edificio {
     static public Edificio construir(String tipo, Jugador j, Tablero tablero) {
 
         Edificio edificio = null;
-        Casilla casilla = j.getAvatar().getLugar();
+        Solar casilla = (Solar) j.getAvatar().getLugar();
         Grupo grupo = casilla.getGrupo();
         float coste = casilla.getPrecioOriginal();
 
@@ -205,7 +206,7 @@ public class Edificio {
         cadena = ("{\n");
         cadena += ("\tid: " + id + "," + "\n");
         cadena += ("\tpropietario: " + duenho.getNombre() + "," + "\n");
-        cadena += ("\tcasilla: " + casilla.getNombre() + "," + "\n");
+        cadena += ("\tcasilla: " + solar.getNombre() + "," + "\n");
         cadena += ("\tgrupo: " + grupo.getColorGrupo() + "," + "\n");
         cadena += ("\tcoste: " + coste + "\n");
         cadena += ("},\n");
@@ -227,8 +228,8 @@ public class Edificio {
         return this.duenho;
     }
 
-    public Casilla getCasilla() {
-        return this.casilla;
+    public Solar getCasilla() {
+        return this.solar;
     }
 
     public Grupo getGrupo() {
@@ -252,8 +253,8 @@ public class Edificio {
         this.duenho = duenho;
     }
 
-    public void setCasilla(Casilla casilla) {
-        this.casilla = casilla;
+    public void setCasilla(Solar casilla) {
+        this.solar = casilla;
     }
 
     public void setGrupo(Grupo grupo) {
