@@ -37,10 +37,6 @@ public class Jugador {
     private boolean pagarBanca;
     private int debeContinuar;
 
-    //Constructor vacío. Se usará para crear la banca.
-    public Jugador() {
-    }
-
     /*Constructor principal. Requiere parámetros:
      * Nombre del jugador, tipo del avatar que tendrá, casilla en la que empezará y ArrayList de
      * avatares creados (usado para dos propósitos: evitar que dos jugadores tengan el mismo nombre y
