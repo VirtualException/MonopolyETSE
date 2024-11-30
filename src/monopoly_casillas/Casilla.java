@@ -1,17 +1,14 @@
 package monopoly_casillas;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import monopoly_casillas.propiedades.Solar;
-import monopoly_edificios.Casa;
+import monopoly_edificios.*;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
-import monopoly_tablero.Grupo;
 import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
 import monopoly_avatares.Avatar;
-import monopoly_edificios.Edificio;
 
 
 public abstract class Casilla {
@@ -281,7 +278,7 @@ public abstract class Casilla {
     public int getHotelesN() {
         int sum = 0;
         for (Edificio e : edificios) {
-            if (e.getTipo().equals("hotel"))
+            if (e instanceof Hotel)
                 sum++;
         }
         return sum;
@@ -290,7 +287,7 @@ public abstract class Casilla {
     public int getPiscinasN() {
         int sum = 0;
         for (Edificio e : edificios) {
-            if (e.getTipo().equals("piscina"))
+            if (e instanceof Piscina)
                 sum++;
         }
         return sum;
@@ -300,7 +297,7 @@ public abstract class Casilla {
     public int getPistasN() {
         int sum = 0;
         for (Edificio e : edificios) {
-            if (e.getTipo().equals("pista"))
+            if (e instanceof PistaDeporte)
                 sum++;
         }
         return sum;

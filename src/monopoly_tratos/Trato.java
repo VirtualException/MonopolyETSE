@@ -70,7 +70,7 @@ public class Trato {
 
 
     // Método que imprime el trato propuesto
-    public String mostrarTratoPropuesto(){
+    public String mostrarTratoPropuesto(){  //Revisar
         String cadena = (destinatario.getNombre() + ", ¿te doy ");
 
         if (propiedadOfrecida != null) {
@@ -110,6 +110,17 @@ public class Trato {
             Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
         }
+
+        if(propiedadOfrecida != null && !propiedadOfrecida.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad ofrecida no puede tener edificios.");
+            return;
+        }
+
+        if(propiedadSolicitada != null && !propiedadSolicitada.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad solicitada no puede tener edificios.");
+            return;
+        }
+
         this.proponente.eliminarPropiedad(propiedadOfrecida);
         this.proponente.anhadirPropiedad(propiedadSolicitada);
         this.destinatario.eliminarPropiedad(propiedadSolicitada);
@@ -129,6 +140,12 @@ public class Trato {
             Juego.consola.imprimir("El trato no puede ser aceptado: El jugador destinatario " + this.destinatario.getNombre() + " no tiene " + cantidadSolicitada + "€" + ". Se conserva el trato.");
             return;
         }
+
+        if(propiedadOfrecida != null && !propiedadOfrecida.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad ofrecida no puede tener edificios.");
+            return;
+        }
+
         this.proponente.sumarFortuna(cantidadSolicitada);
         this.proponente.eliminarPropiedad(propiedadOfrecida);
         this.destinatario.anhadirPropiedad(propiedadOfrecida);
@@ -149,6 +166,12 @@ public class Trato {
             Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
         }
+
+        if(propiedadSolicitada != null && !propiedadSolicitada.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad solicitada no puede tener edificios.");
+            return;
+        }
+
         this.proponente.sumarFortuna(-cantidadOfrecida);
         this.proponente.sumarGastos(cantidadOfrecida);
         this.proponente.anhadirPropiedad(propiedadSolicitada);
@@ -172,6 +195,17 @@ public class Trato {
             Juego.consola.imprimir("El trato no se puede aceptar: El jugador destinatario " + this.destinatario.getNombre() + " no tiene " + cantidadSolicitada + "€. Se conserva el trato.");
             return;
         }
+
+        if(propiedadOfrecida != null && !propiedadOfrecida.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad ofrecida no puede tener edificios.");
+            return;
+        }
+
+        if(propiedadSolicitada != null && !propiedadSolicitada.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad solicitada no puede tener edificios.");
+            return;
+        }
+
         this.proponente.eliminarPropiedad(propiedadOfrecida);
         this.proponente.anhadirPropiedad(propiedadSolicitada);
         this.proponente.sumarFortuna(cantidadSolicitada);
@@ -197,6 +231,17 @@ public class Trato {
             Juego.consola.imprimir("El trato no puede ser aceptado: El jugador destinatario " + this.destinatario.getNombre() + " no posee " + propiedadSolicitada.getNombre() + ".");
             return;
         }
+
+        if(propiedadOfrecida != null && !propiedadOfrecida.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad ofrecida no puede tener edificios.");
+            return;
+        }
+
+        if(propiedadSolicitada != null && !propiedadSolicitada.getEdificios().isEmpty()){
+            Juego.consola.imprimir("La propiedad solicitada no puede tener edificios.");
+            return;
+        }
+
         this.proponente.eliminarPropiedad(propiedadOfrecida);
         this.proponente.sumarFortuna(-cantidadOfrecida);
         this.proponente.sumarGastos(cantidadOfrecida);

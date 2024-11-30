@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import monopoly_avatares.Avatar;
 import monopoly_casillas.Casilla;
-import monopoly_casillas.propiedades.Propiedad;
 import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.Edificio;
 import monopoly_juego.Juego;

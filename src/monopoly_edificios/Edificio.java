@@ -12,7 +12,7 @@ import monopoly_tablero.Valor;
 
 public class Edificio {
 
-    private String id;
+    protected String id;
     private Jugador duenho;
     private Solar solar;
     private Grupo grupo;

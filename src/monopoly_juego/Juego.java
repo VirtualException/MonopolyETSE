@@ -239,7 +239,53 @@ public class Juego implements Comandos{
         } else if (comandos_args[0].equals("aceptar") && num_args == 2) {
             String nombreTrato = comandos_args[1];
             aceptarTrato(nombreTrato);
-        } //FALTA COMANDO PROPONER TRATO
+        } else if (comandos_args[0].equals("trato") && num_args == 5) {  //Ejemplo de uso: trato Luis: cambiar (Solar1, Solar2)
+            String nombreDestinatario = comandos_args[1].replace(":", "");
+            Casilla propiedadOfrecida = null;
+            Casilla propiedadSolicitada = null;
+
+            float cantidadOfrecida = 0f;
+            float cantidadSolicitada = 0f;
+            
+            try{            
+                cantidadOfrecida = Float.parseFloat(comandos_args[3].replaceAll("[(,]", ""));    
+            }
+            catch(NumberFormatException e){
+                propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("[(,]", ""));
+            }
+
+            try{            
+                cantidadSolicitada = Float.parseFloat(comandos_args[4].replace(")", ""));    
+            }
+            catch(NumberFormatException e){
+                propiedadSolicitada = tablero.encontrar_casilla(comandos_args[4].replace(")", ""));
+            }    
+
+            proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, cantidadSolicitada);
+        } else if (comandos_args[0].equals("trato") && num_args == 7) {
+            String nombreDestinatario = comandos_args[1].replaceAll(":", "");
+            Casilla propiedadOfrecida = null;
+            Casilla propiedadSolicitada = null;
+
+            float cantidadOfrecida = 0f;
+            float cantidadSolicitada = 0f;
+
+            if (comandos_args[5].equals("y")) {
+                propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("[(,]", ""));
+                propiedadSolicitada = tablero.encontrar_casilla(comandos_args[4]);
+                cantidadSolicitada = Float.parseFloat(comandos_args[6].replaceAll(")", ""));
+
+                proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, cantidadSolicitada);
+            } else if (comandos_args[4].equals("y")) {
+                propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("(", ""));
+                cantidadOfrecida = Float.parseFloat(comandos_args[5].replaceAll(",", ""));
+                propiedadSolicitada = tablero.encontrar_casilla(comandos_args[6].replaceAll(")", ""));
+
+                proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, cantidadSolicitada);
+            } else {
+                consola.imprimir("Error. Formato inválido");
+            }
+        }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
             return true;
@@ -801,15 +847,39 @@ public class Juego implements Comandos{
                 if (trato.getDestinatario().getNombre().equals(nombreJugador)){
                     cadena.append("{\n");
                     cadena.append("\tid: " + trato.getId() + "\n");
-                    cadena.append("\tjugadorPropone: " + trato.getProponente() + ",\n");
-                    cadena.append("\ttrato: " + trato.mostrarTratoPropuesto() + "\n");
+                    cadena.append("\tjugadorPropone: " + trato.getProponente().getNombre() + ",\n");
+                    cadena.append("\ttrato: " + descripcionTrato(trato) + "\n");
                     cadena.append("},\n");
                 }
             }
         } else {
-            Juego.consola.imprimir("No hay tratos propuestos");
+            consola.imprimir("No hay tratos propuestos para " + nombreJugador);
             return;
         }
+    }
+
+
+    private String descripcionTrato(Trato trato) {
+        StringBuilder descripcion = new StringBuilder();
+
+        if (trato.getPropiedadOfrecida() != null && trato.getPropiedadSolicitada() != null) {
+            if (trato.getCantidadSolicitada() <= 0 && trato.getCantidadOfrecida() <= 0) {
+                descripcion.append("cambiar (" + trato.getPropiedadOfrecida().getNombre() + ", " + trato.getPropiedadSolicitada().getNombre() + ")");
+            }
+            else {
+                if (trato.getCantidadSolicitada() > 0 && trato.getCantidadOfrecida() <= 0) {
+                    descripcion.append("cambiar (" + trato.getPropiedadOfrecida().getNombre() + ", " + trato.getPropiedadSolicitada().getNombre() + " y " + trato.getCantidadSolicitada() + "€)");
+                } else if (trato.getCantidadSolicitada() <= 0 && trato.getCantidadOfrecida() > 0) {
+                    descripcion.append("cambiar (" + trato.getPropiedadOfrecida().getNombre() + " y " + trato.getCantidadOfrecida() + "€, " + trato.getPropiedadSolicitada().getNombre() + ")");
+                }
+            }
+        } else if (trato.getCantidadOfrecida() <= 0 && trato.getPropiedadOfrecida() != null && trato.getCantidadSolicitada() > 0) {
+            descripcion.append("cambiar (" + trato.getPropiedadOfrecida().getNombre() + ", " + trato.getCantidadSolicitada() + "€)");
+        } else if (trato.getCantidadOfrecida() > 0 && trato.getPropiedadSolicitada() != null && trato.getCantidadSolicitada() <= 0) {
+            descripcion.append("cambiar (" + trato.getCantidadOfrecida() + "€, " + trato.getPropiedadSolicitada().getNombre() + ")");
+        }
+
+        return descripcion.toString();
     }
 
 
@@ -854,6 +924,7 @@ public class Juego implements Comandos{
 
         if (tratoAAceptar == null){
             consola.imprimir("ERROR. Este trato no existe");
+            return;
         }
 
         // Verificamos si la propiedad ofrecida está hipotecada 
@@ -866,28 +937,37 @@ public class Juego implements Comandos{
                 return;
             }
         }
-
         // Realizamos el intercambio
 
         if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getPropiedadSolicitada() != null){
-            tratoAAceptar.cambiarPropiedadPorPropiedad();
-        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getCantidadSolicitada() > 0){
+            if (tratoAAceptar.getCantidadSolicitada() <= 0 && tratoAAceptar.getCantidadOfrecida() <= 0){
+                tratoAAceptar.cambiarPropiedadPorPropiedad();
+            }
+            else {
+                if (tratoAAceptar.getCantidadSolicitada() > 0 && tratoAAceptar.getCantidadOfrecida() <= 0) {
+                    tratoAAceptar.cambiarPropiedadPorPropiedadYDinero();
+                } else if (tratoAAceptar.getCantidadSolicitada() <= 0 && tratoAAceptar.getCantidadOfrecida() > 0) {
+                    tratoAAceptar.cambiarPropiedadYDineroPorPropiedad();
+                }
+            }
+        } else if (tratoAAceptar.getCantidadOfrecida() <= 0 && tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getCantidadSolicitada() > 0){
             tratoAAceptar.cambiarPropiedadPorDinero();
-        } else if (tratoAAceptar.getCantidadOfrecida() > 0 && tratoAAceptar.getPropiedadSolicitada() != null){
+        } else if (tratoAAceptar.getCantidadOfrecida() > 0 && tratoAAceptar.getPropiedadSolicitada() != null && tratoAAceptar.getCantidadSolicitada() <= 0){
             tratoAAceptar.cambiarDineroPorPropiedad();
-        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getPropiedadSolicitada() != null && tratoAAceptar.getCantidadSolicitada() > 0){
-            tratoAAceptar.cambiarPropiedadPorPropiedadYDinero();
-        } else if (tratoAAceptar.getPropiedadOfrecida() != null && tratoAAceptar.getCantidadOfrecida() > 0 && tratoAAceptar.getPropiedadSolicitada() != null){
-            tratoAAceptar.cambiarPropiedadYDineroPorPropiedad();
         }
     }
 
 
-    @Override
-    public String respuestaAceptarTrato() {
-        consola.imprimir("La propiedad a recibir es una hipoteca, quieres aceptar el trato? (s/n): ");
+    private String respuestaAceptarTrato() {
         Scanner scanner = new Scanner(System.in);
-        String respuesta = scanner.nextLine();
+        String respuesta = null;
+
+        while(respuesta == null || !respuesta.equals("s") || !respuesta.equals("n")){
+            consola.imprimir("La propiedad a recibir es una hipoteca, quieres aceptar el trato? (s/n): ");
+            respuesta = scanner.nextLine();
+        }
+
+        scanner.close();
         return respuesta;
     }
 
@@ -905,6 +985,10 @@ public class Juego implements Comandos{
                 destinatario = j;
                 break;
             }
+        }
+
+        if(propiedadOfrecida == null && propiedadSolcitada == null){ //COMPROBACIONES
+
         }
 
         if (destinatario == null) {
