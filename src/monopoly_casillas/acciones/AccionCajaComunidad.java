@@ -1,5 +1,6 @@
 package monopoly_casillas.acciones;
 
+import monopoly_exception.dados.DadosNoValidosException;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Tablero;
@@ -15,7 +16,7 @@ public class AccionCajaComunidad extends Accion {
     }
 
     @Override
-    public void evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) {
+    public void evaluarCasilla(Tablero tab, Jugador jugador, Jugador banca, ArrayList<Jugador> jugadores) throws DadosNoValidosException{
 
         /* El jugador cayó una vez más en esta casilla */
         this.contarCaer[jugador.getIndice()]++;
@@ -31,10 +32,10 @@ public class AccionCajaComunidad extends Accion {
                 if (opcion1 >= 1 && opcion1 <= 6) {
                     numeroIncorrecto1 = false; // Si el número está en el rango, sale del bucle
                 } else {
-                    Juego.consola.imprimir("Valor erróneo. Debe ser un número entre 1 y 6.");
+                    throw new DadosNoValidosException("Valor erróneo. Debe ser un número entre 1 y 6.");
                 }
             } catch (NumberFormatException e) {
-                Juego.consola.imprimir("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
+                throw new DadosNoValidosException("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
             }
         }
         tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas

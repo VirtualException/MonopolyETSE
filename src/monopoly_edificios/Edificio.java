@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import monopoly_casillas.Casilla;
 import monopoly_casillas.propiedades.Solar;
+import monopoly_exception.casillas.DuenhoGrupoException;
+import monopoly_exception.edificios.*;
+import monopoly_exception.valores.ValorNoPermitidoException;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Grupo;
@@ -31,7 +34,7 @@ public class Edificio {
     }
 
     /* Construye edificio evaluando si se puede o no. Devuelve 1 si no se puede */
-    static public Edificio construir(String tipo, Jugador j, Tablero tablero) {
+    static public Edificio construir(String tipo, Jugador j, Tablero tablero) throws TipoEdificioException, DuenhoGrupoException, MaximoEdificiosException, EdificarHotelException, EdificarPiscinaException, EdificarPistaException{
 
         Edificio edificio = null;
         Solar casilla = (Solar) j.getAvatar().getLugar();
@@ -42,20 +45,17 @@ public class Edificio {
 
         /* Tipo inválido */
         if (!"casa hotel piscina pista".contains(tipo)) {
-            Juego.consola.imprimir("El edificio no es de un tipo válido.");
-            return null;
+            throw new TipoEdificioException("El edificio no es de un tipo válido.");
         }
 
         /* Comprobar si alguna regla no se cumple */
         if (!casilla.getTipo().equals("Solar")) {
-            Juego.consola.imprimir("La casilla no es un solar, no se puede contruir.");
-            return null;
+            throw new TipoEdificioException("La casilla no es un solar, no se puede contruir.");
         }
         
         boolean puedeConstruir = grupo.esDuenhoGrupo(j) || casilla.haCaidoMasDosVeces(j);
         if (!puedeConstruir) {
-            Juego.consola.imprimir("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
-            return null;
+            throw new DuenhoGrupoException("El jugador no es el dueño del grupo o no ha caído más de 2 veces en la casilla.");
         }
 
         int numPistasEdificables = grupo.numEdificiosEdificablesGrupo("pista");
@@ -67,8 +67,7 @@ public class Edificio {
             numHotelesEdificables == 0 &&
             numPiscinasEdificables == 0 &&
             numPistasEdificables == 0) {
-            Juego.consola.imprimir("Máximo de edificios alcanzados!");
-            return null;
+            throw new MaximoEdificiosException("Máximo de edificios alcanzados!");
         }
 
         Juego.consola.imprimir("Contruyendo " + tipo + ".");
@@ -84,8 +83,7 @@ public class Edificio {
             case "casa":
                 /* Comprobar máximo de edificios. */
                 if (numCasasEdificables == 0 || casilla.getCasasN() == 4) {
-                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
-                    return null;
+                    throw new MaximoEdificiosException("Máximo de edificio alcanzado.");
                 }
                 edificio = new Casa(j);
                 edificio.setCoste(precio_original * Valor.MULTIPLICADOR_CASA);
@@ -95,8 +93,7 @@ public class Edificio {
             case "hotel":
                 /* Comprobar máximo de edificios. */
                 if (numHotelesEdificables == 0) {
-                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
-                    return null;
+                    throw new MaximoEdificiosException("Máximo de edificio alcanzado.");
                 }
                 if (casilla.getCasasN() == 4) {
                     /* Eliminar casas */
@@ -107,8 +104,7 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_HOTEL);
                 }
                 else {
-                    Juego.consola.imprimir("No hay suficientes casas para un hotel.");
-                    return null;
+                    throw new EdificarHotelException("No hay suficientes casas para un hotel.");
                 }
                 break;
 
@@ -116,8 +112,7 @@ public class Edificio {
             case "piscina":
                 /* Comprobar máximo de edificios. */
                 if (numPiscinasEdificables == 0) {
-                    Juego.consola.imprimir("Máximo de edificio alcanzado.");
-                    return null;
+                    throw new MaximoEdificiosException("Máximo de edificio alcanzado.");
                 }
                 if (casilla.getHotelesN() >= 1 && casilla.getCasasN() >= 2) {
                     /* Eliminar hoteles */
@@ -129,16 +124,14 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISCINA);
                 }
                 else {
-                    Juego.consola.imprimir("No hay suficientes hoteles para una piscina.");
-                    return null;
+                    throw new EdificarPiscinaException("No hay suficientes hoteles para una piscina.");
                 }
                 break;
 
             /* SI EL EDIFICIO ES PISTA DE DEPORTE */
             case "pista":
                 if (numPistasEdificables == 0) {
-                    Juego.consola.imprimir("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
-                    return null;
+                    throw new MaximoEdificiosException("Ya hay 2 contrucciones del tipo pista de deporte. Máximo de edificio alcanzado.");
                 }
                 if (casilla.getHotelesN() >= 2) {
                     /* Eliminar hoteles */
@@ -149,15 +142,13 @@ public class Edificio {
                     edificio.setCoste(precio_original * Valor.MULTIPLICADOR_PISTA_DE_DEPORTE);
                 }
                 else {
-                    Juego.consola.imprimir("No hay suficientes hoteles para una pista de deporte.");
-                    return null;
+                    throw new EdificarPistaException("No hay suficientes hoteles para una pista de deporte.");
                 }
                 break;
 
             /* TIPO INVÁLIDO */
             default:
-                Juego.consola.imprimir("Tipo de contrucción inválido.");
-                return null; /* Salir de la función con código de error */
+            throw new TipoEdificioException("Tipo de contrucción inválido.");
         }
 
         edificio.setId(edificio.generarID(edificio.tipo, tablero));
@@ -165,8 +156,7 @@ public class Edificio {
         /* El jugador gasta dinero */
 
         if (coste > j.getFortuna()) {
-            Juego.consola.imprimir("Fortuna insuficiente para edificar.");
-            return null;
+            throw new ValorNoPermitidoException("Fortuna insuficiente para edificar.");
         }
 
         Juego.consola.imprimir(edificio.id + " contruído.");

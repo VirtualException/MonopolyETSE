@@ -1,6 +1,7 @@
 package monopoly_casillas.impuestos;
 
 import monopoly_casillas.Casilla;
+import monopoly_exception.valores.ValorNegativoNoPermitidoException;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Tablero;
@@ -34,8 +35,12 @@ public class Impuesto extends Casilla {
         jugador.setPagoTasasEImpuestos(jugador.getPagoTasasEImpuestos() + impuesto);
         banca.sumarFortuna(impuesto);
         /* Bote del parking */
-        Casilla parking = tab.encontrar_casilla("Parking");
-        parking.sumarValor(impuesto);
+        try {
+            Casilla parking = tab.encontrar_casilla("Parking");
+            parking.sumarValor(impuesto);
+        } catch (ValorNegativoNoPermitidoException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         return;
 
     }

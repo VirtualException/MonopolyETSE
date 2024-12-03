@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import monopoly_casillas.Casilla;
+import monopoly_exception.avatares.AvatarNoValidoException;
 import monopoly_juego.Juego;
 import monopoly_tablero.Valor;
 import monopoly_jugador.Jugador;
-import monopoly_consola.*;
 
 
 public class Avatar {
@@ -27,15 +27,15 @@ public class Avatar {
      * Tipo del avatar, jugador al que pertenece, lugar en el que estará ubicado, y un arraylist con los
      * avatares creados (usado para crear un ID distinto del de los demás avatares).
      */
-    public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) {
+    public Avatar(String tipo, Jugador jugador, Casilla lugar, ArrayList<Avatar> avCreados) throws AvatarNoValidoException{
         this.generarId(avCreados);  //Crea un ID nuevo para un avatar distinto de los creados anteriormente
 
         if ("Pelota Coche Esfinge Sombrero".contains(tipo)) {
             this.tipo = tipo;
         }
         else {
-            Juego.consola.imprimir("Tipo de avatar no reconocido, se toma Pelota por defecto.");
             this.tipo = "Pelota";
+            throw new AvatarNoValidoException("Tipo de avatar no reconocido, se toma Pelota por defecto.");
         }
 
         this.jugador = jugador;
@@ -71,9 +71,14 @@ public class Avatar {
                         jugador.encarcelar(casillas);
                         return;
                     }
-                    this.lugar.eliminarAvatar(this);
-                    this.lugar = casilla;
-                    casilla.anhadirAvatar(this);
+
+                    try {
+                        this.lugar.eliminarAvatar(this);
+                        this.lugar = casilla;
+                        casilla.anhadirAvatar(this);
+                    } catch (AvatarNoValidoException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                 }
             }
         }
@@ -99,9 +104,13 @@ public class Avatar {
         for (ArrayList<Casilla> arrayList : casillas) {
             for (Casilla casilla : arrayList) {
                 if (casilla.getPosicion() == nuevaPosicion) {
-                    this.lugar.eliminarAvatar(this);
-                    this.lugar = casilla;
-                    casilla.anhadirAvatar(this);
+                    try {
+                        this.lugar.eliminarAvatar(this);
+                        this.lugar = casilla;
+                        casilla.anhadirAvatar(this);
+                    } catch (AvatarNoValidoException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                     return; // Salimos del bucle una vez encontrado
                 }
             }
@@ -113,9 +122,13 @@ public class Avatar {
         for(ArrayList<Casilla> arrayList : casillas){
             for(Casilla casilla : arrayList){
                 if(casilla.getPosicion() == c.getPosicion()){
-                    this.lugar.eliminarAvatar(this);
-                    this.lugar = casilla;
-                    casilla.anhadirAvatar(this);
+                    try {
+                        this.lugar.eliminarAvatar(this);
+                        this.lugar = casilla;
+                        casilla.anhadirAvatar(this);
+                    } catch (AvatarNoValidoException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                     return;
                 }
             }

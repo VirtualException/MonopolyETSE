@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.*;
-import monopoly_juego.Juego;
+import monopoly_exception.avatares.AvatarNoValidoException;
+import monopoly_exception.compras.CompraCasillaNoPermitidaException;
+import monopoly_exception.valores.ValorNegativoNoPermitidoException;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
@@ -75,18 +77,18 @@ public abstract class Casilla {
     }
 
     //Método utilizado para añadir un avatar al array de avatares en casilla.
-    public void anhadirAvatar(Avatar av) {
+    public void anhadirAvatar(Avatar av) throws AvatarNoValidoException{
         if(avatares.contains(av)) {
-            Juego.consola.imprimir("Este avatar ya existe, elige otro distinto.");
+            throw new AvatarNoValidoException("Este avatar ya existe, elige otro distinto.");
         } else {
             avatares.add(av);
         }
     }
 
     //Método utilizado para eliminar un avatar del array de avatares en casilla.
-    public void eliminarAvatar(Avatar av) {
+    public void eliminarAvatar(Avatar av) throws AvatarNoValidoException{
         if(avatares.isEmpty() || !avatares.contains(av)) {
-            Juego.consola.imprimir("No hay ningún avatar.");
+            throw new AvatarNoValidoException("No hay ningún avatar.");
         } else {
             avatares.remove(av);
         }
@@ -103,21 +105,18 @@ public abstract class Casilla {
     /*Método usado para comprar una casilla determinada. Parámetros:
      * - Jugador que solicita la compra de la casilla.
      * - Banca del monopoly (es el dueño de las casillas no compradas aún).*/
-    public boolean comprarCasilla(Jugador solicitante, Jugador banca) {
+    public boolean comprarCasilla(Jugador solicitante, Jugador banca) throws CompraCasillaNoPermitidaException{
 
         if(!getTipo().equals("Solar") && !getTipo().equals("Transporte") && !getTipo().equals("Servicio")){
-            Juego.consola.imprimir("Esta casilla no se puede comprar.");
-            return false;
+            throw new CompraCasillaNoPermitidaException("Esta casilla no se puede comprar.");
         }
 
         if(!this.duenho.equals(banca)){
-            Juego.consola.imprimir("Esta casilla ya pertenece a un jugador.");
-            return false;
+            throw new CompraCasillaNoPermitidaException("Esta casilla ya pertenece a un jugador.");
         }
 
         if(solicitante.getFortuna() < this.valor){
-            Juego.consola.imprimir("No tienes suficiente dinero para comprar esta casilla.");
-            return false;
+            throw new CompraCasillaNoPermitidaException("No tienes suficiente dinero para comprar esta casilla.");
         }
 
         solicitante.sumarFortuna(-valor);
@@ -138,9 +137,9 @@ public abstract class Casilla {
      * - Sumar valor a la casilla de parking.
      * - Sumar valor a las casillas de solar al no comprarlas tras cuatro vueltas de todos los jugadores.
      * Este método toma como argumento la cantidad a añadir del valor de la casilla.*/
-    public void sumarValor(float suma) {
+    public void sumarValor(float suma) throws ValorNegativoNoPermitidoException{
         if(suma < 0){
-            Juego.consola.imprimir("La cantidad a añadir debe ser un número positivo.");
+            throw new ValorNegativoNoPermitidoException("La cantidad a añadir debe ser un número positivo.");
         } else {
             this.valor += suma;
         }

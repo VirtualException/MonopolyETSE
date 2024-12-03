@@ -10,6 +10,12 @@ import monopoly_consola.Consola;
 import monopoly_consola.ConsolaNormal;
 import monopoly_dados.Dado;
 import monopoly_edificios.Edificio;
+import monopoly_exception.avatares.AvatarNoValidoException;
+import monopoly_exception.casillas.DuenhoGrupoException;
+import monopoly_exception.casillas.TipoCasillaException;
+import monopoly_exception.compras.CompraCasillaNoPermitidaException;
+import monopoly_exception.edificios.*;
+import monopoly_exception.valores.ValorNoPermitidoException;
 import monopoly_jugador.Jugador;
 import monopoly_tablero.Grupo;
 import monopoly_tablero.Tablero;
@@ -319,7 +325,12 @@ public class Juego implements Comandos{
         jugadores.add(new Jugador(nombre, tipo, tablero.encontrar_casilla("Salida"), avatares, jugadores.size()));
         avatares.add(jugadores.getLast().getAvatar());
 
-        tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
+
+        try {
+            tablero.encontrar_casilla("Salida").anhadirAvatar(avatares.getLast());
+        } catch (AvatarNoValidoException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
 
         consola.imprimir("{");
         consola.imprimir("\tnombre: " + jugadores.getLast().getNombre() + ",");
@@ -537,7 +548,12 @@ public class Juego implements Comandos{
             return;
         }
 
-        boolean compraExitosa = casillaActual.comprarCasilla(jugadorActual, banca);
+        boolean compraExitosa = false;
+        try {
+            compraExitosa = casillaActual.comprarCasilla(jugadorActual, banca);
+        } catch (CompraCasillaNoPermitidaException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
 
         jugadorActual.setDineroInvertido(jugadorActual.getDineroInvertido() + casillaActual.getValor());
 
@@ -555,18 +571,22 @@ public class Juego implements Comandos{
         /* El edificio es el encargado de comprobar las reglas, y en caso de
         éxito, se añade a la lista de edificios. Además se suman los gastos. */
 
-        Edificio e = Edificio.construir(tipo, j, tablero);
+        try {
+        /* El edificio es el encargado de comprobar las reglas, y en caso de
+           éxito, se añade a la lista de edificios. Además se suman los gastos. */
+            Edificio e = Edificio.construir(tipo, j, tablero);
 
-        if (e != null) {
-            /* Si todo va bien, el edificio se añade a la lista de edificios  */
-            ArrayList<Edificio> edificios = j.getEdificios();
-            edificios.add(e);
-            consola.imprimir("Añadiendo edificio a la lista de la casilla...");
-            j.getAvatar().getLugar().setEdificios(edificios);
-            consola.imprimir("Edificio de tipo \"" + e.getTipo() + "\" añadido.");
-        }
-        else {
-            consola.imprimir("El edificio no se contruyó.");
+            if (e != null) {
+                /* Si todo va bien, el edificio se añade a la lista de edificios */
+                ArrayList<Edificio> edificios = j.getEdificios();
+                edificios.add(e);
+                consola.imprimir("Añadiendo edificio a la lista de la casilla...");
+                j.getAvatar().getLugar().setEdificios(edificios);
+                consola.imprimir("Edificio de tipo \"" + e.getTipo() + "\" añadido.");
+            }
+        } catch (TipoEdificioException | DuenhoGrupoException | MaximoEdificiosException | EdificarHotelException |
+                 EdificarPiscinaException | EdificarPistaException | ValorNoPermitidoException e) {
+            consola.imprimir("Error: " + e.getMessage());
         }
     }
 
@@ -641,7 +661,12 @@ public class Juego implements Comandos{
     // Método para vender edificios
     @Override
     public void venderEdificios(Jugador jugador, String tipoEdificio, String nombreCasila, int numEdificios){
-        jugador.venderEdificios(tipoEdificio, nombreCasila, numEdificios);
+
+        try {
+            jugador.venderEdificios(tipoEdificio, nombreCasila, numEdificios);
+        } catch (TipoEdificioException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
     }
 
 
@@ -768,7 +793,11 @@ public class Juego implements Comandos{
     // Método para hipotecar una propiedad
     @Override
     public void hipotecarPropiedad(Jugador jugador, Casilla c) {
-        jugador.hipotecarPropiedad(c);
+        try {
+            jugador.hipotecarPropiedad(c);
+        } catch (TipoCasillaException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
     }
 
 
@@ -776,7 +805,11 @@ public class Juego implements Comandos{
     // Método para deshipotecar una propiedad
     @Override
     public void deshipotecarPropiedad(Jugador jugador, Casilla c) {
-        jugador.deshipotecarPropiedad(c);
+        try {
+            jugador.deshipotecarPropiedad(c);
+        } catch (TipoCasillaException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
     }
 
 

@@ -1,6 +1,9 @@
 package monopoly_tratos;
 
 import monopoly_casillas.Casilla;
+import monopoly_casillas.propiedades.Solar;
+import monopoly_exception.propiedades.PropiedadException;
+import monopoly_exception.tratos.TratoException;
 import monopoly_juego.Juego;
 import monopoly_jugador.Jugador;
 
@@ -43,10 +46,9 @@ public class Trato {
 
 
     // Método para añadir un trato al arraylist de tratos
-    public void anhadirTrato(ArrayList<Trato> tratos, Trato trato) {
+    public void anhadirTrato(ArrayList<Trato> tratos, Trato trato) throws TratoException{
         if (tratos.contains(trato)) {
-            Juego.consola.imprimir("ERROR. El trato ya existe.");
-            return;
+            throw new TratoException("ERROR. El trato ya existe.");
         } else {
             tratos.add(trato);
         }
@@ -121,9 +123,18 @@ public class Trato {
             return;
         }
 
-        this.proponente.eliminarPropiedad(propiedadOfrecida);
+
+        try {
+            this.proponente.eliminarPropiedad(propiedadOfrecida);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.proponente.anhadirPropiedad(propiedadSolicitada);
-        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        try {
+            this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.destinatario.anhadirPropiedad(propiedadOfrecida);
 
         Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + ".");
@@ -147,7 +158,11 @@ public class Trato {
         }
 
         this.proponente.sumarFortuna(cantidadSolicitada);
-        this.proponente.eliminarPropiedad(propiedadOfrecida);
+        try {
+            this.proponente.eliminarPropiedad(propiedadOfrecida);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.destinatario.anhadirPropiedad(propiedadOfrecida);
         this.destinatario.sumarFortuna(-cantidadSolicitada);
         this.destinatario.sumarGastos(cantidadSolicitada);
@@ -175,7 +190,11 @@ public class Trato {
         this.proponente.sumarFortuna(-cantidadOfrecida);
         this.proponente.sumarGastos(cantidadOfrecida);
         this.proponente.anhadirPropiedad(propiedadSolicitada);
-        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        try {
+            this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.destinatario.sumarFortuna(cantidadOfrecida);
 
         Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + cantidadOfrecida + "€.");
@@ -206,10 +225,19 @@ public class Trato {
             return;
         }
 
-        this.proponente.eliminarPropiedad(propiedadOfrecida);
+
+        try {
+            this.proponente.eliminarPropiedad(propiedadOfrecida);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.proponente.anhadirPropiedad(propiedadSolicitada);
         this.proponente.sumarFortuna(cantidadSolicitada);
-        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        try {
+            this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.destinatario.anhadirPropiedad(propiedadOfrecida);
         this.destinatario.sumarFortuna(-cantidadSolicitada);
         this.destinatario.sumarGastos(cantidadSolicitada);
@@ -242,11 +270,20 @@ public class Trato {
             return;
         }
 
-        this.proponente.eliminarPropiedad(propiedadOfrecida);
+
+        try {
+            this.proponente.eliminarPropiedad(propiedadOfrecida);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.proponente.sumarFortuna(-cantidadOfrecida);
         this.proponente.sumarGastos(cantidadOfrecida);
         this.proponente.anhadirPropiedad(propiedadSolicitada);
-        this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        try {
+            this.destinatario.eliminarPropiedad(propiedadSolicitada);
+        } catch (PropiedadException e) {
+            Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+        }
         this.destinatario.sumarFortuna(cantidadOfrecida);
 
         Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + " y " + cantidadOfrecida + "€.");

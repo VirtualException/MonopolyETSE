@@ -6,6 +6,11 @@ import monopoly_avatares.Avatar;
 import monopoly_casillas.Casilla;
 import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.Edificio;
+import monopoly_exception.avatares.AvatarNoValidoException;
+import monopoly_exception.dados.DadosNoValidosException;
+import monopoly_exception.propiedades.PropiedadException;
+import monopoly_exception.casillas.TipoCasillaException;
+import monopoly_exception.edificios.TipoEdificioException;
 import monopoly_juego.Juego;
 import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
@@ -45,7 +50,15 @@ public class Jugador {
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados, int index) {
         this.nombre = nombre;
-        if (!tipoAvatar.equals("Banca")) this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados);  //Creación del avatar
+        if (!tipoAvatar.equals("Banca")) {
+            try {
+                this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados); // Creación del avatar
+            } catch (AvatarNoValidoException e) {
+                System.out.println("Advertencia: " + e.getMessage());
+                // Establece un avatar por defecto en caso de error
+                this.avatar = new Avatar("Pelota", this, inicio, avCreados);
+            }
+        }
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
         this.gastos = 0.0f;
         this.enCarcel = false;
@@ -77,11 +90,11 @@ public class Jugador {
 
 
     //Método para eliminar una propiedad del arraylist de propiedades de jugador.
-    public void eliminarPropiedad(Casilla casilla) {
+    public void eliminarPropiedad(Casilla casilla) throws PropiedadException{
         if (propiedades.contains(casilla)) {
             propiedades.remove(casilla);
         } else {
-            Juego.consola.imprimir("El jugador no es poseedor de la propiedad");
+            throw new PropiedadException("El jugador no es poseedor de la propiedad");
         }
     }
 
@@ -124,11 +137,15 @@ public class Jugador {
             for(Casilla casilla : arrayList) {
                 if(casilla.getNombre().equals("Carcel")){
 
-                    this.avatar.getLugar().eliminarAvatar(this.avatar);
-                    this.avatar.setLugar(casilla);
-                    casilla.anhadirAvatar(this.avatar);
-                    this.enCarcel = true;
-                    this.incrementarVecesEnCarcel();
+                    try {
+                        this.avatar.getLugar().eliminarAvatar(this.avatar);
+                        this.avatar.setLugar(casilla);
+                        casilla.anhadirAvatar(this.avatar);
+                        this.enCarcel = true;
+                        this.incrementarVecesEnCarcel();
+                    } catch (AvatarNoValidoException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                     return;
                 }
             }
@@ -137,7 +154,7 @@ public class Jugador {
 
 
     // Método para hipotecar una propiedad
-    public void hipotecarPropiedad(Casilla c) {
+    public void hipotecarPropiedad(Casilla c) throws TipoCasillaException{
 
         float precioHipoteca;
 
@@ -182,8 +199,8 @@ public class Jugador {
                     break;
 
                 default:
-                    Juego.consola.imprimir("Tipo de casilla no válido para hipotecar.");
-                    break;
+                    throw new TipoCasillaException("Tipo de casilla no válido para hipotecar.");
+
             }
 
 
@@ -192,7 +209,7 @@ public class Jugador {
 
 
     // Método para deshipotecar una propiedad
-    public void deshipotecarPropiedad(Casilla c){
+    public void deshipotecarPropiedad(Casilla c) throws TipoCasillaException{
         
         float precioDeshipoteca;
 
@@ -248,15 +265,14 @@ public class Jugador {
                 break;
 
             default:
-                Juego.consola.imprimir("Tipo de casilla no válido para deshipotecar.");
-                break;
+                throw new TipoCasillaException("Tipo de casilla no válido para deshipotecar.");
         }
     }
 
 
 
     // Método para vender edificios
-    public void venderEdificios(String tipoEdificio, String nombreCasilla, int numEdificios) {
+    public void venderEdificios(String tipoEdificio, String nombreCasilla, int numEdificios) throws TipoEdificioException{
 
         Casilla propiedad = null;
 
@@ -293,8 +309,7 @@ public class Jugador {
                 multiplicador = Valor.MULTIPLICADOR_PISTA_DE_DEPORTE;
                 break;
             default:
-                Juego.consola.imprimir("Tipo de edificio no reconocido. Debe ser: 'casa', 'hotel', 'piscina' o 'pista'.");
-                return;
+                throw new TipoEdificioException("Tipo de edificio no reconocido. Debe ser: 'casa', 'hotel', 'piscina' o 'pista'.");
         }
 
         float precioEdificio = numEdificios * ((propiedad.getValor() * multiplicador) / 2);
@@ -320,14 +335,16 @@ public class Jugador {
         Casilla c = this.getAvatar().getLugar();
 
         if (!this.isModo()) {
-
-            Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-            this.getAvatar().moverAvatar(pos, tirada);
-            c = this.getAvatar().getLugar();
-            Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-            c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+            try {
+                Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                this.getAvatar().moverAvatar(pos, tirada);
+                c = this.getAvatar().getLugar();
+                Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores); // Puede lanzar DadosNoValidosException
+            } catch (DadosNoValidosException e) {
+                Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+            }
             return true;
-
         } else {
             if (this.getAvatar().getTipo().equals("Pelota")) {
 
@@ -345,14 +362,18 @@ public class Jugador {
                     }
                     else
                         tirada = 2;
-
-                    Juego.consola.imprimir("Pasando a la siguiente casilla (modo Pelota)");
-                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                    this.getAvatar().moverAvatar(pos, tirada);
-                    c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");  
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    try {
+                        Juego.consola.imprimir("Pasando a la siguiente casilla (modo Pelota)");
+                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                        this.getAvatar().moverAvatar(pos, tirada);
+                        c = this.getAvatar().getLugar();
+                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    } catch (DadosNoValidosException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                     return true;
+
                 }
 
                 /* Si es la primera tirada en modo Pelota */
@@ -364,12 +385,16 @@ public class Jugador {
                     else
                         tiradaPrimera = 4;
 
-                    Juego.consola.imprimir("Primer movimiento (modo Pelota)");
-                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones, desde " + c.getNombre());
-                    this.getAvatar().moverAvatar(pos, tiradaPrimera);
-                    c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    try {
+                        Juego.consola.imprimir("Primer movimiento (modo Pelota)");
+                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones, desde " + c.getNombre());
+                        this.getAvatar().moverAvatar(pos, tiradaPrimera);
+                        c = this.getAvatar().getLugar();
+                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    } catch (DadosNoValidosException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
 
                     Juego.consola.imprimir("El jugador debe seguir avanzando aún");
 
@@ -384,12 +409,16 @@ public class Jugador {
                     else
                         tiradaPrimera = 4;
 
-                    Juego.consola.imprimir("Primer y único movimiento (modo Pelota)");
-                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones hacia atrás, desde " + c.getNombre());
-                    this.getAvatar().moverAvatarAtras(pos, tiradaPrimera);
-                    c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    try {
+                        Juego.consola.imprimir("Primer y único movimiento (modo Pelota)");
+                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones hacia atrás, desde " + c.getNombre());
+                        this.getAvatar().moverAvatarAtras(pos, tiradaPrimera);
+                        c = this.getAvatar().getLugar();
+                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    } catch (DadosNoValidosException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
 
                     debeContinuar = 0;
                 }
@@ -414,27 +443,31 @@ public class Jugador {
                 }
 
                 if (tirada > 4) {
-                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                    this.getAvatar().moverAvatar(pos, tirada);
-                    c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    try {
+                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
+                        this.getAvatar().moverAvatar(pos, tirada);
+                        c = this.getAvatar().getLugar();
+                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                    } catch (DadosNoValidosException e) {
+                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                    }
                     return false;
                 }
 
                 // Si la tirada es menor o igual a 4, retroceder y deshabilitar tiradas.
 
                 tiradas_turno = -3;
-
-                Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
-                this.getAvatar().moverAvatarAtras(pos, tirada);
-                c = this.getAvatar().getLugar();
-                Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-
+                try {
+                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
+                    this.getAvatar().moverAvatarAtras(pos, tirada);
+                    c = this.getAvatar().getLugar();
+                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
+                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
+                } catch (DadosNoValidosException e) {
+                    Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+                }
                 return true;
-
-
             }
         }
         return true;
@@ -511,10 +544,14 @@ public class Jugador {
     private void traspasarPropiedadesJugador(Jugador nuevoPropietario, Jugador jugador){
         ArrayList<Casilla> propiedadesACopiar = new ArrayList<>(jugador.propiedades);
         for(Casilla c : propiedadesACopiar) {
-            c.setValor(((Solar)c).getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
-            nuevoPropietario.anhadirPropiedad(c);
-            c.setDuenho(nuevoPropietario);
-            jugador.eliminarPropiedad(c);
+            try {
+                c.setValor(((Solar)c).getPrecioOriginal()); //resetea el precio de la casilla a su precio inicial
+                nuevoPropietario.anhadirPropiedad(c);
+                c.setDuenho(nuevoPropietario);
+                jugador.eliminarPropiedad(c);
+            } catch (PropiedadException e) {
+                Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
+            }
         }
     }
 
