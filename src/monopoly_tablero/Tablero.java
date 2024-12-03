@@ -31,7 +31,6 @@ public class Tablero {
         this.grupos = new HashMap<>();
         this.banca = banca;
         this.cartas = new Cartas();
-
         generarCasillas();
     }
 

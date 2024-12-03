@@ -36,6 +36,6 @@ public class AccionSuerte extends Accion {
                 throw new DadosNoValidosException("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
             }
         }
-        tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funcion de las cartas
+        tab.getCartas().getGestorCartas().accion(this, jugador, banca, jugadores, tab, opcion2); //ejecutamos la funcion de las cartas
     }
 }
