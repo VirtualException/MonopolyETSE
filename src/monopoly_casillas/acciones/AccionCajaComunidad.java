@@ -38,6 +38,6 @@ public class AccionCajaComunidad extends Accion {
                 throw new DadosNoValidosException("Entrada no válida. Por favor, ingresa un número entre 1 y 6.");
             }
         }
-        tab.getCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
+        tab.getCartas().getGestorCartas().accion(this, jugador, banca, jugadores, tab, opcion1); //ejecutamos la funciona de las cartas
     }
 }
