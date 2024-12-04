@@ -89,7 +89,7 @@ public class Juego implements Comandos{
     */
     public boolean analizarComando(String comando) {
 
-        String[] comandos_args = new String[5];
+        String[] comandos_args = new String[10];
         String[] split = comando.split(" ");
         int num_args = split.length;
         System.arraycopy(split, 0, comandos_args, 0, num_args);
@@ -269,27 +269,32 @@ public class Juego implements Comandos{
 
             proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, cantidadSolicitada);
         } else if (comandos_args[0].equals("trato") && num_args >= 7) {
-            String nombreDestinatario = comandos_args[1].replaceAll(":", "");
+            String nombreDestinatario = comandos_args[1].replaceAll(":","");
             Casilla propiedadOfrecida = null;
             Casilla propiedadSolicitada = null;
-
+            float cantidadOfrecida = 0f;
             float cantidadSolicitada = 0f;
 
-            if (comandos_args[5].equals("y")) {
-                propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("[(,]", ""));
-                propiedadSolicitada = tablero.encontrar_casilla(comandos_args[4]);
-                cantidadSolicitada = Float.parseFloat(comandos_args[6].replaceAll(")", ""));
-                proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, 0f, cantidadSolicitada);
+            try {
+                if (comandos_args[4].equals("y")) {
+                    propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("[(]", ""));
+                    cantidadOfrecida = Float.parseFloat(comandos_args[5].replaceAll("[,]", ""));
+                    propiedadSolicitada = tablero.encontrar_casilla(comandos_args[6].replaceAll("[)]", ""));
 
-            } else if (comandos_args[4].equals("y")) {
-                propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("(", ""));
-                float cantidadOfrecida = Float.parseFloat(comandos_args[5]);
-                propiedadSolicitada = tablero.encontrar_casilla(comandos_args[6].replaceAll(")", ""));
-                proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, cantidadSolicitada);
+                    proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, cantidadOfrecida, 0f);
 
-            } else {
-                consola.imprimir("Error. Formato inválido");
-            }
+                } else if (comandos_args[5].equals("y")) {
+                    propiedadOfrecida = tablero.encontrar_casilla(comandos_args[3].replaceAll("[(,]", ""));
+                    propiedadSolicitada = tablero.encontrar_casilla(comandos_args[4]);
+                    cantidadSolicitada = Float.parseFloat(comandos_args[6].replaceAll("[)]", ""));
+
+                    proponerTrato(nombreDestinatario, propiedadOfrecida, propiedadSolicitada, 0f, cantidadSolicitada);
+                } else {
+                    consola.imprimir("Error: Formato inválido.");
+                }
+            } catch(Exception e) {
+                consola.imprimir("Error al analizar el comando para proponer un trato: " + e.getMessage());
+            } 
         }
         /* Comando salida */
         else if (comandos_args[0].equals("exit") && num_args == 1) {
@@ -1023,9 +1028,6 @@ public class Juego implements Comandos{
         scanner.close();
         return respuesta;
     }
-
-
-
 
 
     @Override

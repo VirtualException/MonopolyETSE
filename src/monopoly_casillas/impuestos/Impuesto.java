@@ -7,7 +7,6 @@ import monopoly_jugador.Jugador;
 import monopoly_tablero.Tablero;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Impuesto extends Casilla {
     public Impuesto(String nombre, String tipo, int posicion, float valor, Jugador duenho) {

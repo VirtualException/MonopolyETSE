@@ -3,6 +3,8 @@ package monopoly_jugador;
 import java.util.ArrayList;
 
 import monopoly_avatares.Avatar;
+import monopoly_avatares.Coche;
+import monopoly_avatares.Pelota;
 import monopoly_casillas.Casilla;
 import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.Edificio;
@@ -50,13 +52,26 @@ public class Jugador {
      */
     public Jugador(String nombre, String tipoAvatar, Casilla inicio, ArrayList<Avatar> avCreados, int index) {
         this.nombre = nombre;
+        // Verificamos que no sea Banca
         if (!tipoAvatar.equals("Banca")) {
             try {
-                this.avatar = new Avatar(tipoAvatar, this, inicio, avCreados); // Creación del avatar
+                switch (tipoAvatar) {
+                    case "Pelota":
+                        this.avatar = new Pelota(this, inicio, avCreados);
+                        break;
+                    case "Coche":
+                        this.avatar = new Coche(this, inicio, avCreados);
+                        break;
+                    default:
+                        throw new AvatarNoValidoException("Tipo de avatar no reconocido: " + tipoAvatar);
+                }
             } catch (AvatarNoValidoException e) {
                 System.out.println("Advertencia: " + e.getMessage());
-                // Establece un avatar por defecto en caso de error
-                this.avatar = new Avatar("Pelota", this, inicio, avCreados);
+                try {
+                    this.avatar = new Pelota(this, inicio, avCreados);
+                } catch (AvatarNoValidoException ex) {
+                    System.out.println("Error al crear avatar por defecto.");
+                }
             }
         }
         this.fortuna = (float) Valor.FORTUNA_INICIAL;
@@ -78,6 +93,7 @@ public class Jugador {
         this.pagarBanca = false;
         this.debeContinuar = 0;
     }
+
 
 
 
@@ -331,13 +347,13 @@ public class Jugador {
     public boolean moverJugador(Tablero tablero, int tirada, ArrayList<Jugador> jugadores) {
 
         ArrayList<ArrayList<Casilla>> pos = tablero.getPosiciones();
-
         Casilla c = this.getAvatar().getLugar();
 
+        // Modo básico
         if (!this.isModo()) {
             try {
                 Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                this.getAvatar().moverAvatar(pos, tirada);
+                this.getAvatar().moverEnBasico(pos, tirada);
                 c = this.getAvatar().getLugar();
                 Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
                 c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores); // Puede lanzar DadosNoValidosException
@@ -346,131 +362,20 @@ public class Jugador {
             }
             return true;
         } else {
-            if (this.getAvatar().getTipo().equals("Pelota")) {
-
-                /* Movimiento Pelota */
-                Juego.consola.imprimir("Moviendo como Pelota");
-
-                /* Está en el proceso de avanzar por cada casilla */
-                if (debeContinuar > 0) {
-
-                    debeContinuar-=2;
-                    /* Si le queda UN SOLO PASO */
-                    if (debeContinuar < 0) {
-                        tirada = 1;
-                        debeContinuar = 0;
-                    }
-                    else
-                        tirada = 2;
-                    try {
-                        Juego.consola.imprimir("Pasando a la siguiente casilla (modo Pelota)");
-                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                        this.getAvatar().moverAvatar(pos, tirada);
-                        c = this.getAvatar().getLugar();
-                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                    } catch (DadosNoValidosException e) {
-                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
-                    }
-                    return true;
-
-                }
-
-                /* Si es la primera tirada en modo Pelota */
-                if (tirada > 4) {
-
-                    int tiradaPrimera;
-                    if (avatar.getLugar().getPosicion() % 2 == 0)
-                        tiradaPrimera = 5;
-                    else
-                        tiradaPrimera = 4;
-
-                    try {
-                        Juego.consola.imprimir("Primer movimiento (modo Pelota)");
-                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones, desde " + c.getNombre());
-                        this.getAvatar().moverAvatar(pos, tiradaPrimera);
-                        c = this.getAvatar().getLugar();
-                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                    } catch (DadosNoValidosException e) {
-                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
-                    }
-
-                    Juego.consola.imprimir("El jugador debe seguir avanzando aún");
-
-                    debeContinuar = tirada - tiradaPrimera;
-
-                }
-                else {
-
-                    int tiradaPrimera;
-                    if (avatar.getLugar().getPosicion() % 2 == 0)
-                        tiradaPrimera = 5;
-                    else
-                        tiradaPrimera = 4;
-
-                    try {
-                        Juego.consola.imprimir("Primer y único movimiento (modo Pelota)");
-                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tiradaPrimera + " posiciones hacia atrás, desde " + c.getNombre());
-                        this.getAvatar().moverAvatarAtras(pos, tiradaPrimera);
-                        c = this.getAvatar().getLugar();
-                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                    } catch (DadosNoValidosException e) {
-                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
-                    }
-
-                    debeContinuar = 0;
-                }
-
-
-
-            } else if (this.getAvatar().getTipo().equals("Coche")) {
-
-                /* Movimiento Coche */
-                Juego.consola.imprimir("Moviendo como Coche");
-
-                if (tiradas_turno <= -3) {
-                    Juego.consola.imprimir("El jugador que tira en modo Coche no puede los siguientes " + (-tiradas_turno) + " turnos.");
-                    return true;
-                }
-
-                /* Si lleva tirando muchas veces, no se tira*/
-                if (tiradas_turno > 3) {
-                    tiradas_turno = 0;
-                    Juego.consola.imprimir("El jugador que tira en modo Coche ya tiró 3 veces.");
-                    return true;
-                }
-
-                if (tirada > 4) {
-                    try {
-                        Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones, desde " + c.getNombre());
-                        this.getAvatar().moverAvatar(pos, tirada);
-                        c = this.getAvatar().getLugar();
-                        Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                        c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                    } catch (DadosNoValidosException e) {
-                        Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
-                    }
-                    return false;
-                }
-
-                // Si la tirada es menor o igual a 4, retroceder y deshabilitar tiradas.
-
-                tiradas_turno = -3;
-                try {
-                    Juego.consola.imprimir_sin_salto("El avatar " + this.getAvatar().getId() + " avanza " + tirada + " posiciones hacia atrás, desde " + c.getNombre());
-                    this.getAvatar().moverAvatarAtras(pos, tirada);
-                    c = this.getAvatar().getLugar();
-                    Juego.consola.imprimir(" hasta " + c.getNombre() + ".");
-                    c.evaluarCasilla(tablero, this, tablero.getBanca(), jugadores);
-                } catch (DadosNoValidosException e) {
-                    Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
-                }
-                return true;
+            
+            // Modo avanzado
+            if (this.getAvatar() instanceof Pelota) {
+                Pelota avatarPelota = (Pelota) this.getAvatar();
+                avatarPelota.moverEnAvanzado(tablero, tirada, jugadores);
+            } else if (this.getAvatar() instanceof Coche) {
+                Coche avatarCoche = (Coche) this.getAvatar();
+                avatarCoche.moverEnAvanzado(tablero, tirada, jugadores);
+            } else {
+                Juego.consola.imprimir("Error: El tipo de avatar no es válido.");
+                return false;
             }
         }
-        return true;
+        return true; 
     }
 
 
@@ -592,6 +497,14 @@ public class Jugador {
 
     public int getTiradasCarcel() {
         return tiradasCarcel;
+    }
+
+    public int getTiradasTurno() {
+        return tiradas_turno;
+    }
+
+    public void setTiradasTurno(int tiradasTurno) {
+        this.tiradas_turno = tiradasTurno;
     }
 
     public int getVueltas() {

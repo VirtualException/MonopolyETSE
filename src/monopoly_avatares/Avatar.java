@@ -6,11 +6,12 @@ import java.util.Random;
 import monopoly_casillas.Casilla;
 import monopoly_exception.avatares.AvatarNoValidoException;
 import monopoly_juego.Juego;
+import monopoly_tablero.Tablero;
 import monopoly_tablero.Valor;
 import monopoly_jugador.Jugador;
 
 
-public class Avatar {
+public abstract class Avatar {
 
     //Atributos
     private String id; //Identificador: una letra generada aleatoriamente.
@@ -18,10 +19,10 @@ public class Avatar {
     private Jugador jugador; //Un jugador al que pertenece ese avatar.
     private Casilla lugar; //Los avatares se sitúan en casillas del tablero.
 
-
     //Constructor vacío
     public Avatar() {
     }
+
 
     /*Constructor principal. Requiere éstos parámetros:
      * Tipo del avatar, jugador al que pertenece, lugar en el que estará ubicado, y un arraylist con los
@@ -48,7 +49,7 @@ public class Avatar {
      * - Un entero que indica el numero de casillas a moverse (será el valor sacado en la tirada de los dados).
      * EN ESTA VERSIÓN SUPONEMOS QUE valorTirada siemrpe es positivo.
      */
-    public void moverAvatar(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
+    public void moverEnBasico(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
 
         int nuevaPosicion = this.lugar.getPosicion() + valorTirada;
 
@@ -84,7 +85,7 @@ public class Avatar {
         }
     }
 
-    /*REVISAR IrCarcel / carcel */
+
     public void moverAvatarAtras(ArrayList<ArrayList<Casilla>> casillas, int valorTirada) {
 
         int nuevaPosicion = this.lugar.getPosicion() - Math.abs(valorTirada); // Resta el valor para moverse hacia atrás
@@ -159,6 +160,8 @@ public class Avatar {
 
     }
 
+    // Método abstracto para movimiento avanzado
+    public abstract void moverEnAvanzado(Tablero tab, int tirada, ArrayList<Jugador> jugadores);
 
 
 

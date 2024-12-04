@@ -1,7 +1,6 @@
 package monopoly_tratos;
 
 import monopoly_casillas.Casilla;
-import monopoly_casillas.propiedades.Solar;
 import monopoly_exception.propiedades.PropiedadException;
 import monopoly_exception.tratos.TratoException;
 import monopoly_juego.Juego;
@@ -86,7 +85,7 @@ public class Trato {
         cadena += ("y tú me das ");
 
         if (propiedadSolicitada != null && cantidadSolicitada > 0) {
-            cadena += (propiedadSolicitada.getNombre() + "y" + cantidadSolicitada + "€");
+            cadena += (propiedadSolicitada.getNombre() + " y " + cantidadSolicitada + "€");
         }
         else {
             if (propiedadSolicitada != null) {
@@ -285,6 +284,7 @@ public class Trato {
             Juego.consola.imprimir("Error: " + e.getMessage()); // Manejo del error
         }
         this.destinatario.sumarFortuna(cantidadOfrecida);
+        this.destinatario.anhadirPropiedad(propiedadOfrecida);
 
         Juego.consola.imprimir("Se ha aceptado el siguiente trato con " + this.proponente.getNombre() + ": le doy " + propiedadSolicitada.getNombre() + " y " + this.proponente.getNombre() + " me da " + propiedadOfrecida.getNombre() + " y " + cantidadOfrecida + "€.");
     }
