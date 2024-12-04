@@ -2,9 +2,7 @@ package monopoly_jugador;
 
 import java.util.ArrayList;
 
-import monopoly_avatares.Avatar;
-import monopoly_avatares.Coche;
-import monopoly_avatares.Pelota;
+import monopoly_avatares.*;
 import monopoly_casillas.Casilla;
 import monopoly_casillas.propiedades.Solar;
 import monopoly_edificios.Edificio;
@@ -56,10 +54,16 @@ public class Jugador {
         if (!tipoAvatar.equals("Banca")) {
             try {
                 switch (tipoAvatar) {
-                    case "Pelota":
+                    case "Pelota": case "pelota":
                         this.avatar = new Pelota(this, inicio, avCreados);
                         break;
-                    case "Coche":
+                    case "Esfinge": case "esfinge":
+                        this.avatar = new Esfinge(this, inicio, avCreados);
+                        break;
+                    case "Sombrero": case "sombrero":
+                        this.avatar = new Sombrero(this, inicio, avCreados);
+                        break;
+                    case "Coche": case "coche":
                         this.avatar = new Coche(this, inicio, avCreados);
                         break;
                     default:
